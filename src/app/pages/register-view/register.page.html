@@ -1,0 +1,70 @@
+<!--Aqui Usamos este header, para no tener el back-->
+<ion-header>
+  <ion-toolbar color="primary">
+
+    <ion-buttons slot="start">
+      <ion-menu-button menu="customMenu"></ion-menu-button>
+    </ion-buttons>
+
+    <ion-title text-capitalize> {{ titleHeaderPage }} </ion-title>
+
+  </ion-toolbar>
+</ion-header>
+<!--Aqui Usamos este header, para no tener el back-->
+
+<ion-content>
+
+  <form [formGroup]="registerVerificationForm">
+
+    <ion-item lines="full">
+      <ion-label position="floating">Correo: </ion-label>
+      <ion-input 
+        type="text" 
+        inputmode="email"
+        formControlName="email"
+        required>
+      </ion-input>
+      <div *ngFor="let error of errorMessages.email">
+        <ng-container *ngIf="registerVerificationForm.controls['email'].hasError(error.type) && (registerVerificationForm.controls['email'].dirty || registerVerificationForm.controls['email'].touched)">
+          <small class="error-message">{{error.message}}</small>
+        </ng-container>
+      </div>
+    </ion-item>
+
+    <ion-item lines="full">
+      <ion-label position="floating">Contraseña: </ion-label>
+      <ion-input
+        type="password"
+        inputmode="password" 
+        formControlName="password"
+        required>
+      </ion-input>
+      <div *ngFor="let error of errorMessages.password">
+        <ng-container *ngIf="registerVerificationForm.controls['password'].hasError(error.type) && (registerVerificationForm.controls['password'].dirty || registerVerificationForm.controls['password'].touched)">
+          <small class="error-message">{{error.message}}</small>
+        </ng-container>
+      </div>
+    </ion-item>
+
+    <ion-row>
+      <ion-col>
+        <ion-button
+          type="submit"
+          [disabled]="!registerVerificationForm.valid"
+          (click)="onRegister()"
+          expand="block">
+          Registrarse
+        </ion-button>
+      </ion-col>
+    </ion-row>
+
+  </form>
+
+</ion-content>
+
+<!--Button RedSocial-->
+<fab-icons-component></fab-icons-component>
+
+<footer-component>
+</footer-component>
+

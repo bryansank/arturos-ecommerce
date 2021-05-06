@@ -1,0 +1,132 @@
+.toastCart{
+    margin-bottom: 500px;
+    text-align: center;
+    color: white;
+    font-weight: bold;
+}
+/*
+ * App Global CSS
+ * ----------------------------------------------------------------------------
+ * TODO: Colocar la franja de categorias en otro color cuando se trata de DARK MODE
+ * TODO: Colocar las cards de productos en color blanco cuando se trata de DARK MODE
+ * TODO: Display none del despliegue de los productos cuando se accionan en categorias
+ */
+
+/* Core CSS required for Ionic components to work properly */
+@import "~@ionic/angular/css/core.css";
+
+/* Basic CSS for apps built with Ionic */
+@import "~@ionic/angular/css/normalize.css";
+@import "~@ionic/angular/css/structure.css";
+@import "~@ionic/angular/css/typography.css";
+@import '~@ionic/angular/css/display.css';
+
+/* Optional CSS utils that can be commented out */
+@import "~@ionic/angular/css/padding.css";
+@import "~@ionic/angular/css/float-elements.css";
+@import "~@ionic/angular/css/text-alignment.css";
+@import "~@ionic/angular/css/text-transformation.css";
+@import "~@ionic/angular/css/flex-utils.css";
+
+/**/
+/*Se coloca aqui, porque los componentes solo cambian si el estilo es global*/
+/**/
+
+/*Card stripe*/
+.credit-card-stripe{
+    width: 500px;
+    height: 100px;
+    border: 1px solid black;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+.noneDis{
+    display: none;
+}
+
+.inner-scroll.scroll-y{
+    background: red !important;
+}
+
+.error-message {
+    color: var(--ion-color-danger);
+}
+
+/* color body*/
+ion-content{ --ion-background-color:#f7f7f7; }
+
+/* Header Alert title*/
+.alert-title.sc-ion-alert-md{
+    color: red !important;
+    font-size: 30px !important;
+}
+
+/*Card header message*/
+.deleteCss span, .deleteCss .sc-ion-action-sheet-md{
+    color: red !important;
+    font-weight: bold;
+}
+/*img card produc*/
+.swiper-slide img {
+    width: 100%;
+}
+
+/*paragraft footer*/
+.pFooter{
+    padding: 0;
+    margin: 0;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+/*Zoom de productos*/
+.zoom{ transition: transform 0.3s; }
+.zoom:hover{ transform: scale(1.3); }
+
+/*title*/
+.headerCategoryProduct{
+    color: #fe4f00 !important;
+    font-size: 18px !important;
+    text-transform: uppercase;
+    text-decoration: none;
+    margin-top: 20px;
+    text-align: center;
+}
+
+/*Carrito*/
+ion-badge{
+    color: #000000;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    border-radius: 100%;
+    background: #c1c1c1;
+}
+
+/*slider stackoverflokeado*/
+.category-banner{
+    border-left: 8px solid var(--ion-color-secondary);
+    background: var(--ion-color-light);
+    height: 40px;
+    padding: 10px;
+    font-weight: 500;
+    margin-bottom: 0px;
+}
+
+/*Si usamos botones para navegar en el nav*/
+.MenuMediaQry{
+    display: block;
+}
+@media only screen and (max-width: 500px) {
+    .MenuMediaQry{
+        display: none;
+    }
+}
+/*Si usamos textos largos antes mencionados.*/
+/*@media only screen and (max-width: 786px) {
+    .MenuMediaQry{
+        display: none;
+    }
+}*/

@@ -1,0 +1,94 @@
+<style></style>
+<!--Aqui Usamos este header, para no tener el back-->
+<ion-header>
+  <ion-toolbar color="primary">
+
+    <ion-buttons slot="start">
+      <!--<ion-back-button defaultHref="/" text="Volver">-->
+      <ion-back-button defaultHref="/">
+        <ion-icon slot="start" name="arrow-back"></ion-icon>
+      </ion-back-button>
+    </ion-buttons>
+
+    <ion-buttons slot="end">
+      <ion-button (click)="openPageCart()">
+
+        <ion-badge *ngIf="cartHome.length > 0">{{ cartHome.length }}</ion-badge>
+        <ion-icon name="cart" slot="icon-only"></ion-icon>
+
+      </ion-button>
+    </ion-buttons>
+
+    <!--
+    <ion-buttons slot="end" class="MenuMediaQry">
+      <ion-button>Hola</ion-button>
+      <ion-button>Hola</ion-button>
+      <ion-button>Hola</ion-button>
+      <ion-button>Hola</ion-button>
+      <ion-button>Hola</ion-button>
+    </ion-buttons>
+    -->
+
+    <ion-buttons slot="start">
+      <ion-menu-button menu="customMenu"></ion-menu-button>
+    </ion-buttons>
+
+    <ion-title text-capitalize> {{ titleHeader }} </ion-title>
+
+    <!--
+      <ion-avatar slot="end">
+      <img src="/assets/avatar-freeman.jpg" alt="-">
+    </ion-avatar>
+    -->
+    
+  </ion-toolbar>
+</ion-header>
+<!--Aqui Usamos este header, para no tener el back-->
+
+
+<ion-content>
+
+  <!--Producst-->
+  <div *ngFor="let cat of item">
+
+    <ion-row no-padding class="category-banner">
+      <ion-col text-left button tappable (click)="cat.expanded = !cat.expanded" align-self-center>
+        {{cat.category}}
+      </ion-col>
+    </ion-row>
+  
+    <ion-grid>
+      <ion-row>
+        <ion-col *ngFor="let obj of cat.products; let index =index" size="12" size-lg="3" size-md="4" size-sm="6" size-xs="12">
+          <div *ngIf="cat.expanded">
+            <ion-card>
+              <ion-card-header>
+                <ion-card-title>
+                  {{ obj.name}} - {{obj.price}}$
+                </ion-card-title>
+              </ion-card-header>
+              <ion-card-content>
+                <ion-img style="margin: 2px;" src="/assets/productos/version-tres-postres.png"></ion-img>
+                <ion-button expand="full" (click)="addToCart(obj)">
+                  Añadir al Carrito
+                </ion-button>
+              </ion-card-content>
+            </ion-card>  
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+  </div>
+
+  <!--Producst-->
+
+  <!--
+  <footer-component>
+  </footer-component>
+  -->
+
+</ion-content>
+
+<!--Button RedSocial-->
+<fab-icons-component class="footer"></fab-icons-component>

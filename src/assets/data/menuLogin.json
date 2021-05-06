@@ -1,0 +1,27 @@
+[
+    {
+        "icon" : "home-outline",
+        "txt": "Inicio",
+        "redirecTo": "/home-view"
+    },
+    {
+        "icon" : "restaurant",
+        "txt": "Platos",
+        "redirecTo": "/products-view"
+    },
+    {
+        "icon" : "cart",
+        "txt": "Carrito",
+        "redirecTo": "/cart-view"
+    },
+    {
+        "icon" : "people-circle-outline",
+        "txt": "Perfil",
+        "redirecTo": "/admin-view"
+    },
+    {
+        "icon" : "log-out-outline",
+        "txt": "Salir",
+        "redirecTo": "/logout-view"
+    }
+]

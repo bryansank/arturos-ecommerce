@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  
+  <title>Arturos</title>
+
+  <base href="/" />
+
+  <meta name="color-scheme" content="light dark" />
+  <meta name="viewport" content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="format-detection" content="telephone=no" />
+  <meta name="msapplication-tap-highlight" content="no" />
+  <meta name="description" content="Tienda Online de Arturos. Para comer de verdad, Come Arturos." />
+  <meta name="keywords" content="arturos, Arturos, ARTUROS, delivery, arturos delivery, pollo, super, arturos precios, precios arturos" />
+  <meta name="author" content="Bryan Key @bryansank_dev" />
+  <meta charset="UTF-8" />
+
+  <link rel="icon" type="image/png" href="assets/icon/favicon.png" />
+
+  <!--API DE STRIPE-->
+  <script src="https://js.stripe.com/v3/"></script>
+  <script>
+    var stripe = Stripe(
+      'pk_test_51InQSMEligkEWzHsZgWV8iUxgP2TBXhqEizgNlQKWCq2BAFOCIa0XtJAAYHAeuKb0jDrOFgjmWUtp1vGQDLqoDqY00C3m40mIw'
+    );
+
+    var elements = stripe.elements();
+    //console.log("Elementos de Stripe Elements: ", elements);
+    //console.log("Obj Stripe: ", stripe);
+  </script>
+  <!--API DE STRIPE-->
+
+  <!-- add to homescreen for ios -->
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+</head>
+
+  <body>
+    <app-root></app-root>
+  </body>
+
+</html>

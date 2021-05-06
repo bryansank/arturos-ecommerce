@@ -1,0 +1,102 @@
+<style>
+  
+</style>
+<!--Aqui Usamos este header, para no tener el back-->
+<ion-header>
+  <ion-toolbar color="primary">
+
+    <ion-buttons slot="start">
+      <ion-menu-button menu="customMenu"></ion-menu-button>
+    </ion-buttons>
+
+    <ion-title text-capitalize> {{ titleHeaderPage }} </ion-title>
+    
+  </ion-toolbar>
+</ion-header>
+<!--Aqui Usamos este header, para no tener el back-->
+
+<ion-content>
+
+  <form [formGroup]="loginForm">
+
+    <ion-item lines="full">
+      <ion-label position="floating">Email</ion-label>
+      <ion-input 
+        type="text" 
+        inputmode="email"
+        formControlName="email"
+        required>
+      </ion-input>
+      <div *ngFor="let error of errorMessages.email">
+        <ng-container *ngIf="loginForm.controls['email'].hasError(error.type) && (loginForm.controls['email'].dirty || loginForm.controls['email'].touched)">
+          <small class="error-message">{{error.message}}</small>
+        </ng-container>
+      </div>
+      <!--#emailForm-->
+
+    </ion-item>
+    <ion-item lines="full">
+      <ion-label position="floating">Contraseña</ion-label>
+      <ion-input 
+        type="password"
+        inputmode="password" 
+        formControlName="password"
+        required>
+      </ion-input>
+      <div *ngFor="let error of errorMessages.password">
+        <ng-container *ngIf="loginForm.controls['password'].hasError(error.type) && (loginForm.controls['password'].dirty || loginForm.controls['password'].touched)">
+          <small class="error-message">{{error.message}}</small>
+        </ng-container>
+      </div>
+      <!--#passwordForm-->
+      
+    </ion-item>
+    <ion-row>
+      <ion-col>
+        <ion-button
+          type="submit"
+          expand="block"
+          [disabled]="!loginForm.valid"
+          (click)="onLogin()"
+          >
+          Login
+        </ion-button>
+      </ion-col>
+    </ion-row>
+    <!--(click)="onLogin(emailForm, passwordForm)"-->
+    
+
+    <!--(click)="onGoogleLogin(emailForm, passwordForm)"-->
+  </form>
+
+  <ion-row>
+    <ion-col>
+      <ion-button
+        type="submit"
+        color="danger"
+        (click)="onGoogleLogin()"
+        expand="block">
+        Login con Google
+      </ion-button>
+    </ion-col>
+  </ion-row>
+
+  <ion-row>
+    <ion-col>
+      <ion-button
+        type="submit"
+        color="danger"
+        (click)="passwordLost()"
+        expand="block">
+        ¿Olvidaste la Contraseña?
+      </ion-button>
+    </ion-col>
+  </ion-row>
+
+</ion-content>
+
+<footer-component>
+</footer-component>
+
+<!--Button RedSocial-->
+<fab-icons-component></fab-icons-component>

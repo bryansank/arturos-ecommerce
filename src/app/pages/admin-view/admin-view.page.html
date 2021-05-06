@@ -1,0 +1,32 @@
+<!--Aqui Usamos este header, para no tener el back-->
+<ion-header>
+  <ion-toolbar color="primary">
+
+    <ion-buttons slot="end">
+      <ion-button (click)="onLogout()">
+        <span style="margin-right:10px">Salir </span> <ion-icon name="log-out-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+    <ion-buttons slot="start">
+      <ion-menu-button menu="customMenu"></ion-menu-button>
+    </ion-buttons>
+
+    <ion-title text-capitalize> {{ titleHeaderPage }} </ion-title>
+    
+  </ion-toolbar>
+</ion-header>
+<!--Aqui Usamos este header, para no tener el back-->
+
+<ion-content>
+  <ion-text color="primary" style="text-align:center;">
+    <h1>Modulo de Administracion</h1>
+  </ion-text>
+
+  <ion-list>
+    <ion-item>
+      <ion-label>Hola</ion-label>
+    </ion-item>
+  </ion-list>
+
+</ion-content>

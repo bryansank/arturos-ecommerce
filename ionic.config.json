@@ -1,0 +1,7 @@
+{
+  "name": "ecommerce-arturos",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
