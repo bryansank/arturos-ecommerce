@@ -2,19 +2,24 @@
 
 <ion-content>
   <ion-list>
-      <ion-item *ngFor="let item of selectedItems" lines="inset">
+      <ion-item *ngFor="let item of selectedItems;" lines="inset">
         {{item.count}}x. - {{item.name}} - {{item.price}}$
         
         <span slot="end">{{ (item.price * item.count).toFixed(2) }}$</span>
+
+        <ion-item>
+          <ion-button (click)="deleteProduct(item.name)">Eliminar</ion-button>
+        </ion-item>
+
       </ion-item>
       <ion-item>
-        Total: <span slot="end">{{ totalPrice }}$</span>
+        Total a pagar: <span slot="end">{{ totalPrice }}$</span>
       </ion-item>
-      <!--
-        <ion-item>
-        <ion-button (click)="cartClean()">Limpiar mi carrito</ion-button>
+      
+      <ion-item *ngIf="flagCartClean" (click)="cartClear()">
+        <ion-button>Vaciar mi carrito</ion-button>
       </ion-item>
-      -->
+      
 
   </ion-list>
 

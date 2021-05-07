@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { AlertController, LoadingController, ToastController } from '@ionic/angular';
 import { errorHandler } from 'src/app/errors-handler/errors-handler';
 import { CartService } from 'src/app/services/cart.service';
+import { collapseTextChangeRangesAcrossMultipleVersions, transpileModule } from 'typescript';
 
 @Component({
   selector: 'app-cart-view',
@@ -18,6 +19,9 @@ export class CartViewPage implements OnInit, AfterViewInit {
   public totalPrice : number = 0;
   
   private loading : any;
+  public items: any[];
+  public flagExcludeCart = false;
+  public flagCartClean = false;
   //public flagPay:string = "";
   //public activeBtn = true;
 
@@ -47,45 +51,57 @@ export class CartViewPage implements OnInit, AfterViewInit {
 
   ngOnInit() {
     
-    let items = this.cartService.getCart();
+    if(this.flagExcludeCart){
+      this.items = this.selectedItems;
+    }else{
+      this.items = this.cartService.getCart();
+    }
+
+    //---
     let itemSelected = {};
 
-    if(items.length != 0){
+    if(this.items.length != 0){
 
-      for (let obj of items) {
+      this.flagCartClean = true;
+
+      for (let obj of this.items) {
         if(itemSelected[obj.id]){
           itemSelected[obj.id].count++;
         }else{
           itemSelected[obj.id] = { ...obj, count : 1}
         }
-      }
+      }//Llenamos nuestro obj con la cantidad y precio de platos elegidos.
       
       this.selectedItems = Object.keys(itemSelected).map((key)=> itemSelected[key]);
 
-      console.log("Items: " , this.selectedItems);
+      //console.log("Items elegidos: " , this.selectedItems);
 
       this.totalPrice = this.selectedItems.reduce(
-        
-        (inicial, actual) => {
-          
-          debugger;
-          console.log( (parseFloat(inicial) + (actual.price * actual.count)));
-          return ( (parseFloat(inicial) + (actual.price * actual.count)).toFixed(2) );
-
-        }, 0
+        (inicial, actual) => {return((parseFloat(inicial) + (actual.price * actual.count)).toFixed(2))}, 0
       );
       
 
     }else{
       this.totalPrice = 0;
-      this.presentToast("Agrega algo carrito!", 2500)
-      //TODO: COLOCAAR UN MENSAJE DE AGREGAR ALGO AL CARRITO
+      this.presentToast("Agrega algo carrito!", 1800);
     }
     
   }
 
-  cartClean(){
+  deleteProduct(excludeNameProduct){
+    excludeNameProduct = excludeNameProduct.trim().trimStart();
+    this.selectedItems = this.selectedItems.filter((e)=>e.name != excludeNameProduct);
+    this.flagExcludeCart = false;
+    this.ngOnInit();
+  }
+
+  cartClear(){
+    this.selectedItems = null;
     this.totalPrice = 0;
+    debugger;
+    this.cartService.deleteAllProducts();
+    this.flagCartClean = false;
+    this.ngOnInit();
   }
 
   /*onChangeStripeCard(elem, {error}){
@@ -135,19 +151,11 @@ export class CartViewPage implements OnInit, AfterViewInit {
     this.cardInfoElement.addEventListener('change', this.onChangeStripeCard.bind(this))
   }*/
 
-  async presentToast(msn:string,duration:number = 2000) {
+  async presentToast(msn:string,duration:number = 1800) {
     const toast = await this.toastController.create({
       message: msn.toUpperCase(),
       duration: duration,
       color: "primary",
-      /*buttons: [{
-        side: 'start',
-        icon: 'restaurant-outline',
-        text: '¡Elegir que comer!',
-        handler: () => {
-          console.log(this.router.navigate(["home-view"]));
-        }
-      }],*/
       position: 'bottom',
       cssClass: "toastCart"
     });

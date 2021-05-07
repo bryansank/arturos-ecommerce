@@ -22,5 +22,11 @@ export class CartService {
   addProduct(product){
     this.cart.push(product)
   }
+
+  deleteAllProducts(){
+    debugger;
+    this.cart = [];
+    return this.getCart();
+  }
   
 }
