@@ -25,7 +25,7 @@ export class HomeViewPage implements OnInit {
 
   promoTest = [1, 2, 3, 4];
 
-  cambiar(tabCategory){
+  displayCategory(tabCategory){
 
     const elementGrid = document.getElementById(tabCategory+"Grid");
 
@@ -42,14 +42,14 @@ export class HomeViewPage implements OnInit {
     private alertController: AlertController,
     public loadingCtlr: LoadingController
   ){
-    
+    this.cartHome = this.cartService.getCart();
   }
 
   ngOnInit() {
 
     this.presentLoading();
 
-    this.cartHome = this.cartService.getCart();
+    //this.cartHome = this.cartService.getCart();
 
     this.cartService.getProducts()
       .subscribe(

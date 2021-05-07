@@ -1,5 +1,26 @@
 <header-component [titleHeaderPage]="titlePage"></header-component>
 
+<!--Aqui Usamos este header, para no tener el back-->
+<ion-header>
+  <ion-toolbar color="primary">
+
+    <ion-buttons slot="start">
+      <ion-menu-button menu="customMenu"></ion-menu-button>
+    </ion-buttons>
+
+    <ion-buttons slot="start">
+      <!--<ion-back-button defaultHref="/" text="Volver">-->
+      
+      <ion-icon slot="start" name="arrow-back" [routerLink]="backHome()"></ion-icon>
+      
+    </ion-buttons>
+
+    <ion-title text-capitalize> {{ titleHeaderPage }} </ion-title>
+    
+  </ion-toolbar>
+</ion-header>
+<!--Aqui Usamos este header, para no tener el back-->
+
 <ion-content>
   <ion-list>
       <ion-item *ngFor="let item of selectedItems;" lines="inset">

@@ -88,6 +88,10 @@ export class CartViewPage implements OnInit, AfterViewInit {
     
   }
 
+  backHome(){
+    this.router.navigate(["home-view"]);
+  }
+
   deleteProduct(excludeNameProduct){
     excludeNameProduct = excludeNameProduct.trim().trimStart();
     this.selectedItems = this.selectedItems.filter((e)=>e.name != excludeNameProduct);

@@ -26,6 +26,7 @@ export class CartService {
   deleteAllProducts(){
     debugger;
     this.cart = [];
+    console.log(this.cart);
     return this.getCart();
   }
   
