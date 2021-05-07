@@ -91,7 +91,7 @@ export class CartViewPage implements OnInit, AfterViewInit {
   deleteProduct(excludeNameProduct){
     excludeNameProduct = excludeNameProduct.trim().trimStart();
     this.selectedItems = this.selectedItems.filter((e)=>e.name != excludeNameProduct);
-    this.flagExcludeCart = false;
+    this.flagExcludeCart = true;
     this.ngOnInit();
   }
 
