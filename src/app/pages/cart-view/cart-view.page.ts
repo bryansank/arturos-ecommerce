@@ -13,7 +13,7 @@ import { collapseTextChangeRangesAcrossMultipleVersions, transpileModule } from 
 })
 export class CartViewPage implements OnInit, AfterViewInit {
 
-  public titlePage:string = "Carrito";
+  public titleHeaderPage:string = "Carrito";
   private errorHandler = new errorHandler(this.alertController, this.router);
   public selectedItems: any[] = [];
   public totalPrice : number = 0;
