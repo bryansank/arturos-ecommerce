@@ -10,6 +10,7 @@ firebase.json
 environment.ts
 environment.prod.ts
 environment.dev.ts
+bk_pro.rar
 
 *~
 *.sw[mnpcod]
