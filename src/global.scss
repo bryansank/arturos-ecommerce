@@ -1,26 +1,16 @@
-.toastCart{
-    margin-bottom: 500px;
-    text-align: center;
-    color: white;
-    font-weight: bold;
-}
 /*
+
  * App Global CSS
  * ----------------------------------------------------------------------------
- * TODO: Colocar la franja de categorias en otro color cuando se trata de DARK MODE
- * TODO: Colocar las cards de productos en color blanco cuando se trata de DARK MODE
- * TODO: Display none del despliegue de los productos cuando se accionan en categorias
- */
 
+*/
 /* Core CSS required for Ionic components to work properly */
 @import "~@ionic/angular/css/core.css";
-
 /* Basic CSS for apps built with Ionic */
 @import "~@ionic/angular/css/normalize.css";
 @import "~@ionic/angular/css/structure.css";
 @import "~@ionic/angular/css/typography.css";
 @import '~@ionic/angular/css/display.css';
-
 /* Optional CSS utils that can be commented out */
 @import "~@ionic/angular/css/padding.css";
 @import "~@ionic/angular/css/float-elements.css";
@@ -31,6 +21,33 @@
 /**/
 /*Se coloca aqui, porque los componentes solo cambian si el estilo es global*/
 /**/
+
+/*Grid de Categorias de Productos*/
+.category-banner{
+    border-left: 8px solid var(--ion-color-secondary);
+    background: var(--ion-color-primary) !important;
+    height: 40px;
+    color: white;
+    font-weight: 600;
+    margin-bottom: 1px;
+    padding-top: 8px;
+    padding-left: 5px;
+}
+.noDisplayContent{
+    display: none;
+}
+.displayContent{
+    display: block !important;
+}
+/*Grid de Categorias de Productos*/
+
+/*Toast Message in Cart*/
+.toastCart{
+    text-align: center;
+    color: white;
+    font-weight: bold;
+}
+/*Toast Message in Cart*/
 
 /*Card stripe*/
 .credit-card-stripe{
@@ -45,6 +62,7 @@
 .noneDis{
     display: none;
 }
+/*Card stripe*/
 
 .inner-scroll.scroll-y{
     background: red !important;
@@ -105,17 +123,9 @@ ion-badge{
     background: #c1c1c1;
 }
 
-/*slider stackoverflokeado*/
-.category-banner{
-    border-left: 8px solid var(--ion-color-secondary);
-    background: var(--ion-color-light);
-    height: 40px;
-    padding: 10px;
-    font-weight: 500;
-    margin-bottom: 0px;
-}
 
-/*Si usamos botones para navegar en el nav*/
+/*Si llegaramos a usar botones para el nav--- APLICAR el menuMediaQry y su query */
+/*
 .MenuMediaQry{
     display: block;
 }
@@ -124,6 +134,7 @@ ion-badge{
         display: none;
     }
 }
+*/
 /*Si usamos textos largos antes mencionados.*/
 /*@media only screen and (max-width: 786px) {
     .MenuMediaQry{

@@ -25,12 +25,25 @@ export class HomeViewPage implements OnInit {
 
   promoTest = [1, 2, 3, 4];
 
+  cambiar(tabCategory){
+
+    const elementGrid = document.getElementById(tabCategory+"Grid");
+
+    if(elementGrid.classList.contains('displayContent')){
+      elementGrid.setAttribute("class","noDisplayContent md hydrated");
+    }else{
+      elementGrid.setAttribute("class","displayContent md hydrated");
+    }
+  }
+
   constructor(
     private cartService: CartService,
     private router: Router,
     private alertController: AlertController,
     public loadingCtlr: LoadingController
-  ){}
+  ){
+    
+  }
 
   ngOnInit() {
 
