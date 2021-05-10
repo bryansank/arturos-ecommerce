@@ -38,6 +38,29 @@
   </ion-slides>
   <!-- Slider -->
 
+  <!-- Search platos -->
+  <div>
+    <ion-searchbar placeholder="¿Que quiere comer hoy?" 
+    style="color:black !important; font-weight: bold !important;" 
+    (input)="getItem($event)"
+    animated 
+    autocomplete="on"
+    (ionCancel)="noDisplaySrch()"
+    debounce="500">
+    </ion-searchbar>
+  </div>
+  <!-- Search platos -->
+
+  <!-- Search list -->
+  <div *ngIf="noneDisplaySearch">
+    <div *ngFor="let a of itemsPrueba">
+      <ion-list *ngFor="let ite of a.products">
+        <ion-item>{{ite.name}} - {{ite.price}}$</ion-item>
+      </ion-list>
+    </div>
+  </div>
+  <!-- Search list -->
+
   <ion-text color="primary" style="text-align:center;">
     <h1>PROMOCIONES</h1>
   </ion-text>

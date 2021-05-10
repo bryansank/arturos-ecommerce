@@ -18,6 +18,40 @@ export class HomeViewPage implements OnInit {
   public cartHome: any = [];
   public item: any = [];
 
+  public itemsPrueba: any;
+  public noneDisplaySearch:boolean=true;
+
+  InitializeItems(){
+    this.itemsPrueba = this.item;
+  }
+
+  //TODO: El evento cancel, dispara de nuevo el getItem... 
+  getItem(ev:any){
+    debugger;
+    ev.preventDefault(); 
+    this.noneDisplaySearch = true;
+    this.InitializeItems();
+
+    let val = ev.target.value;
+
+    if(val && val.trim() != ''){
+      this.itemsPrueba = this.itemsPrueba.filter(
+        (e)=>{
+          for (const i of e.products) {
+            return (i.name.toLowerCase().indexOf(val.toLowerCase()) !== -1);
+          }
+        }
+      );
+      console.log(val.toLowerCase())
+      console.log("valor final: == ", this.itemsPrueba)
+    }
+  }
+
+  noDisplaySrch(){
+    debugger;
+    this.noneDisplaySearch = false;
+  }
+
   public slideOpts: any = {
     initialSlide: 0,
     speed: 400,
