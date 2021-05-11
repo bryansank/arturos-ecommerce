@@ -59,10 +59,12 @@
         <ion-item>{{search.name}} - {{search.price}}$</ion-item>
       </ion-list>
     </div>
-    <ng-template #notDisplay>
+    <ng-template #notDisplay *ngIf="notFound; else notData">
       <ion-list>
-        <ion-item></ion-item>
+        <ion-item>No se encontro nada.</ion-item>
       </ion-list>
+      <ng-template #notData>
+      </ng-template>
     </ng-template>
   </div>  
   <!--

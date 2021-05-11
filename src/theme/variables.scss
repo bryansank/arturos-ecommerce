@@ -80,10 +80,18 @@
    * -------------------------------------------
    */
   #searchHome{
+    
+    --placeholder-color: white !important;
     --background: #1e1e1e;
-    --color: white !important;
-    color: white;
+    --border-radius: white !important;
+    --icon-color: white !important;
+    
+    color:white !important;
   }
+  .searchbar-input.sc-ion-searchbar-md{
+    color: white !important;
+  }
+  
    
   .CardBody{
     background: white;

@@ -20,6 +20,7 @@ export class HomeViewPage implements OnInit {
 
   public displaySrch:boolean=true;
   public flagDisplayListSearch:boolean = false;
+  public notFound = true;
   public itemsForSearch;
 
   public slideOpts: any = {
@@ -125,6 +126,9 @@ export class HomeViewPage implements OnInit {
       //manipular categorias en un futuro
 
     }else{
+      if(!this.itemsContentData){
+        this.notFound = false;
+      }
       this.displaySrch = false;
     }
   }
