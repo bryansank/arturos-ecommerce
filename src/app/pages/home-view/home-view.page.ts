@@ -18,39 +18,9 @@ export class HomeViewPage implements OnInit {
   public cartHome: any = [];
   public item: any = [];
 
-  public itemsPrueba: any;
-  public noneDisplaySearch:boolean=true;
-
-  InitializeItems(){
-    this.itemsPrueba = this.item;
-  }
-
-  //TODO: El evento cancel, dispara de nuevo el getItem... 
-  getItem(ev:any){
-    debugger;
-    ev.preventDefault(); 
-    this.noneDisplaySearch = true;
-    this.InitializeItems();
-
-    let val = ev.target.value;
-
-    if(val && val.trim() != ''){
-      this.itemsPrueba = this.itemsPrueba.filter(
-        (e)=>{
-          for (const i of e.products) {
-            return (i.name.toLowerCase().indexOf(val.toLowerCase()) !== -1);
-          }
-        }
-      );
-      console.log(val.toLowerCase())
-      console.log("valor final: == ", this.itemsPrueba)
-    }
-  }
-
-  noDisplaySrch(){
-    debugger;
-    this.noneDisplaySearch = false;
-  }
+  public displaySrch:boolean=true;
+  public flagDisplayListSearch:boolean = false;
+  public itemsForSearch;
 
   public slideOpts: any = {
     initialSlide: 0,
@@ -92,6 +62,7 @@ export class HomeViewPage implements OnInit {
           this.item = productsData; 
           this.hideLoading();
           
+          
           setTimeout(()=>{
             this.ShowPopup("Hola Querid@ Cliente.", "Te recordamos que si usas algun tipo de bloqueador de anuncios debes desactivarlo.", "No usaremos ningun dato personal fuera de este sitio o con fines comerciales.");
           },1500);
@@ -112,6 +83,58 @@ export class HomeViewPage implements OnInit {
       );
     
   }
+
+  /* SEARCH LOGIC */
+  InitializeItems(){
+    this.itemsForSearch = this.item;
+  }
+
+  itemsContentData():boolean{
+    const contentData = this.item;
+    return (contentData.length != 0 ? true : false);
+  }
+
+  getItemSearch(ev:any){
+    this.flagDisplayListSearch = true;
+
+    const valueSrch:string = ev.detail.value.toString();
+
+    if(valueSrch != "" && this.itemsContentData()){
+
+      this.InitializeItems();
+      /* console.log(this.itemsForSearch); */
+
+      const categoryAll = this.itemsForSearch.filter(
+        (e)=>{ return e.category == "TODOS" }
+      );
+      //No funciona fusionado ambos metodos...
+      const allProducts = categoryAll.map(
+        (e)=> e.products
+      );
+
+      this.itemsForSearch = allProducts[0].filter(
+        (i)=>{
+          return(i.name.toLowerCase().indexOf(valueSrch.toLowerCase()) !== -1 ? i : "")
+        }
+      )
+
+      //console.log(this.itemsForSearch);
+
+      //todo: pique la primera palabra del nombre
+      //Si se coloca espacio, que tome la 2da palabra
+      //manipular categorias en un futuro
+
+    }else{
+      this.displaySrch = false;
+    }
+  }
+
+  noDisplaySrch(){
+    this.InitializeItems();
+    this.displaySrch = false;
+    //console.log("test");
+  }
+  /* SEARCH LOGICCC */
 
   addToCart(product){
     //console.log(this.cartHome.length)

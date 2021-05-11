@@ -24,6 +24,20 @@
 
 <ion-content>
 
+  <!-- Search platos -->
+  <div>
+    <ion-searchbar 
+      placeholder="¿Que quiere comer hoy?" 
+      style="color:black !important; font-weight: bold !important;" 
+      (ionChange)="getItemSearch($event)"
+      (ionClear)="noDisplaySrch()"
+      debounce="1000"
+      id="searchHome"
+    >
+    </ion-searchbar>
+  </div>
+  <!-- Search platos -->
+
   <!-- Slider -->
   <ion-slides [options]="slideOpts" pager="true" #slider (ionSlidesDidLoad)="slidesDidLoad(slider)">
     <ion-slide>
@@ -38,27 +52,31 @@
   </ion-slides>
   <!-- Slider -->
 
-  <!-- Search platos -->
-  <div>
-    <ion-searchbar placeholder="¿Que quiere comer hoy?" 
-    style="color:black !important; font-weight: bold !important;" 
-    (input)="getItem($event)"
-    animated 
-    autocomplete="on"
-    (ionCancel)="noDisplaySrch()"
-    debounce="500">
-    </ion-searchbar>
-  </div>
-  <!-- Search platos -->
-
   <!-- Search list -->
-  <div *ngIf="noneDisplaySearch">
-    <div *ngFor="let a of itemsPrueba">
-      <ion-list *ngFor="let ite of a.products">
-        <ion-item>{{ite.name}} - {{ite.price}}$</ion-item>
+  <div *ngIf="flagDisplayListSearch">
+    <div *ngIf="displaySrch; else notDisplay">
+      <ion-list *ngFor="let search of itemsForSearch">
+        <ion-item>{{search.name}} - {{search.price}}$</ion-item>
       </ion-list>
     </div>
+    <ng-template #notDisplay>
+      <ion-list>
+        <ion-item></ion-item>
+      </ion-list>
+    </ng-template>
+  </div>  
+  <!--
+    RAPIDO 
+    <div *ngIf="condicion; else bloqueElse">
+
   </div>
+  <div *ngFor="let a of itemsPrueba">
+    <ion-list *ngFor="let ite of a.products">
+      <ion-item>{{ite.name}} - {{ite.price}}$</ion-item>
+    </ion-list>
+  </div>
+  -->
+  
   <!-- Search list -->
 
   <ion-text color="primary" style="text-align:center;">
