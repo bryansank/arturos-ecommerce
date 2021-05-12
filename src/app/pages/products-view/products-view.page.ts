@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-//
-import { ActionSheetController, AlertController, IonSlides, LoadingController } from '@ionic/angular';
+import { AlertController, IonSlides, LoadingController, ActionSheetController } from '@ionic/angular';
 import { errorHandler } from 'src/app/errors-handler/errors-handler';
 import { CartService } from 'src/app/services/cart.service';
+//
 
 @Component({
   selector: 'app-products-view',
@@ -12,51 +12,124 @@ import { CartService } from 'src/app/services/cart.service';
 })
 
 export class ProductsViewPage implements OnInit {
-  
-  public titleHeader:string = "Platos";
+
+  public titleHeaderPage:string = "Inicio";
   private errorHandler = new errorHandler(this.alertController, this.router);
 
-  public cartHome:any = [];
-  public item:any = [];
   private loading : any;
+  public cartHome: any = [];
+  public item: any = [];
+
+  public displaySrch:boolean=true;
+  public flagDisplayListSearch:boolean = false;
+  public notFound = true;
+  public itemsForSearch;
 
   constructor(
     private cartService: CartService,
     private router: Router,
     private alertController: AlertController,
     public loadingCtlr: LoadingController
-  ){}
+  ){
+    this.cartHome = this.cartService.getCart();
+  }
 
   ngOnInit() {
     this.presentLoading();
-
-    this.cartHome = this.cartService.getCart();  
     this.cartService.getProducts()
       .subscribe(
-        productsData=> {
-          this.item = productsData;
+        (productsData) => { 
+
+          this.item = productsData; 
           this.hideLoading();
-        },
-        err=>{
-          if(this.loading === undefined){
-            this.ngOnInit();
-          }else{  
-            this.hideLoading();
-            this.errorHandler.handlerError(err, true, "No pudimos cargar los productos.");
-            setTimeout( ()=>{
-              this.ngOnInit();
-            }, 1000000)
-          }
+
+        },(err)=>{
+          this.hideLoading();
+
+          this.errorHandler.handlerError(err, true, "No pudimos cargar los productos.");
         }
       );
   }
+
+  displayCategory(tabCategory){
+
+    const elementGrid = document.getElementById(tabCategory+"Grid");
+
+    if(elementGrid.classList.contains('displayContent')){
+      elementGrid.setAttribute("class","noDisplayContent md hydrated");
+    }else{
+      elementGrid.setAttribute("class","displayContent md hydrated");
+    }
+  }
+
+  /* SEARCH LOGIC */
+  InitializeItems(){
+    this.itemsForSearch = this.item;
+  }
+
+  itemsContentData():boolean{
+    const contentData = this.item;
+    return (contentData.length != 0 ? true : false);
+  }
+
+  getItemSearch(ev:any){
+    this.flagDisplayListSearch = true;
+
+    const valueSrch:string = ev.detail.value.toString();
+
+    if(valueSrch != "" && this.itemsContentData()){
+
+      this.InitializeItems();
+      /* console.log(this.itemsForSearch); */
+
+      const categoryAll = this.itemsForSearch.filter(
+        (e)=>{ return e.category == "TODOS" }
+      );
+      //No funciona fusionado ambos metodos...
+      const allProducts = categoryAll.map(
+        (e)=> e.products
+      );
+
+      this.itemsForSearch = allProducts[0].filter(
+        (i)=>{
+          return(i.name.toLowerCase().indexOf(valueSrch.toLowerCase()) !== -1 ? i : "")
+        }
+      )
+
+      //console.log(this.itemsForSearch);
+
+      //todo: pique la primera palabra del nombre
+      //Si se coloca espacio, que tome la 2da palabra
+      //manipular categorias en un futuro
+
+    }else{
+      if(!this.itemsContentData){
+        this.notFound = false;
+      }
+      this.displaySrch = false;
+    }
+  }
+
+  noDisplaySrch(){
+    this.InitializeItems();
+    this.displaySrch = false;
+  }
+  /* SEARCH LOGICCC */
 
   addToCart(product){
     this.cartService.addProduct(product);
   }
 
   openPageCart(){
-    this.router.navigate(["cart-view"]);
+    this.router.navigate(["cart-view"])
+  }
+
+  async hideLoading() {
+    this.loadingCtlr.getTop().then(loader => {
+      if (loader) {
+        loader.dismiss();
+      }
+    });
   }
 
   async presentLoading() {
@@ -68,12 +141,6 @@ export class ProductsViewPage implements OnInit {
     return this.loading.present();
   }
 
-  async hideLoading() {
-    this.loadingCtlr.getTop().then(loader => {
-      if (loader) {
-        loader.dismiss();
-      }
-    });
-  }
 
+  
 }
