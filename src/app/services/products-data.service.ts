@@ -32,7 +32,7 @@ export class ProductsDataService {
                         { id: r.levelId, 
                           name: r.name, 
                           price: Number(r.salePriceUsd.$numberDecimal),
-                          imageUrl : "/assets/productos/" + ((r.imageUrl !== "") ? r.imageUrl : "version-tres-postres.png")
+                          imageUrl : "/assets/productos/" + ((r.imageUrl !== "") ? r.imageUrl : "junior.png")
                         }
                     ))  
               }

@@ -41,44 +41,35 @@
   <!-- Slider -->
   <ion-slides [options]="slideOpts" pager="true" #slider (ionSlidesDidLoad)="slidesDidLoad(slider)">
     <ion-slide>
-      <img class="imgSlideProducts" src="/assets/productos/diseno-uno-super.png" />
+      <img class="imgSlideProducts" src="/assets/productos/slide-1.png" />
     </ion-slide>
     <ion-slide>
-      <img class="imgSlideProducts" src="/assets/productos/diseno-uno-super.png" />
+      <img class="imgSlideProducts" src="/assets/productos/slide-2.png" />
     </ion-slide>
     <ion-slide>
-      <img class="imgSlideProducts" src="/assets/productos/version-dos-infantiles.png" />
+      <img class="imgSlideProducts" src="/assets/productos/slide-3.png" />
     </ion-slide>
   </ion-slides>
   <!-- Slider -->
 
   <!-- Search list -->
   <div *ngIf="flagDisplayListSearch">
-    <div *ngIf="displaySrch; else notDisplay">
+    <div *ngIf="displaySrch; then thenBlock else elseBlock"></div>
+    <ng-template #thenBlock>
       <ion-list *ngFor="let search of itemsForSearch">
         <ion-item>{{search.name}} - {{search.price}}$</ion-item>
       </ion-list>
-    </div>
-    <ng-template #notDisplay *ngIf="notFound; else notData">
-      <ion-list>
-        <ion-item>No se encontro nada.</ion-item>
-      </ion-list>
-      <ng-template #notData>
-      </ng-template>
     </ng-template>
-  </div>  
-  <!--
-    RAPIDO 
-    <div *ngIf="condicion; else bloqueElse">
-
+    <ng-template #elseBlock>
+      <div *ngIf="notFound; then thenBlock else elseBlock"></div>
+      <ng-template #thenBlock>
+        <ion-list>
+          <ion-item>No se encontro nada.</ion-item>
+        </ion-list>
+      </ng-template>
+      <ng-template #elseBlock></ng-template>
+    </ng-template>
   </div>
-  <div *ngFor="let a of itemsPrueba">
-    <ion-list *ngFor="let ite of a.products">
-      <ion-item>{{ite.name}} - {{ite.price}}$</ion-item>
-    </ion-list>
-  </div>
-  -->
-  
   <!-- Search list -->
 
   <ion-text color="primary" style="text-align:center;">
@@ -90,7 +81,7 @@
     <ion-row>
       <ion-col *ngFor="let promo of promoTest; let index =index" size="12" size-lg="3" size-md="4" size-sm="6" size-xs="12">
         <ion-card>
-          <ion-img class="zoom" src="/assets/productos/version-tres-postres.png"></ion-img>
+          <ion-img class="zoom" src="/assets/productos/promo.png"></ion-img>
           <ion-card-header style="background-color: white;">
             <ion-card-title  class="headerCategoryProduct">Promocion {{index + 1}}</ion-card-title>
           </ion-card-header>
