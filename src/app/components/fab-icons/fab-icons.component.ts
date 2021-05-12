@@ -13,9 +13,9 @@ export class FabIconsComponent implements OnInit {
 
   ngOnInit() {}
 
-  changeTheme(ev){
+  /*changeTheme(ev){
     console.log(ev)
-  }
+  }*/
 
   goAdmin(){
     this.router.navigate(['admin-view']);
