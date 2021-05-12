@@ -22,6 +22,14 @@
 /*Se coloca aqui, porque los componentes solo cambian si el estilo es global*/
 /**/
 
+
+.headerTitleCardProduct{
+    font-weight: 600;
+    color: black;
+    font-size: 13px;
+}
+
+
 /*Grid de Categorias de Productos*/
 .category-banner{
     border-left: 8px solid var(--ion-color-secondary);

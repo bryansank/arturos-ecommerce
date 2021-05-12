@@ -28,8 +28,8 @@
   <div>
     <ion-searchbar 
       placeholder="¿Que quiere comer hoy?" 
-      style="color:black !important; font-weight: bold !important;" 
-      (ionChange)="getItemSearch($event)"
+      style="color:black !important; font-weight: bold !important;"
+      (ionInput)="getItemSearch($event)"
       (ionClear)="noDisplaySrch()"
       debounce="1000"
       id="searchHome"
@@ -37,6 +37,26 @@
     </ion-searchbar>
   </div>
   <!-- Search platos -->
+
+  <!-- Search list -->
+  <div *ngIf="flagDisplayListSearch">
+    <div *ngIf="displaySrch; then thenBlock else elseBlock"></div>
+    <ng-template #thenBlock>
+      <ion-list *ngFor="let search of itemsForSearch">
+        <ion-item>{{search.name}} {{search.price}}$</ion-item>
+      </ion-list>
+    </ng-template>
+    <ng-template #elseBlock>
+      <div *ngIf="notFound; then thenBlock else elseBlock"></div>
+      <ng-template #thenBlock>
+        <ion-list>
+          <ion-item>No se encontro nada.</ion-item>
+        </ion-list>
+      </ng-template>
+      <ng-template #elseBlock></ng-template>
+    </ng-template>
+  </div>
+  <!-- Search list -->
 
   <!-- Slider -->
   <ion-slides [options]="slideOpts" pager="true" #slider (ionSlidesDidLoad)="slidesDidLoad(slider)">
@@ -51,26 +71,6 @@
     </ion-slide>
   </ion-slides>
   <!-- Slider -->
-
-  <!-- Search list -->
-  <div *ngIf="flagDisplayListSearch">
-    <div *ngIf="displaySrch; then thenBlock else elseBlock"></div>
-    <ng-template #thenBlock>
-      <ion-list *ngFor="let search of itemsForSearch">
-        <ion-item>{{search.name}} - {{search.price}}$</ion-item>
-      </ion-list>
-    </ng-template>
-    <ng-template #elseBlock>
-      <div *ngIf="notFound; then thenBlock else elseBlock"></div>
-      <ng-template #thenBlock>
-        <ion-list>
-          <ion-item>No se encontro nada.</ion-item>
-        </ion-list>
-      </ng-template>
-      <ng-template #elseBlock></ng-template>
-    </ng-template>
-  </div>
-  <!-- Search list -->
 
   <ion-text color="primary" style="text-align:center;">
     <h1>PROMOCIONES</h1>
@@ -120,7 +120,7 @@
 
               <ion-card-header>
                 <ion-card-title class="headerTitleCardProduct">
-                  {{ obj.name}} - {{obj.price}}$
+                  {{ obj.name}} {{obj.price}}$
                 </ion-card-title>
               </ion-card-header>
               

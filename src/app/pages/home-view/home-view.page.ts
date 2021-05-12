@@ -96,22 +96,28 @@ export class HomeViewPage implements OnInit {
   }
 
   getItemSearch(ev:any){
+
     this.flagDisplayListSearch = true;
 
-    const valueSrch:string = ev.detail.value.toString();
+    const valueSrch:string = ev.srcElement.value == null ? "": ev.srcElement.value.toString();
+    console.log(valueSrch)
 
-    if(valueSrch != "" && this.itemsContentData()){
+    /*if (!valueSrch || valueSrch=="") {
+      this.notFound = false;
+      return;
+    }*/
 
+    if(!this.itemsContentData()){console.log("A")}
+    if(valueSrch==""){console.log("b")}
+
+    if(!this.itemsContentData() || valueSrch !=""){
+
+      this.displaySrch = true;
       this.InitializeItems();
-      /* console.log(this.itemsForSearch); */
 
-      const categoryAll = this.itemsForSearch.filter(
-        (e)=>{ return e.category == "TODOS" }
-      );
+      const category = this.filterDataCategory("TODOS");
       //No funciona fusionado ambos metodos...
-      const allProducts = categoryAll.map(
-        (e)=> e.products
-      );
+      const allProducts = category.map( (e)=> e.products );
 
       this.itemsForSearch = allProducts[0].filter(
         (i)=>{
@@ -119,23 +125,30 @@ export class HomeViewPage implements OnInit {
         }
       )
 
-      //console.log(this.itemsForSearch);
-
-      //todo: pique la primera palabra del nombre
-      //Si se coloca espacio, que tome la 2da palabra
-      //manipular categorias en un futuro
+      if(this.itemsForSearch.length == 0){
+        this.noDisplaySrch(true);
+      }
+      
 
     }else{
-      if(!this.itemsContentData){
-        this.notFound = false;
-      }
-      this.displaySrch = false;
+      this.noDisplaySrch();
     }
+    
+  }
+  
+  filterDataCategory(ParamCategory:string="TODOS"){
+    return (
+      this.itemsForSearch.filter(
+        (e)=>{ return e.category == ParamCategory }
+      )
+    );
   }
 
-  noDisplaySrch(){
+  noDisplaySrch(FlagnotFound:boolean=false){
     this.InitializeItems();
     this.displaySrch = false;
+    this.notFound = FlagnotFound;
+    return;
     //console.log("test");
   }
   /* SEARCH LOGICCC */
