@@ -1,7 +1,6 @@
 
 #obviar el archivo enviroment cuando se sube a Github!!!!!!!
-/src/assets/productos
-/src/environments
+
 environment.ts
 environment.prod.ts
 environment.dev.ts
