@@ -51,15 +51,17 @@ export class ProductsViewPage implements OnInit {
       );
   }
 
-  displayCategory(tabCategory){
+  displayCategoryProd(tabCategory){
 
-    const elementGrid = document.getElementById(tabCategory+"Grid");
+    //TODO: cambio de estilos, se bugeaba con los de Home al llamarse igual
+    const elementGrid = document.getElementById(tabCategory+"GridProd");
 
-    if(elementGrid.classList.contains('displayContent')){
+    if(elementGrid.classList.contains('displayContentProd')){
       elementGrid.setAttribute("class","noDisplayContent md hydrated");
     }else{
-      elementGrid.setAttribute("class","displayContent md hydrated");
+      elementGrid.setAttribute("class","displayContentProd md hydrated");
     }
+
   }
 
   /* SEARCH LOGIC */

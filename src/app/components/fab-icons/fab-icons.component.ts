@@ -13,9 +13,36 @@ export class FabIconsComponent implements OnInit {
 
   ngOnInit() {}
 
-  /*changeTheme(ev){
-    console.log(ev)
-  }*/
+  changeTheme(){
+    /*
+    console.log(window.matchMedia('(prefers-color-scheme: light)').matches);
+    console.log(window.matchMedia('(prefers-color-scheme: dark)'));
+    console.log(window.matchMedia('(prefers-color-scheme)'));
+*/
+    //const b = window.matchMedia();
+    //console.log(b);
+    //console.log(document.documentElement);
+    //document.addEventListener("DOMContentLoaded", function(event) {
+      //document.documentElement.setAttribute("data-theme", "light");
+  
+      // Get our button switcher
+      //var themeSwitcher = document.getElementById("theme-switcher");
+  
+      // When our button gets clicked
+      //function() {
+        // Get the current selected theme, on the first run
+        // it should be `light`
+        //var currentTheme = document.documentElement.getAttribute("data-theme");
+  
+        // Switch between `dark` and `light`
+        //var switchToTheme = currentTheme === "dark" ? "light" : "dark"
+  
+        // Set our currenet theme to the new one
+        //document.documentElement.setAttribute("data-theme", switchToTheme);
+      //}
+    //});
+  
+  }
 
   goAdmin(){
     this.router.navigate(['admin-view']);
