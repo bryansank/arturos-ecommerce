@@ -54,7 +54,7 @@ export class CartViewPage implements OnInit, AfterViewInit {
     if(this.flagExcludeCart){
       this.items = this.selectedItems;
     }else{
-      this.items = this.cartService.getCart();
+      this.items = this.getAllProductCart();
     }
 
     //---
@@ -88,13 +88,20 @@ export class CartViewPage implements OnInit, AfterViewInit {
     
   }
 
-  backHome(){
-    this.router.navigate(["home-view"]);
+  getAllProductCart(){
+    return (this.cartService.getCart());
   }
 
   deleteProduct(excludeNameProduct){
     excludeNameProduct = excludeNameProduct.trim().trimStart();
     this.selectedItems = this.selectedItems.filter((e)=>e.name != excludeNameProduct);
+
+    this.cartService.deleteAllProducts();
+    
+    this.selectedItems.map(e=>{
+      this.cartService.addProduct(e);
+    });
+
     this.flagExcludeCart = true;
     this.ngOnInit();
   }
@@ -102,7 +109,7 @@ export class CartViewPage implements OnInit, AfterViewInit {
   cartClear(){
     this.selectedItems = null;
     this.totalPrice = 0;
-    debugger;
+
     this.cartService.deleteAllProducts();
     this.flagCartClean = false;
     this.ngOnInit();

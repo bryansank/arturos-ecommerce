@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterContentChecked, AfterContentInit, AfterViewChecked, AfterViewInit, Component, DoCheck, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController, IonSlides, LoadingController } from '@ionic/angular';
 import { errorHandler } from 'src/app/errors-handler/errors-handler';
@@ -9,7 +9,7 @@ import { CartService } from 'src/app/services/cart.service';
   templateUrl: './home-view.page.html',
   styleUrls: ['./home-view.page.scss'],
 })
-export class HomeViewPage implements OnInit {
+export class HomeViewPage implements OnInit, AfterContentChecked {
 
   public titleHeaderPage:string = "Inicio";
   private errorHandler = new errorHandler(this.alertController, this.router);
@@ -46,8 +46,12 @@ export class HomeViewPage implements OnInit {
     private router: Router,
     private alertController: AlertController,
     public loadingCtlr: LoadingController
-  ){
-    this.cartHome = this.cartService.getCart();
+  ){}
+
+
+  ngAfterContentChecked(){
+    //Evento se dispara Se ejecuta cada vez que el contenido del componente ha sido verificado
+    this.getCart();
   }
 
   ngOnInit() {
@@ -62,7 +66,7 @@ export class HomeViewPage implements OnInit {
 
           this.item = productsData; 
           this.hideLoading();
-          
+          this.getCart();
           
           setTimeout(()=>{
             this.ShowPopup("Hola Querid@ Cliente.", "Te recordamos que si usas algun tipo de bloqueador de anuncios debes desactivarlo.", "No usaremos ningun dato personal fuera de este sitio o con fines comerciales.");
@@ -98,17 +102,7 @@ export class HomeViewPage implements OnInit {
   getItemSearch(ev:any){
 
     this.flagDisplayListSearch = true;
-
     const valueSrch:string = ev.srcElement.value == null ? "": ev.srcElement.value.toString();
-    console.log(valueSrch)
-
-    /*if (!valueSrch || valueSrch=="") {
-      this.notFound = false;
-      return;
-    }*/
-
-    if(!this.itemsContentData()){console.log("A")}
-    if(valueSrch==""){console.log("b")}
 
     if(!this.itemsContentData() || valueSrch !=""){
 
@@ -128,8 +122,7 @@ export class HomeViewPage implements OnInit {
       if(this.itemsForSearch.length == 0){
         this.noDisplaySrch(true);
       }
-      
-
+      //
     }else{
       this.noDisplaySrch();
     }
@@ -154,12 +147,15 @@ export class HomeViewPage implements OnInit {
   /* SEARCH LOGICCC */
 
   addToCart(product){
-    //console.log(this.cartHome.length)
     this.cartService.addProduct(product);
   }
 
   openPageCart(){
-    this.router.navigate(["cart-view"])
+    this.router.navigate(["cart-view"]);
+  }
+
+  getCart(){
+    this.cartHome = this.cartService.getCart();
   }
 
   async hideLoading() {

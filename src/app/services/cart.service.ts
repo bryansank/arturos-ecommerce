@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+//import { BehaviorSubject, Observable } from 'rxjs';
 import { ProductsDataService } from './products-data.service';
 
 @Injectable({
@@ -20,14 +21,11 @@ export class CartService {
   }
   
   addProduct(product){
-    this.cart.push(product)
+    this.cart.push(product);
   }
 
   deleteAllProducts(){
-    debugger;
     this.cart = [];
-    console.log(this.cart);
-    return this.getCart();
   }
-  
+
 }
