@@ -44,6 +44,12 @@
     <ng-template #thenBlock>
       <ion-list *ngFor="let search of itemsForSearch">
         <ion-item>{{search.name}} {{search.price}}$</ion-item>
+        <ion-item>
+          <ion-button color="secondary" (click)="addToCart(search)">Agregar al Carrito</ion-button>
+          <ion-button color="secondary" (click)="a()">+</ion-button>
+          <ion-button color="secondary" (click)="a()">+</ion-button>
+          <ion-button color="secondary" (click)="a()">+</ion-button>
+        </ion-item>
       </ion-list>
     </ng-template>
     <ng-template #elseBlock>

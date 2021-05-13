@@ -1,27 +1,28 @@
-import { AfterViewInit, Component, ElementRef, NgZone, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ElementRef, NgZone, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { AlertController, LoadingController, ToastController } from '@ionic/angular';
 import { errorHandler } from 'src/app/errors-handler/errors-handler';
 import { CartService } from 'src/app/services/cart.service';
-import { collapseTextChangeRangesAcrossMultipleVersions, transpileModule } from 'typescript';
-
+//
 @Component({
   selector: 'app-cart-view',
   templateUrl: './cart-view.page.html',
   styleUrls: ['./cart-view.page.scss'],
 })
+//
 export class CartViewPage implements OnInit, AfterViewInit {
 
+  //private errorHandler = new errorHandler(this.alertController, this.router);
   public titleHeaderPage:string = "Carrito";
-  private errorHandler = new errorHandler(this.alertController, this.router);
   public selectedItems: any[] = [];
   public totalPrice : number = 0;
   
   private loading : any;
   public items: any[];
-  public flagExcludeCart = false;
-  public flagCartClean = false;
+  
+  public flagExcludeCart:boolean = false;
+  public flagCartClean:boolean = false;
   //public flagPay:string = "";
   //public activeBtn = true;
 
@@ -121,7 +122,15 @@ export class CartViewPage implements OnInit, AfterViewInit {
     this.ngOnInit();
   }
 
-  addCountProduct(){console.log("funciona")}
+  addCountProduct(productName:string){
+    console.log(productName);
+    const allItems = this.getAllProductCart();
+    console.log("allItems ", allItems);
+    const item = allItems.filter(e=>e.name == productName);
+    console.log("item ", item)
+    const result = item.map(e=> e.price = e.price + e.price);
+    console.log(result);
+  }
 
   subCountProduct(){console.log("funciona 2")}
 

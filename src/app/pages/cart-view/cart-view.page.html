@@ -20,21 +20,25 @@
 <!--Aqui Usamos este header, para no tener el back-->
 
 <ion-content>
+
   <ion-list>
+    <!--Items in the cart-->
     <div *ngFor="let item of selectedItems;" style="border-bottom:1x solid #fe5000">
       <ion-item lines="none">
         {{item.count}}x. - {{item.name}} - {{item.price}}$
         <span slot="end">{{ (item.price * item.count).toFixed(2) }}$</span>
       </ion-item>
       
+      <!--tooloptions for c/u-->
       <ion-item lines="none">
         <ion-button (click)="deleteProduct(item.name)">Eliminar</ion-button>
-        <ion-button (click)="addCountProduct()">+</ion-button>
+        <ion-button (click)="subCountProduct()">-</ion-button>
         <ion-button>{{item.count}}</ion-button>
-        <ion-button (click)="subCountProduct()">+</ion-button>
+        <ion-button (click)="addCountProduct(item.name)">+</ion-button>
       </ion-item>
     </div>
 
+    <!--Total section-->
     <div style="border-bottom: 1px solid #dddddd;">
       <ion-item lines="none">
         Total a pagar: <span slot="end">{{ totalPrice }}$</span>
@@ -50,6 +54,9 @@
       <ng-template #elseBlock></ng-template>
     </div>
   </ion-list>
+
+
+
 
   <!--<ion-list>
     <ion-text color="primary" style="text-align:center;">

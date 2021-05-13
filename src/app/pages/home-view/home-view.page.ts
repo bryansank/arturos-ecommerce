@@ -89,6 +89,10 @@ export class HomeViewPage implements OnInit, AfterContentChecked {
     
   }
 
+  a(){
+    console.log("a")
+  }
+
   /* SEARCH LOGIC */
   InitializeItems(){
     this.itemsForSearch = this.item;
@@ -146,7 +150,28 @@ export class HomeViewPage implements OnInit, AfterContentChecked {
   }
   /* SEARCH LOGICCC */
 
-  addToCart(product){
+  /*aka(product){
+    if(this.cartHome.length != 0){
+      const a = this.cartHome.filter(i=>i.name==product.name);
+      if(a.length > 0){
+        if(a.hasOwnProperty('count')){
+          a[0].count++;
+        }else{
+          a[0].count = 1;
+        }
+        this.cartService.addProduct(a[0]);
+      }else{
+        console.log("no entro nada")
+        this.cartService.addProduct(product);
+      }
+    }else{
+      this.cartService.addProduct(product);
+    }
+    console.log(this.cartHome)
+  }*/
+
+  addToCart(product:any){
+    //this.aka(product)
     this.cartService.addProduct(product);
   }
 
