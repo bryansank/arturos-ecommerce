@@ -60,6 +60,12 @@ export class CartViewPage implements OnInit, AfterViewInit {
     //---
     let itemSelected = {};
 
+    if(this.items == null || this.items == undefined){
+      this.totalPrice = 0;
+      this.presentToast("Agrega algo carrito!", 1800);
+      return;
+    }
+
     if(this.items.length != 0){
 
       this.flagCartClean = true;
@@ -114,6 +120,10 @@ export class CartViewPage implements OnInit, AfterViewInit {
     this.flagCartClean = false;
     this.ngOnInit();
   }
+
+  addCountProduct(){console.log("funciona")}
+
+  subCountProduct(){console.log("funciona 2")}
 
   /*onChangeStripeCard(elem, {error}){
     console.log(elem)
