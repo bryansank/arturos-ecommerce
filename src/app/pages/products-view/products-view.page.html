@@ -11,7 +11,7 @@
 
     <ion-buttons slot="end">
       <ion-button (click)="openPageCart()">
-
+        
         <ion-badge *ngIf="cartHome.length > 0">{{ cartHome.length }}</ion-badge>
         <ion-icon name="cart" slot="icon-only"></ion-icon>
 
@@ -28,7 +28,7 @@
 </ion-header>
 <!--Aqui Usamos este header, para no tener el back-->
 
-<ion-content>
+<ion-content #pageTop>
 
   <!-- Search platos -->
   <div>
@@ -49,7 +49,10 @@
     <div *ngIf="displaySrch; then thenBlock else elseBlock"></div>
     <ng-template #thenBlock>
       <ion-list *ngFor="let search of itemsForSearch">
-        <ion-item>{{search.name}} - {{search.price}}$</ion-item>
+        <ion-item>{{search.name}} {{search.price}}$</ion-item>
+        <ion-item>
+          <ion-button color="secondary" (click)="addToCart(search)">Agregar al Carrito</ion-button>
+        </ion-item>
       </ion-list>
     </ng-template>
     <ng-template #elseBlock>
@@ -94,7 +97,7 @@
               </ion-card-header>
               
               <ion-card-content>
-                <ion-img class="zoom" style="margin: 2px;" src="{{obj.imageUrl}}"></ion-img>
+                <ion-img style="margin: 2px;" src="{{obj.imageUrl}}"></ion-img>
                 <ion-button expand="full" (click)="addToCart(obj)">
                   Añadir al Carrito
                 </ion-button>
@@ -111,12 +114,20 @@
   </div>
   <!--Producst-->
 
+  
+
 </ion-content>
 
 <!--Footer-->
 <footer-component>
 </footer-component>
 <!--Footer-->
+
+<ion-fab color="primary" vertical="bottom" horizontal="start" slot="fixed">
+  <ion-fab-button (click)="pageScroller()">
+    <ion-icon name="arrow-up-outline"></ion-icon>
+  </ion-fab-button>
+</ion-fab>
 
 <!--Button tools-->
 <fab-icons-component></fab-icons-component>

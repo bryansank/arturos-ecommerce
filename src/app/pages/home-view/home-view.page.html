@@ -46,9 +46,6 @@
         <ion-item>{{search.name}} {{search.price}}$</ion-item>
         <ion-item>
           <ion-button color="secondary" (click)="addToCart(search)">Agregar al Carrito</ion-button>
-          <ion-button color="secondary" (click)="a()">+</ion-button>
-          <ion-button color="secondary" (click)="a()">+</ion-button>
-          <ion-button color="secondary" (click)="a()">+</ion-button>
         </ion-item>
       </ion-list>
     </ng-template>
@@ -132,10 +129,16 @@
               </ion-card-header>
               
               <ion-card-content>
-                <ion-img class="zoom" style="margin: 2px;" src="{{obj.imageUrl}}"></ion-img>
+                <ion-img style="margin: 2px;" src="{{obj.imageUrl}}"></ion-img>
                 <ion-button expand="full" (click)="addToCart(obj)">
                   Añadir al Carrito
                 </ion-button>
+                 <!--tooloptions for c/u-->
+                <!--<ion-item lines="none">
+                  <ion-button (click)="subCountProduct(obj.name)">-</ion-button>
+                  <ion-button id="countProduct">0</ion-button>
+                  <ion-button (click)="addCountProduct(obj.name)">+</ion-button>
+                </ion-item>-->
               </ion-card-content>
 
             </ion-card>  

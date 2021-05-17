@@ -58,47 +58,30 @@ export class CartViewPage implements OnInit, AfterViewInit {
       this.items = this.getAllProductCart();
     }
 
-    //---
-    //let itemSelected = {};
-
     if(this.items == null || this.items == undefined){
       this.totalPrice = 0;
-      this.presentToast("Agrega algo carrito!", 1800);
+      this.presentToast("Agrega algo al carrito", 1800);
       return;
     }
 
     if(this.items.length != 0){
 
       this.flagCartClean = true;
+      this.selectedItems = this.items;
 
-
-      /*for (let obj of this.items) {
-        if(itemSelected[obj.id]){
-          itemSelected[obj.id].count++;
-        }else{
-          itemSelected[obj.id] = { ...obj, count : 1}
-        }
-      }*///Llenamos nuestro obj con la cantidad y precio de platos elegidos.
-      
-      //this.selectedItems = Object.keys(itemSelected).map((key)=> itemSelected[key]);
-
-      //console.log("Items elegidos: " , this.selectedItems);
-      console.log(this.items)
-
-      /*this.totalPrice = this.selectedItems.reduce(
+      this.totalPrice = this.items.reduce(
         (inicial, actual) => {return((parseFloat(inicial) + (actual.price * actual.count)).toFixed(2))}, 0
-      );*/
-      this.totalPrice = 100;
+      );
 
     }else{
       this.totalPrice = 0;
-      this.presentToast("Agrega algo carrito!", 1800);
+      this.presentToast("Agrega algo al carrito", 1800);
     }
     
   }
 
   getAllProductCart(){
-    return (this.cartService.getCart());
+    return this.cartService.getCart();
   }
 
   deleteProduct(excludeNameProduct){
@@ -125,16 +108,26 @@ export class CartViewPage implements OnInit, AfterViewInit {
   }
 
   addCountProduct(productName:string){
-    console.log(productName);
-    const allItems = this.getAllProductCart();
-    console.log("allItems ", allItems);
-    const item = allItems.filter(e=>e.name == productName);
-    console.log("item ", item)
-    const result = item.map(e=> e.price = e.price + e.price);
-    console.log(result);
+    this.cartService.deleteAllProducts();
+    this.selectedItems.map(i => {
+      if(i.name == productName){
+        i.count += 1;
+      }
+      this.cartService.addProduct(i);
+    });
+    this.ngOnInit();
   }
 
-  subCountProduct(){console.log("funciona 2")}
+  subCountProduct(productName:string){
+    this.cartService.deleteAllProducts();
+    this.selectedItems.map(i => {
+      if(i.name == productName){
+        i.count -= 1;
+      }
+      this.cartService.addProduct(i);
+    });
+    this.ngOnInit();
+  }
 
   /*onChangeStripeCard(elem, {error}){
     console.log(elem)

@@ -57,17 +57,17 @@ export class HomeViewPage implements OnInit, AfterContentChecked {
 
   ngOnInit() {
 
-    this.ShowPopup("Hola Querid@ Cliente.", "Te recordamos que si usas algun tipo de bloqueador de anuncios debes desactivarlo.", "No usaremos ningun dato personal fuera de este sitio o con fines comerciales.");
-
     this.presentLoading();
 
     this.cartService.getProducts()
       .subscribe(
         (productsData) => {
 
-          console.log(productsData)
           this.item = productsData;
           this.hideLoading();
+
+          this.ShowPopup("Hola Querid@ Cliente.", "Te recordamos que si usas algun tipo de bloqueador de anuncios debes desactivarlo.", "No usaremos ningun dato personal fuera de este sitio o con fines comerciales.");
+
           this.getCart();
 
         }, (err) => {
@@ -85,9 +85,6 @@ export class HomeViewPage implements OnInit, AfterContentChecked {
 
   }
 
-  a() {
-    console.log("a")
-  }
 
   /* SEARCH LOGIC */
   InitializeItems() {
@@ -148,46 +145,36 @@ export class HomeViewPage implements OnInit, AfterContentChecked {
 
   
   /*CART LOGIC */
-
   addToCart(product: any) {
+
     this.getCart();
+
     if(this.cartHome.length != 0) {
       const productObjFound = this.cartHome.find(i => i.name == product.name);
       //si no consigue es undefined
       productObjFound==undefined ? this.notFoundProduct(product) : this.foundProduct(product)
     } else {
+      //product entrate, le agrega 1
       product.count = 1;
-      this.presentToast("Producto añadido a tu carrito")      
+      this.presentToast("Producto añadido a tu carrito", 1200);
       this.cartService.addProduct(product);
     }
   }
   notFoundProduct(product:any) {
     product.count = 1;
-    this.presentToast("Producto añadido a tu carrito");
+    
+    this.presentToast("Producto añadido a tu carrito", 1200);
     this.cartService.addProduct(product);
   }
   foundProduct(product:any) {
-    
+    this.cartService.deleteAllProducts();
     this.cartHome.map(i => {
       if(i.name == product.name){
-        if (i.hasOwnProperty('count')) {
-          i.count += 1;
-        } else {
-          i.count = 1;
-        }
+        i.count += 1;
       }
+      this.cartService.addProduct(i);
     });
-    //const find = this.cartHome.filter(i => i.name == product.name);
-    /*find.map(i => {
-      
-      return i;
-    });*/
-    
-    //this.removeItemCart(this.cartHome, find[0]);
-    //this.cartHome.push(find[0]);
-    console.log(this.cartHome);
-    this.presentToast("Producto añadido a tu carrito");
-    this.cartService.addProduct(this.cartHome);
+    this.presentToast("Producto añadido a tu carrito", 1200);
   }
   getCart() {
     this.cartHome = this.cartService.getCart();
@@ -195,7 +182,28 @@ export class HomeViewPage implements OnInit, AfterContentChecked {
   openPageCart() {
     this.router.navigate(["cart-view"]);
   }
-
+  //countProduct
+  /*addCountProduct(productName:string){
+    this.cartService.deleteAllProducts();
+    this.cartHome.map(i => {
+      if(i.name == productName){
+        i.count += 1;
+      }
+      this.cartService.addProduct(i);
+    });
+    document.getElementById("countProduct").innerHTML;
+    this.ngOnInit();
+  }*/
+  /*subCountProduct(productName:string){
+    this.cartService.deleteAllProducts();
+    this.cartHome.map(i => {
+      if(i.name == productName){
+        i.count -= 1;
+      }
+      this.cartService.addProduct(i);
+    });
+    this.ngOnInit();
+  }*/
   /*CART LOGIC */
 
   async hideLoading() {
@@ -205,21 +213,18 @@ export class HomeViewPage implements OnInit, AfterContentChecked {
       }
     });
   }
-
   //Slides
   slidesDidLoad(slides: IonSlides) {
     slides.startAutoplay();
   }
-
   async presentLoading() {
     this.loading = await this.loadingCtlr.create({
       cssClass: 'my-custom-class',
-      message: 'Por favor, espere.',
+      message: 'Por favor espere.',
     });
 
     return this.loading.present();
   }
-
   async ShowPopup(msnHeader: string, msn: string, submsn?: string) {
 
     const alert = await this.alertController.create(
@@ -238,7 +243,6 @@ export class HomeViewPage implements OnInit, AfterContentChecked {
     await alert.present();
 
   }
-
   async presentToast(msn:string,duration:number = 1800) {
     const toast = await this.toastController.create({
       message: msn.toUpperCase(),
@@ -249,7 +253,6 @@ export class HomeViewPage implements OnInit, AfterContentChecked {
     });
     toast.present();
   }
-
 }
 
 /*aka(product){
@@ -271,7 +274,6 @@ export class HomeViewPage implements OnInit, AfterContentChecked {
     }
     console.log(this.cartHome)
   }*/
-
 
 // removeItemCart(data, itemForRemove) {
 

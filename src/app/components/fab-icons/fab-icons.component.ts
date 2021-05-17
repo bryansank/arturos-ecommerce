@@ -25,6 +25,11 @@ export class FabIconsComponent implements OnInit {
     this.ShowPopup("Hola!", "Esta opcion esta en construccion. :D")
   }*/
 
+  upPage(){
+    console.log("funciono")
+    window.scroll(0,300); 
+  }
+
   onClick(icon){
 
     const ico = icon;

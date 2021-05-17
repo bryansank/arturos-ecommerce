@@ -20,7 +20,7 @@ import { FormBuilder, Validators } from "@angular/forms";
 
 export class LoginPage implements OnInit {
 
-  public titleHeaderPage = "Login"
+  public titleHeaderPage = "Entrar a Mi Cuenta"
   public errorHandler = new errorHandler(this.alertController, this.router);
   private loading : any;
 
@@ -35,9 +35,6 @@ export class LoginPage implements OnInit {
 
   ngOnInit() {
   }
-  
-
-  /*get email() { return this.loginVerificationForm.get("email"); }*/
 
   async onLogin(){
 
@@ -75,6 +72,10 @@ export class LoginPage implements OnInit {
     } catch (error) {
       this.errorHandler.handlerError(error);
     }
+  }
+
+  goRegister(): void{
+    this.router.navigate(["register-view"]);
   }
 
   passwordLost(): void{

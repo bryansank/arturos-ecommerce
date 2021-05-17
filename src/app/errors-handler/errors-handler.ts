@@ -102,7 +102,7 @@ export class errorHandler {
         const alert = await this.alertController.create(
           {
             header : msnHeader,
-            message : (msnAditional == undefined ? "": msnAditional) + "<br /><br />"+ msn,
+            message : (msnAditional == undefined ? "": msnAditional +"<br /><br />" ) + msn,
             buttons : [
               {
                 text : 'Acepto',

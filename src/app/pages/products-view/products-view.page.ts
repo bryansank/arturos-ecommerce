@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { AlertController, IonSlides, LoadingController, ActionSheetController } from '@ionic/angular';
+import { AlertController, IonSlides, LoadingController, ActionSheetController, ToastController, IonContent } from '@ionic/angular';
 import { errorHandler } from 'src/app/errors-handler/errors-handler';
 import { CartService } from 'src/app/services/cart.service';
 //
@@ -25,30 +25,39 @@ export class ProductsViewPage implements OnInit {
   public notFound = true;
   public itemsForSearch;
 
+  @ViewChild('pageTop') pageTop: IonContent;
+
   constructor(
     private cartService: CartService,
     private router: Router,
     private alertController: AlertController,
-    public loadingCtlr: LoadingController
-  ){
-    this.cartHome = this.cartService.getCart();
-  }
+    public loadingCtlr: LoadingController,
+    public toastController: ToastController
+  ){}
 
   ngOnInit() {
     this.presentLoading();
     this.cartService.getProducts()
       .subscribe(
-        (productsData) => { 
+        (productsData) => {
 
-          this.item = productsData; 
+          this.item = productsData;
           this.hideLoading();
 
-        },(err)=>{
-          this.hideLoading();
+          this.getCart();
 
+        }, (err) => {
+
+          this.hideLoading();
           this.errorHandler.handlerError(err, true, "No pudimos cargar los productos.");
+
         }
       );
+  }
+
+  public pageScroller(){
+    //scroll to page top
+    this.pageTop.scrollToTop();
   }
 
   displayCategoryProd(tabCategory){
@@ -80,11 +89,6 @@ export class ProductsViewPage implements OnInit {
 
     const valueSrch:string = ev.srcElement.value == null ? "": ev.srcElement.value.toString();
     console.log(valueSrch)
-
-    /*if (!valueSrch || valueSrch=="") {
-      this.notFound = false;
-      return;
-    }*/
 
     if(!this.itemsContentData()){console.log("A")}
     if(valueSrch==""){console.log("b")}
@@ -132,13 +136,45 @@ export class ProductsViewPage implements OnInit {
   }
   /* SEARCH LOGICCC */
 
-  addToCart(product){
+  /*CART LOGIC */
+  addToCart(product: any) {
+
+    this.getCart();
+
+    if(this.cartHome.length != 0) {
+      const productObjFound = this.cartHome.find(i => i.name == product.name);
+      //si no consigue es undefined
+      productObjFound==undefined ? this.notFoundProduct(product) : this.foundProduct(product)
+    } else {
+      //product entrate, le agrega 1
+      product.count = 1;
+      this.presentToast("Producto añadido a tu carrito", 1200);
+      this.cartService.addProduct(product);
+    }
+  }
+  notFoundProduct(product:any) {
+    product.count = 1;
+    
+    this.presentToast("Producto añadido a tu carrito", 1200);
     this.cartService.addProduct(product);
   }
-
-  openPageCart(){
-    this.router.navigate(["cart-view"])
+  foundProduct(product:any) {
+    this.cartService.deleteAllProducts();
+    this.cartHome.map(i => {
+      if(i.name == product.name){
+        i.count += 1;
+      }
+      this.cartService.addProduct(i);
+    });
+    this.presentToast("Producto añadido a tu carrito", 1200);
   }
+  getCart() {
+    this.cartHome = this.cartService.getCart();
+  }
+  openPageCart() {
+    this.router.navigate(["cart-view"]);
+  }
+  /*CART LOGIC */
 
   async hideLoading() {
     this.loadingCtlr.getTop().then(loader => {
@@ -147,7 +183,6 @@ export class ProductsViewPage implements OnInit {
       }
     });
   }
-
   async presentLoading() {
     this.loading = await this.loadingCtlr.create({
       cssClass: 'my-custom-class',
@@ -156,7 +191,14 @@ export class ProductsViewPage implements OnInit {
 
     return this.loading.present();
   }
-
-
-  
+  async presentToast(msn:string,duration:number = 1800) {
+    const toast = await this.toastController.create({
+      message: msn.toUpperCase(),
+      duration: duration,
+      color: "primary",
+      position: 'bottom',
+      cssClass: "toastCart"
+    });
+    toast.present();
+  }
 }

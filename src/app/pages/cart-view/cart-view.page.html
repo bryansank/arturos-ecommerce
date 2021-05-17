@@ -32,7 +32,7 @@
       <!--tooloptions for c/u-->
       <ion-item lines="none">
         <ion-button (click)="deleteProduct(item.name)">Eliminar</ion-button>
-        <ion-button (click)="subCountProduct()">-</ion-button>
+        <ion-button (click)="subCountProduct(item.name)">-</ion-button>
         <ion-button>{{item.count}}</ion-button>
         <ion-button (click)="addCountProduct(item.name)">+</ion-button>
       </ion-item>
@@ -79,3 +79,6 @@
     </div>
   -->
 </ion-content>
+
+<!--Button tools-->
+<fab-icons-component></fab-icons-component>

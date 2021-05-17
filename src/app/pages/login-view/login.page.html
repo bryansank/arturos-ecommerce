@@ -17,81 +17,135 @@
 
 <ion-content>
 
-  <form [formGroup]="loginForm">
-
-    <ion-item lines="full">
-      <ion-label position="floating">Email</ion-label>
-      <ion-input 
-        type="text" 
-        inputmode="email"
-        formControlName="email"
-        required>
-      </ion-input>
-      <div *ngFor="let error of errorMessages.email">
-        <ng-container *ngIf="loginForm.controls['email'].hasError(error.type) && (loginForm.controls['email'].dirty || loginForm.controls['email'].touched)">
-          <small class="error-message">{{error.message}}</small>
-        </ng-container>
-      </div>
-      <!--#emailForm-->
-
-    </ion-item>
-    <ion-item lines="full">
-      <ion-label position="floating">Contraseña</ion-label>
-      <ion-input 
-        type="password"
-        inputmode="password" 
-        formControlName="password"
-        required>
-      </ion-input>
-      <div *ngFor="let error of errorMessages.password">
-        <ng-container *ngIf="loginForm.controls['password'].hasError(error.type) && (loginForm.controls['password'].dirty || loginForm.controls['password'].touched)">
-          <small class="error-message">{{error.message}}</small>
-        </ng-container>
-      </div>
-      <!--#passwordForm-->
-      
-    </ion-item>
+  <ion-grid>
     <ion-row>
-      <ion-col>
-        <ion-button
-          type="submit"
-          expand="block"
-          [disabled]="!loginForm.valid"
-          (click)="onLogin()"
-          >
-          Login
-        </ion-button>
+      <ion-col class="pFooter" size="12" size-lg="6" size-md="6" size-sm="6" size-xs="12">
+        <!--Presentation-->
+        <ion-card>
+          <ion-card-title style="text-align: center;padding: 1px;margin-top: 20px;">¿Eres Nuevo?</ion-card-title>
+          <ion-card-content>
+            
+            <ion-row>
+              <ion-col>
+                Al crear una cuenta con nosotros en Arturo's, podrás comprar más rápido, estar actualizado sobre el estado de los pedidos y realizar un seguimiento de los pedidos que has realizado anteriormente. Ademas, podras optar por promociones ¡INCREÍBLES!
+              </ion-col>
+            </ion-row>
+            
+            <ion-row>
+              <ion-col>
+                <ion-button
+                  type="submit"
+                  color="danger"
+                  (click)="goRegister()"
+                  expand="block" class="btnCardLogin">
+                  Registrate
+                </ion-button>
+              </ion-col>
+            </ion-row>
+
+          </ion-card-content>
+        </ion-card>
+        <!--Presentation-->
+      </ion-col>
+
+      <ion-col class="pFooter" size="12" size-lg="6" size-md="6" size-sm="6" size-xs="12">
+        <!--Login Section-->
+        <ion-card>
+          <ion-card-content>
+            <form [formGroup]="loginForm">
+
+              <ion-item lines="full">
+                <ion-label position="floating">Email</ion-label>
+                <ion-input 
+                  type="text" 
+                  inputmode="email"
+                  formControlName="email"
+                  required>
+                </ion-input>
+                <div *ngFor="let error of errorMessages.email">
+                  <ng-container *ngIf="loginForm.controls['email'].hasError(error.type) && (loginForm.controls['email'].dirty || loginForm.controls['email'].touched)">
+                    <small class="error-message">{{error.message}}</small>
+                  </ng-container>
+                </div>
+                <!--#emailForm-->
+          
+              </ion-item>
+              <ion-item lines="full">
+                <ion-label position="floating">Contraseña</ion-label>
+                <ion-input 
+                  type="password"
+                  inputmode="password" 
+                  formControlName="password"
+                  required>
+                </ion-input>
+                <div *ngFor="let error of errorMessages.password">
+                  <ng-container *ngIf="loginForm.controls['password'].hasError(error.type) && (loginForm.controls['password'].dirty || loginForm.controls['password'].touched)">
+                    <small class="error-message">{{error.message}}</small>
+                  </ng-container>
+                </div>
+                <!--#passwordForm-->
+                
+              </ion-item>
+              <ion-row>
+                <ion-col>
+                  <ion-button
+                    type="submit"
+                    expand="block"
+                    [disabled]="!loginForm.valid"
+                    (click)="onLogin()"
+                    >
+                    Entrar
+                  </ion-button>
+                </ion-col>
+              </ion-row>
+              <!--(click)="onLogin(emailForm, passwordForm)"-->
+              
+          
+              <!--(click)="onGoogleLogin(emailForm, passwordForm)"-->
+            </form>
+          
+            <ion-row>
+              <ion-col>
+                <ion-button
+                  type="submit"
+                  color="danger"
+                  (click)="onGoogleLogin()"
+                  expand="block" class="btnCardLogin">
+                  Entrar con tu cuenta Google
+                </ion-button>
+              </ion-col>
+            </ion-row>
+          
+            <ion-row>
+              <ion-col>
+                <ion-button
+                  type="submit"
+                  color="danger"
+                  (click)="passwordLost()"
+                  expand="block" class="btnCardLogin">
+                  ¿Olvidaste la Contraseña?
+                </ion-button>
+              </ion-col>
+            </ion-row>
+
+            <ion-row>
+              <ion-col>
+                <ion-button
+                  type="submit"
+                  color="danger"
+                  (click)="goRegister()"
+                  expand="block" class="btnCardLogin">
+                  Registrate
+                </ion-button>
+              </ion-col>
+            </ion-row>
+
+          </ion-card-content>
+        </ion-card>
+        <!--Login Section-->
       </ion-col>
     </ion-row>
-    <!--(click)="onLogin(emailForm, passwordForm)"-->
-    
-
-    <!--(click)="onGoogleLogin(emailForm, passwordForm)"-->
-  </form>
-
-  <ion-row>
-    <ion-col>
-      <ion-button
-        type="submit"
-        color="danger"
-        (click)="onGoogleLogin()"
-        expand="block">
-        Login con Google
-      </ion-button>
-    </ion-col>
-  </ion-row>
-
-  <ion-row>
-    <ion-col>
-      <ion-button
-        type="submit"
-        color="danger"
-        (click)="passwordLost()"
-        expand="block">
-        ¿Olvidaste la Contraseña?
-      </ion-button>
-    </ion-col>
-  </ion-row>
+  </ion-grid>
 
 </ion-content>
 
