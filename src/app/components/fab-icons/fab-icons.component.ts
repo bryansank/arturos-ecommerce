@@ -8,8 +8,12 @@ import { AlertController } from '@ionic/angular';
   styleUrls: ['./fab-icons.component.scss'],
 })
 export class FabIconsComponent implements OnInit {
+  
+  constructor(private router: Router, private alertController: AlertController) {}
 
-  constructor(private router: Router, private alertController: AlertController) { }
+  changeTheme(){ 
+    document.body.classList.toggle('dark');
+  }
 
   ngOnInit() {}
 
@@ -20,10 +24,6 @@ export class FabIconsComponent implements OnInit {
   goCart(){
     this.router.navigate(['cart-view']);
   }
-
-  /*goLanguages(){
-    this.ShowPopup("Hola!", "Esta opcion esta en construccion. :D")
-  }*/
 
   upPage(){
     console.log("funciono")

@@ -42,16 +42,10 @@ export class CartViewPage implements OnInit, AfterViewInit {
   ) { }
 
   ngAfterViewInit(){
-    //console.log(this.cardStripeInfo);
-    /*if(this.flagPay != "" && this.flagPay != null){
-      //
-    }else{
-      console.log("Sin acciones")
-    }*/
+    //TODO: Add Stripe pay method.
   }
 
-  ngOnInit() {
-    
+  ngOnInit() { 
     if(this.flagExcludeCart){
       this.items = this.selectedItems;
     }else{
@@ -77,7 +71,6 @@ export class CartViewPage implements OnInit, AfterViewInit {
       this.totalPrice = 0;
       this.presentToast("Agrega algo al carrito", 1800);
     }
-    
   }
 
   getAllProductCart(){
@@ -129,53 +122,8 @@ export class CartViewPage implements OnInit, AfterViewInit {
     this.ngOnInit();
   }
 
-  /*onChangeStripeCard(elem, {error}){
-    console.log(elem)
-    console.log(error)
-
-    if(error){
-      //ngZone forza el trazado en el html
-      this.ngZone.run( ()=> {
-        this.cardError = error.message;
-      });
-      
-    }else{
-      this.ngZone.run( ()=> {
-        this.cardError = null;
-      });
-    }
-  }*/
-
-  /*onClick(typePay){
-
-    if(typePay == "stripe"){
-      this.flagPay = "1";
-
-      if(this.activeBtn){
-        const divStripe = document.getElementById("cardStripe");
-        divStripe.setAttribute("class", "credit-card-stripe");
-        this.activeBtn = true;
-      }else{
-        const divStripe = document.getElementById("cardStripe");
-        divStripe.setAttribute("class", "credit-card-stripe noneDis");
-        this.activeBtn = false;
-      }
-      
-    }else{
-      console.log(this.flagPay)
-      console.log(typePay)
-    }
-  }*/
-
-  /*displayLa(){
-    console.log("hola")
-    this.cardInfoElement = elements.create('card');
-    //apuntamos al element html
-    console.log(this.cardInfoStripe.nativeElement);
-    this.cardInfoElement.mount(this.cardInfoStripe.nativeElement);
-    this.cardInfoElement.addEventListener('change', this.onChangeStripeCard.bind(this))
-  }*/
-
+  /*-------LOGIC FUNCTIONS------*/
+  /*-------LOGIC FUNCTIONS------*/
   async presentToast(msn:string,duration:number = 1800) {
     const toast = await this.toastController.create({
       message: msn.toUpperCase(),
@@ -186,7 +134,6 @@ export class CartViewPage implements OnInit, AfterViewInit {
     });
     toast.present();
   }
-
   async presentLoading() {
     this.loading = await this.loadingCtlr.create({
       cssClass: 'my-custom-class',
@@ -195,7 +142,6 @@ export class CartViewPage implements OnInit, AfterViewInit {
 
     return this.loading.present();
   }
-
   async hideLoading() {
     this.loadingCtlr.getTop().then(loader => {
       if (loader) {
@@ -203,7 +149,6 @@ export class CartViewPage implements OnInit, AfterViewInit {
       }
     });
   }
-
   async ShowPopup(msnHeader:string,msn:string){
     
     const alert = await this.alertController.create(
@@ -222,5 +167,7 @@ export class CartViewPage implements OnInit, AfterViewInit {
     await alert.present();
 
   }
+  /*-------LOGIC FUNCTIONS------*/
+  /*-------LOGIC FUNCTIONS------*/
 
 }

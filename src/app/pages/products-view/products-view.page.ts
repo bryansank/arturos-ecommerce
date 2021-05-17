@@ -1,6 +1,6 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, AfterContentChecked, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { AlertController, IonSlides, LoadingController, ActionSheetController, ToastController, IonContent } from '@ionic/angular';
+import { AlertController, LoadingController, ToastController, IonContent } from '@ionic/angular';
 import { errorHandler } from 'src/app/errors-handler/errors-handler';
 import { CartService } from 'src/app/services/cart.service';
 //
@@ -11,9 +11,9 @@ import { CartService } from 'src/app/services/cart.service';
   styleUrls: ['./products-view.page.scss'],
 })
 
-export class ProductsViewPage implements OnInit {
+export class ProductsViewPage implements OnInit, AfterContentChecked {
 
-  public titleHeaderPage:string = "Inicio";
+  public titleHeaderPage:string = "Platos";
   private errorHandler = new errorHandler(this.alertController, this.router);
 
   private loading : any;
@@ -35,24 +35,23 @@ export class ProductsViewPage implements OnInit {
     public toastController: ToastController
   ){}
 
+  ngAfterContentChecked() {
+    //Evento se dispara Se ejecuta cada vez que el contenido del componente ha sido verificado
+    this.getCart();
+  }
+
   ngOnInit() {
     this.presentLoading();
-    this.cartService.getProducts()
-      .subscribe(
-        (productsData) => {
-
-          this.item = productsData;
-          this.hideLoading();
-
-          this.getCart();
-
-        }, (err) => {
-
-          this.hideLoading();
-          this.errorHandler.handlerError(err, true, "No pudimos cargar los productos.");
-
-        }
-      );
+    this.cartService.getProducts().subscribe(
+      (productsData) => {
+        this.item = productsData;
+        this.hideLoading();
+        this.getCart();
+      }, (err) => {
+        this.hideLoading();
+        this.errorHandler.handlerError(err, true, "No pudimos cargar los productos.");
+      }
+    );
   }
 
   public pageScroller(){
@@ -61,7 +60,6 @@ export class ProductsViewPage implements OnInit {
   }
 
   displayCategoryProd(tabCategory){
-
     //TODO: cambio de estilos, se bugeaba con los de Home al llamarse igual
     const elementGrid = document.getElementById(tabCategory+"GridProd");
 
@@ -70,7 +68,6 @@ export class ProductsViewPage implements OnInit {
     }else{
       elementGrid.setAttribute("class","displayContentProd md hydrated");
     }
-
   }
 
   /* SEARCH LOGIC */
