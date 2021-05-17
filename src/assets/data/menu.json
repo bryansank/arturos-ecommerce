@@ -16,7 +16,7 @@
     },
     {
         "icon" : "log-in-outline",
-        "txt": "Login",
+        "txt": "Entrar",
         "redirecTo": "/login-view"
     },
     {

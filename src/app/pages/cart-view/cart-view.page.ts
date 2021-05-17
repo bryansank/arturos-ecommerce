@@ -59,7 +59,7 @@ export class CartViewPage implements OnInit, AfterViewInit {
     }
 
     //---
-    let itemSelected = {};
+    //let itemSelected = {};
 
     if(this.items == null || this.items == undefined){
       this.totalPrice = 0;
@@ -71,22 +71,24 @@ export class CartViewPage implements OnInit, AfterViewInit {
 
       this.flagCartClean = true;
 
-      for (let obj of this.items) {
+
+      /*for (let obj of this.items) {
         if(itemSelected[obj.id]){
           itemSelected[obj.id].count++;
         }else{
           itemSelected[obj.id] = { ...obj, count : 1}
         }
-      }//Llenamos nuestro obj con la cantidad y precio de platos elegidos.
+      }*///Llenamos nuestro obj con la cantidad y precio de platos elegidos.
       
-      this.selectedItems = Object.keys(itemSelected).map((key)=> itemSelected[key]);
+      //this.selectedItems = Object.keys(itemSelected).map((key)=> itemSelected[key]);
 
       //console.log("Items elegidos: " , this.selectedItems);
+      console.log(this.items)
 
-      this.totalPrice = this.selectedItems.reduce(
+      /*this.totalPrice = this.selectedItems.reduce(
         (inicial, actual) => {return((parseFloat(inicial) + (actual.price * actual.count)).toFixed(2))}, 0
-      );
-      
+      );*/
+      this.totalPrice = 100;
 
     }else{
       this.totalPrice = 0;
