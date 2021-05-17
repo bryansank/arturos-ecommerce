@@ -50,6 +50,10 @@ const routes: Routes = [
   {
     path: 'notfound-view',
     loadChildren: () => import('./pages/notfound-view/notfound-view.module').then( m => m.NotfoundViewPageModule)
+  },
+  {
+    path: 'promotions-view',
+    loadChildren: () => import('./pages/promotions-view/promotions-view.module').then( m => m.PromotionsViewPageModule)
   }
   
 ];

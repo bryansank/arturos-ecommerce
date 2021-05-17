@@ -32,6 +32,7 @@ export class HomeViewPage implements OnInit, AfterContentChecked {
 
   promoTest = [1, 2, 3, 4];
 
+  //Method for display css Categorys...
   displayCategory(tabCategory) {
 
     const elementGrid = document.getElementById(tabCategory + "Grid");
@@ -43,21 +44,14 @@ export class HomeViewPage implements OnInit, AfterContentChecked {
     }
   }
 
-  
-
   constructor(
     private cartService: CartService,
     private router: Router,
     private alertController: AlertController,
     public loadingCtlr: LoadingController,
     public toastController: ToastController
-  ){
-    
-  }
+  ){}
   
-  
-
-
   ngAfterContentChecked() {
     //Evento se dispara Se ejecuta cada vez que el contenido del componente ha sido verificado
     this.getCart();
@@ -91,8 +85,6 @@ export class HomeViewPage implements OnInit, AfterContentChecked {
       );
     },500)
   }
-
- 
 
   /* SEARCH LOGIC */
   InitializeItems() {

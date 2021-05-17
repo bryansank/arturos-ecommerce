@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'header-component',
@@ -11,8 +12,12 @@ export class HeaderAppComponent implements OnInit {
 
   @Input() titleHeaderPage : string;
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit() {}
+
+  openPageCart() {
+    this.router.navigate(["cart-view"]);
+  }
 
 }

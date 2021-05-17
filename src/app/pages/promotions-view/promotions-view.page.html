@@ -1,0 +1,45 @@
+<header-component titleHeaderPage="Promociones"></header-component>
+
+<ion-content #pageTop>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <div *ngFor="let promo of promoTest; let index =index">
+          <ion-card>
+            <ion-img class="zoom" src="/assets/productos/promo.png"></ion-img>
+            <ion-card-header style="background-color: white;">
+              <ion-card-title  class="headerCategoryProduct">Promocion</ion-card-title>
+              <div class="btnsPromotion">
+                <ion-button>Ver detalles</ion-button>
+                <ion-button>Añadir al Carrito</ion-button>
+              </div>
+            </ion-card-header>
+          </ion-card>
+        </div>
+      </ion-col>
+      <ion-col>
+        <div *ngFor="let promo of promoTest; let index =index">
+          <ion-card>
+            <ion-card-header style="background-color: white;">
+              <ion-card-title  class="headerCategoryProduct">Promocion {{index + 1}}</ion-card-title>
+            </ion-card-header>
+          </ion-card>
+        </div>
+      </ion-col>
+      </ion-row>
+  </ion-grid>
+</ion-content>
+
+<ion-fab color="primary" vertical="bottom" horizontal="start" slot="fixed">
+  <ion-fab-button (click)="pageScroller()">
+    <ion-icon name="arrow-up-outline"></ion-icon>
+  </ion-fab-button>
+</ion-fab>
+
+<!--Footer-->
+<footer-component>
+</footer-component>
+<!--Footer-->
+
+<!--Button tools-->
+<fab-icons-component></fab-icons-component>
