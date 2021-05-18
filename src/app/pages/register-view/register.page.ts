@@ -1,7 +1,7 @@
 import { OnInit } from '@angular/core';
 //Components
 import { Router } from '@angular/router';
-import { AlertController } from '@ionic/angular';
+import { AlertController, LoadingController } from '@ionic/angular';
 import { errorHandler } from 'src/app/errors-handler/errors-handler';
 //Servicios
 import { AuthService } from 'src/app/services/firebaseAuth.service';
@@ -18,12 +18,14 @@ export class RegisterPage implements OnInit {
 
   public titleHeaderPage:string = "Registrate"
   public errorHandler = new errorHandler(this.alertController, this.router);
+  private loading : any;
 
   constructor(
     private authFireService: AuthService, 
     private router: Router, 
     public alertController: AlertController,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    public loadingCtlr: LoadingController
   ) { }
 
   ngOnInit() {
@@ -48,13 +50,30 @@ export class RegisterPage implements OnInit {
     }
   }
 
+  async onGoogleLogin(){
+    this.presentLoading();
+    //debugger;
+    try {
+      const user = await this.authFireService.loginGoogle();
+      this.hideLoading();
+
+      if(user){
+        const isVerified = this.authFireService.isEmailValid(user);
+        this.redirectUser(isVerified);
+      }
+
+    } catch (error) {
+      this.errorHandler.handlerError(error);
+    }
+  }
+
   private redirectUser(isVerified: boolean): void{
     //
     if(isVerified){
       this.router.navigate(['admin-view'])
     }else{
       //Aun no se ha verificado.
-      this.ShowPopup();
+      this.ShowPopup("Enhorabuena.", "Hemos enviado un correo para la verificacion de tu cuenta! ");
       setTimeout( ()=>{
           this.router.navigate(["login-view"])
         },5000
@@ -62,15 +81,16 @@ export class RegisterPage implements OnInit {
     }
   }
 
-  async ShowPopup(){
+  async ShowPopup(msnHeader:string,msn:string, flagRouter: boolean=false){
+    
     const alert = await this.alertController.create(
       {
-        header : 'Enhorabuena',
-        message : "Hemos enviado un correo para la verificacion de tu cuenta! ",
+        header : msnHeader,
+        message : msn,
         buttons : [
           {
             text : 'Acepto',
-            handler : () => { console.log("Funciona") }
+            handler : () => { if(flagRouter){this.router.navigate(["home-view"]);}else{console.log("funciona")}  }
           }
         ]
       }
@@ -78,6 +98,23 @@ export class RegisterPage implements OnInit {
 
     await alert.present();
 
+  }
+
+  async presentLoading() {
+    this.loading = await this.loadingCtlr.create({
+      cssClass: 'my-custom-class',
+      message: 'Por favor, espere.',
+    });
+
+    return this.loading.present();
+  }
+
+  async hideLoading() {
+    this.loadingCtlr.getTop().then(loader => {
+      if (loader) {
+        loader.dismiss();
+      }
+    });
   }
 
   //---> Metodos de validacion

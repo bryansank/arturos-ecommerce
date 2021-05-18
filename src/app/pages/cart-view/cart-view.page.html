@@ -70,6 +70,14 @@
         <ion-item lines="none">
           <ion-button color="secondary" (click)="cartClear()">Vaciar mi carrito</ion-button>
           <ion-button color="secondary">Pagar</ion-button>
+          <!--<ion-item>
+            <ion-label>Tipo de Cambio:</ion-label>
+            <ion-select placeholder="Selecciona Uno">
+              <ion-select (click)="changeCurrency('dolares')" okText="Okay" cancelText="Cancelar"></ion-select>
+              <ion-select-option (click)="changeCurrency('dolares')">dolares</ion-select-option>
+              <ion-select-option (click)="changeCurrency('bolivares')">bolivares</ion-select-option>
+            </ion-select>
+          </ion-item>-->
         </ion-item>
       </ng-template>
       <ng-template #elseBlock></ng-template>
@@ -86,6 +94,9 @@
   <!--METODOS-->
   <ion-grid>
     <ion-row>
+
+      <!--PAYPAL-->
+      <!--PAYPAL-->
       <ion-col size="12" size-lg="3" size-md="4" size-sm="6" size-xs="12">
         <ion-card>
           <ion-img class="zoom" src="https://www.mundocuentas.com/img-servicios/paypal.png"></ion-img>
@@ -97,7 +108,11 @@
           </ion-card-header>
         </ion-card>
       </ion-col>
+      <!--PAYPAL-->
+      <!--PAYPAL-->
     
+      <!--STRYPE-->
+      <!--STRYPE-->
       <ion-col size="12" size-lg="3" size-md="4" size-sm="6" size-xs="12">
         <ion-card>
           <ion-img class="zoom" src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Stripe_Logo%2C_revised_2016.svg/1200px-Stripe_Logo%2C_revised_2016.svg.png"></ion-img>
@@ -109,7 +124,11 @@
           </ion-card-header>
         </ion-card>
       </ion-col>
+      <!--STRYPE-->
+      <!--STRYPE-->
     
+      <!--ZELLE-->
+      <!--ZELLE-->
       <ion-col size="12" size-lg="3" size-md="4" size-sm="6" size-xs="12">
         <ion-card>
           <ion-img class="zoom" src="https://upload.wikimedia.org/wikipedia/commons/4/4c/Zelle_logo.svg"></ion-img>
@@ -121,6 +140,25 @@
           </ion-card-header>
         </ion-card>
       </ion-col>
+      <!--ZELLE-->
+      <!--ZELLE-->
+
+      <!--PAGO MOVIL-->
+      <!--PAGO MOVIL-->
+      <ion-col size="12" size-lg="3" size-md="4" size-sm="6" size-xs="12">
+        <ion-card>
+          <ion-img class="zoom" src="https://www.paymentmedia.com/gallery/5aa6e090956e0pagointerbancario_623.png"></ion-img>
+          <ion-card-header style="background-color: white;">
+            <ion-card-title  class="headerCategoryProduct">Pago Movil</ion-card-title>
+            <div style="text-align: center;">
+              <ion-button>PAGAR</ion-button>
+            </div>
+          </ion-card-header>
+        </ion-card>
+      </ion-col>
+      <!--PAGO MOVIL-->
+      <!--PAGO MOVIL-->
+
     </ion-row>
   </ion-grid>
   <!--METODOS-->
@@ -130,6 +168,7 @@
 
 <footer-component>
 </footer-component>
+
 
 <ion-fab vertical="bottom" horizontal="start" slot="fixed">
   <ion-fab-button color="secondary">
