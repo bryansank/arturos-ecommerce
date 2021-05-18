@@ -13,7 +13,7 @@ export class HomeViewPage implements OnInit, AfterContentChecked {
 
   
 
-  public titleHeaderPage: string = "Inicio";
+  public titleHeaderPage: string = "Arturos";
   private errorHandler = new errorHandler(this.alertController, this.router);
   private loading: any;
 
@@ -87,6 +87,7 @@ export class HomeViewPage implements OnInit, AfterContentChecked {
   }
 
   /* SEARCH LOGIC */
+  /* SEARCH LOGIC */
   InitializeItems() {
     this.itemsForSearch = this.item;
   }
@@ -142,8 +143,9 @@ export class HomeViewPage implements OnInit, AfterContentChecked {
     //console.log("test");
   }
   /* SEARCH LOGICCC */
+  /* SEARCH LOGICCC */
 
-  
+  /*CART LOGIC */
   /*CART LOGIC */
   addToCart(product: any) {
 
@@ -182,28 +184,7 @@ export class HomeViewPage implements OnInit, AfterContentChecked {
   openPageCart() {
     this.router.navigate(["cart-view"]);
   }
-  //countProduct
-  /*addCountProduct(productName:string){
-    this.cartService.deleteAllProducts();
-    this.cartHome.map(i => {
-      if(i.name == productName){
-        i.count += 1;
-      }
-      this.cartService.addProduct(i);
-    });
-    document.getElementById("countProduct").innerHTML;
-    this.ngOnInit();
-  }*/
-  /*subCountProduct(productName:string){
-    this.cartService.deleteAllProducts();
-    this.cartHome.map(i => {
-      if(i.name == productName){
-        i.count -= 1;
-      }
-      this.cartService.addProduct(i);
-    });
-    this.ngOnInit();
-  }*/
+  /*CART LOGIC */
   /*CART LOGIC */
 
   async hideLoading() {

@@ -29,6 +29,16 @@
         <span slot="end">{{ (item.price * item.count).toFixed(2) }}$</span>
       </ion-item>
       
+      <!--<div *ngIf="flagPromo; then thenBlock else elseBlock"></div>
+      <ng-template #thenBlock>
+        <ion-item lines="none">Promociones</ion-item>
+        <ion-item lines="none">
+          {{item.title}} - {{item.price}}$
+          <span slot="end">{{ (item.price * item.count).toFixed(2) }}$</span>
+        </ion-item>
+      </ng-template>
+      <ng-template #elseBlock></ng-template>-->
+
       <!--tooloptions for c/u-->
       <ion-item lines="none">
         <ion-button (click)="deleteProduct(item.name)">Eliminar</ion-button>
@@ -54,9 +64,6 @@
       <ng-template #elseBlock></ng-template>
     </div>
   </ion-list>
-
-
-
 
   <!--<ion-list>
     <ion-text color="primary" style="text-align:center;">

@@ -23,6 +23,11 @@ export class CartViewPage implements OnInit, AfterViewInit {
   
   public flagExcludeCart:boolean = false;
   public flagCartClean:boolean = false;
+
+  //todo
+  //public flagPromo: boolean = false;
+
+
   //public flagPay:string = "";
   //public activeBtn = true;
 
@@ -51,6 +56,18 @@ export class CartViewPage implements OnInit, AfterViewInit {
     }else{
       this.items = this.getAllProductCart();
     }
+
+    /*//todo
+    const promoFind =this.items.find(i=>{
+      console.log(i)
+      i.promo == true 
+    });
+
+    console.log(promoFind)
+
+    if(promoFind){
+      this.flagPromo = true;
+    }*/
 
     if(this.items == null || this.items == undefined){
       this.totalPrice = 0;

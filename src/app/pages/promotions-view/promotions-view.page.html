@@ -1,40 +1,78 @@
-<header-component titleHeaderPage="Promociones"></header-component>
+<!--Aqui Usamos este header, para tener la funciones del Cart-->
+<ion-header>
+  <ion-toolbar color="primary">
+
+    <ion-buttons slot="end">
+      <ion-button (click)="openPageCart()">
+        
+        <ion-badge *ngIf="cartData.length > 0">{{ cartData.length }}</ion-badge>
+        <ion-icon name="cart" slot="icon-only"></ion-icon>
+
+      </ion-button>
+    </ion-buttons>
+
+    <ion-buttons slot="start">
+      <ion-menu-button menu="customMenu"></ion-menu-button>
+    </ion-buttons>
+
+    <ion-title text-capitalize> {{ titleHeaderPage }} </ion-title>
+    
+  </ion-toolbar>
+</ion-header>
+<!--Aqui Usamos este header, para tener la funciones del Cart-->
 
 <ion-content #pageTop>
   <ion-grid>
     <ion-row>
-      <ion-col>
-        <div *ngFor="let promo of promoTest; let index =index">
+      <!--DETALLES-->
+      <!--DETALLES-->
+      <ion-col size-xs="5" size-xs="12">
+        <div *ngIf="viewDetail;then thenBlock else elseBlock"></div>
+        <ng-template #thenBlock>
           <ion-card>
-            <ion-img class="zoom" src="/assets/productos/promo.png"></ion-img>
-            <ion-card-header style="background-color: white;">
-              <ion-card-title  class="headerCategoryProduct">Promocion</ion-card-title>
-              <div class="btnsPromotion">
-                <ion-button>Ver detalles</ion-button>
-                <ion-button>Añadir al Carrito</ion-button>
-              </div>
-            </ion-card-header>
+            <ion-card-content>
+              <ion-title color="primary">
+                <h1>{{obj.title}}</h1>
+              </ion-title>
+              <br />
+              <ion-text style="font-size: 20px;">
+                {{obj.detail}}
+              </ion-text>
+              <ion-text style="font-size: 12px;">
+                <br />
+                -{{obj.items}}
+              </ion-text>
+              
+              <ion-text>
+                <h1 style="margin-top: 10px;">Tiene un precio de: <span style="color:orangered">{{obj.price}}$</span></h1>
+              </ion-text>
+            </ion-card-content>
           </ion-card>
-        </div>
+        </ng-template>
+        <ng-template #elseBlock></ng-template>
       </ion-col>
-      <ion-col>
-        <div *ngFor="let promo of promoTest; let index =index">
-          <ion-card>
-            <ion-card-header style="background-color: white;">
-              <ion-card-title  class="headerCategoryProduct">Promocion {{index + 1}}</ion-card-title>
-            </ion-card-header>
-          </ion-card>
-        </div>
+      <!--DETALLES-->
+      <!--DETALLES-->
+
+      <!--PROMO-->
+      <!--PROMO-->
+      <ion-col size="12" size-lg="3" size-md="4" size-sm="6" size-xs="12" *ngFor="let promo of promoData; let ix =index">
+        <ion-card>
+          <ion-img class="zoom" src="/assets/productos/promo.png"></ion-img>
+          <ion-card-header style="background-color: white;">
+            <ion-card-title  class="headerCategoryProduct">{{promo.title}}</ion-card-title>
+            <div style="text-align: center;">
+              <ion-button (click)="viewDetails(ix)">Ver detalles</ion-button>
+              <ion-button (click)="sendToCart(promo)">Añadir al Carrito</ion-button>
+            </div>
+          </ion-card-header>
+        </ion-card>
       </ion-col>
-      </ion-row>
+      <!--PROMO-->
+      <!--PROMO-->
+    </ion-row>
   </ion-grid>
 </ion-content>
-
-<ion-fab color="primary" vertical="bottom" horizontal="start" slot="fixed">
-  <ion-fab-button (click)="pageScroller()">
-    <ion-icon name="arrow-up-outline"></ion-icon>
-  </ion-fab-button>
-</ion-fab>
 
 <!--Footer-->
 <footer-component>
