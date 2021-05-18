@@ -16,6 +16,8 @@ export class CartViewPage implements OnInit, AfterViewInit {
   //private errorHandler = new errorHandler(this.alertController, this.router);
   public titleHeaderPage:string = "Carrito";
   public selectedItems: any[] = [];
+  public itemsProduct: any[] = [];
+  public itemsPromotions: any[] = [];
   public totalPrice : number = 0;
   
   private loading : any;
@@ -24,8 +26,23 @@ export class CartViewPage implements OnInit, AfterViewInit {
   public flagExcludeCart:boolean = false;
   public flagCartClean:boolean = false;
 
-  //todo
-  //public flagPromo: boolean = false;
+  //Prueba promo
+  public flagPromo: boolean = false;
+
+  public currency="$";
+  public typeCurrency = {
+    bolivares: "Bs",
+    dolares: "$",
+    euros: "€"
+  }
+
+  dataCurrency={
+    bolivares: 2900500.50,
+    dolares: 1,
+    euros: 0.50
+  }
+
+  rate = 0;
 
 
   //public flagPay:string = "";
@@ -57,17 +74,11 @@ export class CartViewPage implements OnInit, AfterViewInit {
       this.items = this.getAllProductCart();
     }
 
-    /*//todo
-    const promoFind =this.items.find(i=>{
-      console.log(i)
-      i.promo == true 
-    });
-
-    console.log(promoFind)
-
-    if(promoFind){
+    //promo
+    const findPromo = this.items.find(i=> i.hasOwnProperty('promo') == true ? true : false)
+    if(findPromo != undefined){
       this.flagPromo = true;
-    }*/
+    }
 
     if(this.items == null || this.items == undefined){
       this.totalPrice = 0;
@@ -83,11 +94,32 @@ export class CartViewPage implements OnInit, AfterViewInit {
       this.totalPrice = this.items.reduce(
         (inicial, actual) => {return((parseFloat(inicial) + (actual.price * actual.count)).toFixed(2))}, 0
       );
+      
+      if(this.currency == "$"){
+        this.totalPrice * this.dataCurrency.dolares;
+        this.rate = this.dataCurrency.dolares
+      }else if(this.currency == "Bs"){
+        this.totalPrice * this.dataCurrency.bolivares;
+        this.rate = this.dataCurrency.bolivares
+      }else{
+        this.totalPrice * this.dataCurrency.euros;
+        this.rate = this.dataCurrency.euros
+      }
 
     }else{
       this.totalPrice = 0;
       this.presentToast("Agrega algo al carrito", 1800);
     }
+
+    this.itemsProduct = this.selectedItems.filter(i=> !i.hasOwnProperty('promo'));
+    this.itemsPromotions = this.selectedItems.filter(i=> i.hasOwnProperty('promo'));
+    //console.log("produc: ", this.itemsProduct)
+    //console.log("promo: ", this.itemsPromotions)
+  }
+
+  changeCurrency(currency:string){
+    this.currency = this.typeCurrency[currency];
+    this.ngOnInit();
   }
 
   getAllProductCart(){

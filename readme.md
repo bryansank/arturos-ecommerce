@@ -35,6 +35,3 @@ Este proyecto está bajo la licencia del HONOR.
 * Invita una cerveza 🍺 o un café ☕ a alguien del equipo. 
 * Da las gracias públicamente 🤓.
 * Nunca pares de aprender.
-
-TODO LIST:
--arreglar el metodo de pago stripe. CartView. he index. Revisar

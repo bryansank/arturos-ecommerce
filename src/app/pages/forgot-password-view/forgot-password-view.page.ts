@@ -69,9 +69,8 @@ export class ForgotPasswordViewPage implements OnInit {
     return this.loading.present();
   }
 
-  //---> Metodos de validacion
-
-    
+  /*VALIDACION DE FORMULARIO*/
+  /*VALIDACION DE FORMULARIO*/
   public forgotPassVerificationForm = this.formBuilder.group({
     email: [
       '', [ Validators.required, Validators.pattern('^[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,4}$')]
@@ -84,5 +83,7 @@ export class ForgotPasswordViewPage implements OnInit {
       { type: 'pattern', message: 'Introduce un Email valido.' }
     ]
   }
+  /*VALIDACION DE FORMULARIO*/
+  /*VALIDACION DE FORMULARIO*/
 
 }

@@ -60,7 +60,7 @@ export class ProductsViewPage implements OnInit, AfterContentChecked {
   }
 
   displayCategoryProd(tabCategory){
-    //TODO: cambio de estilos, se bugeaba con los de Home al llamarse igual
+    //cambio de estilos, se bugeaba con los de Home al llamarse igual
     const elementGrid = document.getElementById(tabCategory+"GridProd");
 
     if(elementGrid.classList.contains('displayContentProd')){

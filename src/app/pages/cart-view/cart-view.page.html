@@ -23,21 +23,15 @@
 
   <ion-list>
     <!--Items in the cart-->
-    <div *ngFor="let item of selectedItems;" style="border-bottom:1x solid #fe5000">
+    <div *ngFor="let item of itemsProduct;" style="border-bottom:1x solid #fe5000">
+
       <ion-item lines="none">
-        {{item.count}}x. - {{item.name}} - {{item.price}}$
-        <span slot="end">{{ (item.price * item.count).toFixed(2) }}$</span>
+        {{item.count}}x. - {{item.name}} - {{(item.price * rate).toFixed(2)}}{{currency}}
+        <span slot="end">
+          {{ ((item.price * item.count).toFixed(2) * rate).toFixed(2) }}
+          {{currency}}
+        </span>
       </ion-item>
-      
-      <!--<div *ngIf="flagPromo; then thenBlock else elseBlock"></div>
-      <ng-template #thenBlock>
-        <ion-item lines="none">Promociones</ion-item>
-        <ion-item lines="none">
-          {{item.title}} - {{item.price}}$
-          <span slot="end">{{ (item.price * item.count).toFixed(2) }}$</span>
-        </ion-item>
-      </ng-template>
-      <ng-template #elseBlock></ng-template>-->
 
       <!--tooloptions for c/u-->
       <ion-item lines="none">
@@ -48,10 +42,27 @@
       </ion-item>
     </div>
 
+    <div *ngIf="flagPromo; then PromothenBlock else PromoelseBlock"></div>
+    <ng-template #PromothenBlock>
+      <div *ngFor="let promoItem of itemsPromotions;">
+        <ion-text color="primary" style="text-align:center;">
+          <h3>Promociones:</h3>
+        </ion-text>
+        <ion-item lines="none">
+          {{promoItem.count}}x. {{promoItem.title}} - {{(promoItem.price * rate).toFixed(2)}}{{currency}}
+          <span slot="end">
+            {{ ((promoItem.price * promoItem.count).toFixed(2) * rate).toFixed(2) }}
+            {{currency}}
+          </span>
+        </ion-item>
+      </div>
+    </ng-template>
+    <ng-template #PromoelseBlock></ng-template>
+
     <!--Total section-->
     <div style="border-bottom: 1px solid #dddddd;">
       <ion-item lines="none">
-        Total a pagar: <span slot="end">{{ totalPrice }}$</span>
+        Total a pagar: <span slot="end">{{ (totalPrice * rate).toFixed(2) }}{{currency}}</span>
       </ion-item>
       
       <div *ngIf="flagCartClean; then thenBlock else elseBlock"></div>
@@ -63,29 +74,73 @@
       </ng-template>
       <ng-template #elseBlock></ng-template>
     </div>
+
   </ion-list>
 
-  <!--<ion-list>
-    <ion-text color="primary" style="text-align:center;">
-      <h1>Metodos de pago</h1>
-    </ion-text>
-  </ion-list>-->
-  <!--
-    <ion-item (click)="onClick('stripe')">
-      <ion-icon slot="start" name="card-outline"></ion-icon>
-      <ion-label>Stripe</ion-label>
-    </ion-item>
-  </ion-list>
-  -->
+  
+  <ion-text color="primary" style="text-align:center;">
+    <h1>Metodos de pago</h1>
+  </ion-text>
 
-  <!--
-    <div class="credit-card-stripe noneDis" id="cardStripe">
-      <div #cardInfoStripe></div>
-      <div class="error" *ngIf="cardError">{{cardError}}</div>
-      <button>Pagar</button>
-    </div>
-  -->
+  <!--METODOS-->
+  <!--METODOS-->
+  <ion-col size="12" size-lg="3" size-md="4" size-sm="6" size-xs="12">
+    <ion-card>
+      <ion-img class="zoom" src="https://www.mundocuentas.com/img-servicios/paypal.png"></ion-img>
+      <ion-card-header style="background-color: white;">
+        <ion-card-title  class="headerCategoryProduct">PAYPAL</ion-card-title>
+        <div style="text-align: center;">
+          <ion-button>PAGAR</ion-button>
+        </div>
+      </ion-card-header>
+    </ion-card>
+  </ion-col>
+
+  <ion-col size="12" size-lg="3" size-md="4" size-sm="6" size-xs="12">
+    <ion-card>
+      <ion-img class="zoom" src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Stripe_Logo%2C_revised_2016.svg/1200px-Stripe_Logo%2C_revised_2016.svg.png"></ion-img>
+      <ion-card-header style="background-color: white;">
+        <ion-card-title  class="headerCategoryProduct">STRYPE</ion-card-title>
+        <div style="text-align: center;">
+          <ion-button>PAGAR</ion-button>
+        </div>
+      </ion-card-header>
+    </ion-card>
+  </ion-col>
+
+  <ion-col size="12" size-lg="3" size-md="4" size-sm="6" size-xs="12">
+    <ion-card>
+      <ion-img class="zoom" src="https://upload.wikimedia.org/wikipedia/commons/4/4c/Zelle_logo.svg"></ion-img>
+      <ion-card-header style="background-color: white;">
+        <ion-card-title  class="headerCategoryProduct">ZELLE</ion-card-title>
+        <div style="text-align: center;">
+          <ion-button>PAGAR</ion-button>
+        </div>
+      </ion-card-header>
+    </ion-card>
+  </ion-col>
+  <!--METODOS-->
+  <!--METODOS-->
+
 </ion-content>
+
+<footer-component>
+</footer-component>
+
+<ion-fab vertical="bottom" horizontal="start" slot="fixed">
+  <ion-fab-button color="secondary">
+    <ion-icon name="cash-outline" style="color: black;"></ion-icon>
+  </ion-fab-button>
+
+  <ion-fab-list side="top">
+    <ion-fab-button color="secondary" style="color: black;" (click)="changeCurrency('dolares')">
+      <span style="color: black; font-weight: bold;">$</span>
+    </ion-fab-button>
+    <ion-fab-button color="secondary" style="color: black;" (click)="changeCurrency('bolivares')">
+      <span style="color: black; font-weight: bold;">Bs</span>
+    </ion-fab-button>
+  </ion-fab-list>
+</ion-fab>
 
 <!--Button tools-->
 <fab-icons-component></fab-icons-component>

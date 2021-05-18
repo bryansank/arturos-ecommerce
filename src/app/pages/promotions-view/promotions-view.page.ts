@@ -50,12 +50,10 @@ export class PromotionsViewPage implements OnInit, AfterContentChecked {
   
   public sendToCart(promo: any) {
 
-    console.log("construccion")
+    //console.log("construccion")
+    //TODO: Deberia por acumularse las promociones??
 
-    /*this.getCart();
-
-    console.log(this.cartData)
-    console.log(promo)
+    this.getCart();
 
     if(this.cartData.length != 0) {
       const productObjFound = this.cartData.find(i => i.title == promo.title);
@@ -66,7 +64,7 @@ export class PromotionsViewPage implements OnInit, AfterContentChecked {
       promo.count = 1;
       this.presentToast("Promocion añadida a tu carrito", 1200);
       this.cartService.addProduct(promo);
-    }*/
+    }
   }
 
   notFoundProduct(promo:any) {
