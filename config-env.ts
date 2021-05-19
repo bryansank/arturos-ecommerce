@@ -22,6 +22,9 @@ const APP_ID = process.env.APP_ID || "";
 const API_HOST = process.env.API_HOST || "";
 const API_HOST_PORT = process.env.API_HOST_PORT || "";
 
+//Correos
+const USER_AD_1 = process.env.USER_AD_1 || "";
+const USER_AD_2 = process.env.USER_AD_2 || "";
 
 const envConfigFile = `
   export const environment = {
@@ -35,7 +38,11 @@ const envConfigFile = `
         appId: "${APP_ID}",    
       },
       apiHost: "${API_HOST}",
-      apiHostPort: "${API_HOST_PORT}"
+      apiHostPort: "${API_HOST_PORT}",
+      adminUsers : {
+        devbryansank: "${USER_AD_1}",
+        agarcia: "${USER_AD_2}",
+      }
     };   
 `
 fs.writeFile(targetPath, envConfigFile, function(err){
@@ -50,4 +57,3 @@ fs.writeFile(targetPath, envConfigFile, function(err){
       });
     //}
 })
-

@@ -21,8 +21,16 @@ export class AuthenticateLoginGuard implements CanActivate {
         map( (userData) =>{
           //Devuelve true, si existe el usuario
           if(userData){
-            this.authServiceWithFirebase.Authenticated(true);
-            return true;
+            
+            const navigateFlag = this.authServiceWithFirebase.isAuthenticated("profile") == true ? true : false;
+
+            if(navigateFlag){
+              return true;
+            }
+
+            this.router.navigate(['login-view']);
+            return false;
+            
           }else{
             //Esta llegando null, no esta logueado.
             this.router.navigate(['login-view']);

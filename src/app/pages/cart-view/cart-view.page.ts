@@ -115,8 +115,9 @@ export class CartViewPage implements OnInit, AfterViewInit {
     //console.log("promo: ", this.itemsPromotions)
   }
 
-  changeCurrency(currency:string){
-    this.currency = this.typeCurrency[currency];
+  changeCurrency(currency:any){
+    const currencyValue:string = currency.detail.value.toString();
+    this.currency = this.typeCurrency[currencyValue];
     this.ngOnInit();
   }
 

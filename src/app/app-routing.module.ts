@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { AuthAdminGuard } from './auth-admin.guard';
 import { AuthenticateLoginGuard } from './auth.guard';
 //import { IsLoginAuthGuard } from './is-login-auth.guard';
 
@@ -37,6 +38,11 @@ const routes: Routes = [
   {
     path: 'admin-view',
     loadChildren: () => import('./pages/admin-view/admin-view.module').then( m => m.AdminViewPageModule),
+    canActivate: [AuthAdminGuard],
+  },
+  {
+    path: 'profile-view',
+    loadChildren: () => import('./pages/profile-view/profile-view.module').then( m => m.ProfileViewPageModule),
     canActivate: [AuthenticateLoginGuard],
   },
   {

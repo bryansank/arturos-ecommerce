@@ -21,8 +21,8 @@
     },
     {
         "icon" : "people-circle-outline",
-        "txt": "Perfil",
-        "redirecTo": "/profile-view"
+        "txt": "Admin",
+        "redirecTo": "/admin-view"
     },
     {
         "icon" : "log-out-outline",

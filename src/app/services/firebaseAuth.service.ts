@@ -13,6 +13,7 @@ import { AlertController } from '@ionic/angular';
 //
 import { errorHandler } from '../errors-handler/errors-handler';
 import { Router } from '@angular/router';
+import { environment } from 'src/environments/environment';
 
 
 @Injectable({
@@ -26,6 +27,7 @@ export class AuthService {
 
   //guard observable
   public authenticationState : BehaviorSubject<boolean> = new BehaviorSubject(false);
+  public authenticationAdminState : BehaviorSubject<boolean> = new BehaviorSubject(false);
 
   constructor(
     private firebaseAuth : AngularFireAuth, 
@@ -36,6 +38,17 @@ export class AuthService {
   {
     this.pipeOfDataUser$();
   }
+
+  userAdmin(email:string):boolean{
+
+    const adminsEmails = Object.values(environment.adminUsers);
+    const user = adminsEmails.find(i=> i == email);
+    
+    return (user != undefined ? true : false);
+
+    //return email == environment.adminUsers.devbryansank ? true : false;
+  }
+  //
 
   pipeOfDataUser$(){
     this.dataUser$ = this.firebaseAuth.authState.pipe(
@@ -108,7 +121,9 @@ export class AuthService {
   async logout(): Promise<void>{
     try { 
       await this.firebaseAuth.signOut();
-      this.Authenticated(false)
+      this.AuthenticatedAdmin(false);
+      this.Authenticated(false);
+      
     } catch (error) {
       this.errorHandlre.handlerError(error);
     }
@@ -126,19 +141,16 @@ export class AuthService {
     return userRef.set(data, {merge:true});
   }
 
-  public isAuthenticated() {
-    return this.authenticationState.value;
+  public isAuthenticated(authState:string) :boolean {
+    return authState == "profile" ? this.authenticationState.value : this.authenticationAdminState.value;
   }
 
-  public Authenticated(flag:boolean=true) {
-    if(flag){
-      this.authenticationState.next(true); 
-      return true;
-    }else{
-      this.authenticationState.next(false);
-      //console.log(this.authenticationState)
-      return false;
-    }
+  public AuthenticatedAdmin(flag:boolean):void{
+    flag == true ? this.authenticationAdminState.next(true): this.authenticationAdminState.next(false);
+  }
+
+  public Authenticated(flag:boolean):void{
+    flag == true ? this.authenticationState.next(true): this.authenticationState.next(false);
   }
 
 }

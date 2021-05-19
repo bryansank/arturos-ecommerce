@@ -20,25 +20,38 @@ export class MenuNavComponent implements OnInit {
 
   ngOnInit() {
 
-    this.authServiceWithFirebase.authenticationState
-    .subscribe(
-      (isAuthenticated)=>{
-        if(isAuthenticated){
-          this.dataMenuService.getMenuOptionsLogin().subscribe(
+    this.authServiceWithFirebase.authenticationAdminState.subscribe(
+      authAdmin => {
+        if(authAdmin){
+          this.dataMenuService.getMenuOptionsAdmin().subscribe(
             data=> {
               this.resultNavOptions = data;
-              //console.log(this.resultNavOptions)
             }
           );
-        }else{  
-          this.dataMenuService.getMenuOptions().subscribe(
-            data=> {
-              this.resultNavOptions = data;
-              //console.log(this.resultNavOptions)
-            }
-          );
+        }else{
+          this.authServiceWithFirebase.authenticationState
+            .subscribe(
+              (isAuthenticated)=>{
+                if(isAuthenticated){
+                  this.dataMenuService.getMenuOptionsLogin().subscribe(
+                    data=> {
+                      this.resultNavOptions = data;
+                      //console.log(this.resultNavOptions)
+                    }
+                  );
+                }else{  
+                  this.dataMenuService.getMenuOptions().subscribe(
+                    data=> {
+                      this.resultNavOptions = data;
+                      //console.log(this.resultNavOptions)
+                    }
+                  );
+                }
+            });
         }
-    });
+      }
+    );
+
   }
 
 }

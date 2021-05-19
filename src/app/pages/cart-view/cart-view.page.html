@@ -67,18 +67,21 @@
       
       <div *ngIf="flagCartClean; then thenBlock else elseBlock"></div>
       <ng-template #thenBlock>
+
+        <ion-item>
+          <ion-label>Tipo de Cambio a Usar:</ion-label>
+          <ion-select placeholder="Selecciona Uno" value="dolares" (ionChange)="changeCurrency($event)">
+            <ion-select okText="Okay" cancelText="Cancelar"></ion-select>
+            <ion-select-option value="dolares">Dolares</ion-select-option>
+            <ion-select-option value="bolivares">Bolivares</ion-select-option>
+          </ion-select>
+        </ion-item>
+
         <ion-item lines="none">
           <ion-button color="secondary" (click)="cartClear()">Vaciar mi carrito</ion-button>
           <ion-button color="secondary">Pagar</ion-button>
-          <!--<ion-item>
-            <ion-label>Tipo de Cambio:</ion-label>
-            <ion-select placeholder="Selecciona Uno">
-              <ion-select (click)="changeCurrency('dolares')" okText="Okay" cancelText="Cancelar"></ion-select>
-              <ion-select-option (click)="changeCurrency('dolares')">dolares</ion-select-option>
-              <ion-select-option (click)="changeCurrency('bolivares')">bolivares</ion-select-option>
-            </ion-select>
-          </ion-item>-->
         </ion-item>
+
       </ng-template>
       <ng-template #elseBlock></ng-template>
     </div>
@@ -169,8 +172,8 @@
 <footer-component>
 </footer-component>
 
-
-<ion-fab vertical="bottom" horizontal="start" slot="fixed">
+<!--
+  <ion-fab vertical="bottom" horizontal="start" slot="fixed">
   <ion-fab-button color="secondary">
     <ion-icon name="cash-outline" style="color: black;"></ion-icon>
   </ion-fab-button>
@@ -184,6 +187,7 @@
     </ion-fab-button>
   </ion-fab-list>
 </ion-fab>
+-->
 
 <!--Button tools-->
 <fab-icons-component></fab-icons-component>

@@ -48,7 +48,8 @@ export class LoginPage implements OnInit {
 
       if(user){
         const isVerified = this.authFireService.isEmailValid(user);
-        this.redirectUser(isVerified);
+        
+        this.redirectUser(isVerified, user.email.toString());
       }
 
     } catch (error) {
@@ -66,10 +67,12 @@ export class LoginPage implements OnInit {
 
       if(user){
         const isVerified = this.authFireService.isEmailValid(user);
-        this.redirectUser(isVerified);
+        
+        this.redirectUser(isVerified, user.email.toString());
       }
 
     } catch (error) {
+      this.hideLoading();
       this.errorHandler.handlerError(error);
     }
   }
@@ -82,22 +85,6 @@ export class LoginPage implements OnInit {
     this.router.navigate(["forgot-password-view"]);
   }
 
-  //--> Metodos back  
-
-  private redirectUser(isVerified: boolean): void{
-    //
-    if(isVerified){
-      if(this.authFireService.Authenticated()){
-        //this.router.navigate(['menu-nav']);
-        this.router.navigate(['admin-view']);
-      }
-    }else{
-      this.ShowPopup("Atencion!", "Le hemos enviado un correo anteriormente para que verifique su correo primero.", true);
-      setTimeout(()=>{
-        this.router.navigate(["home-view"]);
-      },6000)
-    }
-  }
 
   async ShowPopup(msnHeader:string,msn:string, flagRouter: boolean=false){
     
@@ -117,7 +104,6 @@ export class LoginPage implements OnInit {
     await alert.present();
 
   }
-
   async presentLoading() {
     this.loading = await this.loadingCtlr.create({
       cssClass: 'my-custom-class',
@@ -126,7 +112,6 @@ export class LoginPage implements OnInit {
 
     return this.loading.present();
   }
-
   async hideLoading() {
     this.loadingCtlr.getTop().then(loader => {
       if (loader) {
@@ -157,5 +142,34 @@ export class LoginPage implements OnInit {
       { type: 'maxlength', message: 'Debe tener maximo de 25 caracteres.' }
     ],
   }
+
+  /* REDIRECT */
+  /* REDIRECT */
+  private redirectUser(isVerified: boolean, email:string): void{
+    //
+    if(isVerified){
+
+      if(this.authFireService.userAdmin(email)){
+        this.authFireService.AuthenticatedAdmin(true);
+      }else{
+        this.authFireService.AuthenticatedAdmin(false);
+        this.authFireService.Authenticated(true);
+      }
+
+      if(this.authFireService.isAuthenticated("profile")){
+        this.router.navigate(['profile-view']);
+      }else{
+        this.router.navigate(['admin-view']);
+      }
+
+    }else{
+      this.ShowPopup("Atencion!", "Le hemos enviado un correo anteriormente para que verifique su correo primero.", true);
+      setTimeout(()=>{
+        this.router.navigate(["home-view"]);
+      },6000)
+    }
+  }
+  /* REDIRECT */
+  /* REDIRECT */
 
 }

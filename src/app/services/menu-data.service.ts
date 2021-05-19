@@ -9,10 +9,12 @@ export class MenuDataService {
 
   public dataMenu;
   public dataMenuLogin;
+  public dataMenuAdmin;
 
   constructor(private http: HttpClient) {
      this.dataMenu = this.http.get<DataNav[]>('/assets/data/menu.json');
      this.dataMenuLogin = this.http.get<DataNav[]>('/assets/data/menuLogin.json');
+     this.dataMenuAdmin = this.http.get<DataNav[]>('/assets/data/menuAdmin.json');
    }
 
   getMenuOptions(){
@@ -21,6 +23,10 @@ export class MenuDataService {
 
   getMenuOptionsLogin(){
     return this.dataMenuLogin;
+  }
+  
+  getMenuOptionsAdmin(){
+    return this.dataMenuAdmin;
   }
 
 
