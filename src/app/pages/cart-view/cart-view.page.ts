@@ -68,11 +68,9 @@ export class CartViewPage implements OnInit, AfterViewInit {
   }
 
   ngOnInit() { 
-    if(this.flagExcludeCart){
-      this.items = this.selectedItems;
-    }else{
-      this.items = this.getAllProductCart();
-    }
+   
+    this.items = this.getAllProductCart();
+    
 
     //promo
     const findPromo = this.items.find(i=> i.hasOwnProperty('promo') == true ? true : false)
@@ -128,11 +126,18 @@ export class CartViewPage implements OnInit, AfterViewInit {
 
   deleteProduct(excludeNameProduct){
     excludeNameProduct = excludeNameProduct.trim().trimStart();
-    this.selectedItems = this.selectedItems.filter((e)=>e.name != excludeNameProduct);
+    console.log( this.itemsProduct)
+    this.itemsProduct = this.itemsProduct.filter((e)=>e.name != excludeNameProduct);
+
+    console.log(this.itemsProduct)
 
     this.cartService.deleteAllProducts();
     
-    this.selectedItems.map(e=>{
+    this.itemsProduct.map(e=>{
+      this.cartService.addProduct(e);
+    });
+
+    this.itemsPromotions.map(e=>{
       this.cartService.addProduct(e);
     });
 
@@ -142,10 +147,13 @@ export class CartViewPage implements OnInit, AfterViewInit {
 
   cartClear(){
     this.selectedItems = null;
+    this.itemsProduct = null;
+    this.itemsPromotions = null;
     this.totalPrice = 0;
 
     this.cartService.deleteAllProducts();
     this.flagCartClean = false;
+    this.flagPromo = false;
     this.ngOnInit();
   }
 
@@ -164,7 +172,9 @@ export class CartViewPage implements OnInit, AfterViewInit {
     this.cartService.deleteAllProducts();
     this.selectedItems.map(i => {
       if(i.name == productName){
-        i.count -= 1;
+        if(i.count != 1){
+          i.count -= 1;
+        }
       }
       this.cartService.addProduct(i);
     });
