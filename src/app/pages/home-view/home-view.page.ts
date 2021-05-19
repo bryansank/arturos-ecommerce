@@ -1,6 +1,6 @@
 import { AfterContentChecked, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AlertController, IonSlides, LoadingController, ToastController } from '@ionic/angular';
+import { AlertController, IonSlides, LoadingController, NavController, ToastController } from '@ionic/angular';
 import { errorHandler } from 'src/app/errors-handler/errors-handler';
 import { CartService } from 'src/app/services/cart.service';
 
@@ -49,7 +49,8 @@ export class HomeViewPage implements OnInit, AfterContentChecked {
     private router: Router,
     private alertController: AlertController,
     public loadingCtlr: LoadingController,
-    public toastController: ToastController
+    public toastController: ToastController,
+    public navCtrl: NavController
   ){}
   
   ngAfterContentChecked() {
@@ -58,32 +59,29 @@ export class HomeViewPage implements OnInit, AfterContentChecked {
   }
 
   ngOnInit() {
-    setTimeout(()=>{
-      this.presentLoading();
-      this.cartService.getProducts().subscribe(
-        (productsData) => {
-          this.item = productsData;
-          this.hideLoading();
-          this.ShowPopup(
-            "Hola Querid@ Cliente.", 
-            "Te recordamos que si usas algun tipo de bloqueador de anuncios debes desactivarlo.",
-            "No usaremos ningun dato personal fuera de este sitio o con fines comerciales."
-          );
-          this.getCart();
+    this.presentLoading();
 
-        },(err)=>{
-          this.hideLoading();
-          setTimeout(() => {
-            this.ShowPopup(
-              "Hola Querid@ Cliente.",
-              "Te recordamos que si usas algun tipo de bloqueador de anuncios debes desactivarlo.",
-              "No usaremos ningun dato personal fuera de este sitio o con fines comerciales."
-            );
-          }, 1500);
-          this.errorHandler.handlerError(err, true, "No pudimos cargar los productos.");
-        }
+    this.cartService.getProducts().subscribe(
+      productsData=>{
+        this.item = productsData;
+        //llenamos cartHome.
+        this.getCart();
+        this.hideLoading();
+      }, err =>{
+        this.hideLoading();
+        this.errorHandler.handlerError(err, true, "No pudimos cargar los productos.");
+      }
+    );
+
+    setTimeout(()=>{
+      this.hideLoading();
+      this.ShowPopup(
+        "Hola Querid@ Cliente.", 
+        "Te recordamos que si usas algun tipo de bloqueador de anuncios debes desactivarlo.",
+        "No usaremos ningun dato personal fuera de este sitio o con fines comerciales."
       );
-    },500)
+    }, 4000);
+    
   }
 
   /* SEARCH LOGIC */
@@ -197,6 +195,14 @@ export class HomeViewPage implements OnInit, AfterContentChecked {
   //Slides
   slidesDidLoad(slides: IonSlides) {
     slides.startAutoplay();
+  }
+  doRefresh(event) {
+    //console.log('Begin async operation');
+    setTimeout(() => {
+      this.navCtrl.navigateRoot("/");
+      event.target.complete();  
+      //console.log("refresh")
+    },1000);    
   }
   async presentLoading() {
     this.loading = await this.loadingCtlr.create({
