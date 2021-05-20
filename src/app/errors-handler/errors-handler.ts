@@ -81,11 +81,6 @@ export class errorHandler {
                 this.ShowPopup("Atencion","El usuario no existe. Verifique su correo.")
                 break;
 
-            /*case "auth/user-not-found":
-                console.log("El usuario o el correo son invalidos.");
-                this.ShowPopup("Atencion","El usuario o el correo colocados, son invalidos. Por favor verifique la informacion.")
-                break;*/
-
             default:
                 console.log('%c No se reconocio el error.', 'background: #222; color: #bada55');
                 console.log('Error: =?>> ', error);

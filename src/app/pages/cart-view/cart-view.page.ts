@@ -14,7 +14,7 @@ import { ExchangeRateDataService } from 'src/app/services/exchange-rate-data.ser
 
 export class CartViewPage implements OnInit, AfterViewInit {
 
-  //private errorHandler = new errorHandler(this.alertController, this.router);
+  private errorHandler = new errorHandler(this.alertController, this.router);
   public titleHeaderPage:string = "Carrito";
   public selectedItems: any[] = [];
   public itemsProduct: any[] = [];
@@ -74,7 +74,6 @@ export class CartViewPage implements OnInit, AfterViewInit {
 
     this.rateService.getExchangeRate().subscribe(
       rate => {
-//        console.log("viene del servicio", data)
         this.dataCurrency.bolivares =  rate[0].rate.$numberDecimal;
 
         this.items = this.getAllProductCart();
@@ -127,6 +126,7 @@ export class CartViewPage implements OnInit, AfterViewInit {
       }, err=>{
         console.log("Hubo un error Inesperado: ", err);
         this.dataCurrency.bolivares = 0;
+        this.errorHandler.handlerError(err);
       }
     );
 
