@@ -47,6 +47,11 @@
                 <h1 style="margin-top: 10px;">Tiene un precio de: <span style="color:orangered">{{obj.price}}$</span></h1>
               </ion-text>
             </ion-card-content>
+
+            <div style="text-align: center;">
+              <ion-button (click)="sendToCart(obj)">Añadir al Carrito</ion-button>
+            </div>
+            
           </ion-card>
         </ng-template>
         <ng-template #elseBlock></ng-template>

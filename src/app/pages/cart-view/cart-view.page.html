@@ -55,6 +55,10 @@
             {{currency}}
           </span>
         </ion-item>
+        <!--tooloptions for c/u-->
+        <ion-item lines="none">
+          <ion-button (click)="deleteProduct(promoItem.title)">Eliminar</ion-button>
+        </ion-item>
       </div>
     </ng-template>
     <ng-template #PromoelseBlock></ng-template>
@@ -75,6 +79,11 @@
             <ion-select-option value="dolares">Dolares</ion-select-option>
             <ion-select-option value="bolivares">Bolivares</ion-select-option>
           </ion-select>
+          <div *ngIf="flagExchange; then thenExchangeRate else elseExchangeRate"></div>
+          <ng-template #thenExchangeRate>
+            <ion-text>{{exchangeRate}}</ion-text>
+          </ng-template>
+          <ng-template #elseExchangeRate></ng-template>
         </ion-item>
 
         <ion-item lines="none">

@@ -26,7 +26,7 @@ export class FabIconsComponent implements OnInit {
   }
 
   upPage(){
-    console.log("funciono")
+    //console.log("funciono")
     window.scroll(0,300); 
   }
 

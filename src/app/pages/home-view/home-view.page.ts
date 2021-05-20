@@ -234,7 +234,7 @@ export class HomeViewPage implements OnInit, AfterContentChecked {
     const toast = await this.toastController.create({
       message: msn.toUpperCase(),
       duration: duration,
-      color: "primary",
+      //color: "primary",
       position: 'bottom',
       cssClass: "toastCart"
     });
@@ -242,25 +242,27 @@ export class HomeViewPage implements OnInit, AfterContentChecked {
   }
 }
 
-/*aka(product){
-    if(this.cartHome.length != 0){
-      const a = this.cartHome.filter(i=>i.name==product.name);
-      if(a.length > 0){
-        if(a.hasOwnProperty('count')){
-          a[0].count++;
-        }else{
-          a[0].count = 1;
-        }
-        this.cartService.addProduct(a[0]);
+/*
+aka(product){
+  if(this.cartHome.length != 0){
+    const a = this.cartHome.filter(i=>i.name==product.name);
+    if(a.length > 0){
+      if(a.hasOwnProperty('count')){
+        a[0].count++;
       }else{
-        console.log("no entro nada")
-        this.cartService.addProduct(product);
+        a[0].count = 1;
       }
+      this.cartService.addProduct(a[0]);
     }else{
+      console.log("no entro nada")
       this.cartService.addProduct(product);
     }
-    console.log(this.cartHome)
-  }*/
+  }else{
+    this.cartService.addProduct(product);
+  }
+  console.log(this.cartHome)
+}
+*/
 
 // removeItemCart(data, itemForRemove) {
 

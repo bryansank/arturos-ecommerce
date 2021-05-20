@@ -192,7 +192,7 @@ export class ProductsViewPage implements OnInit, AfterContentChecked {
     const toast = await this.toastController.create({
       message: msn.toUpperCase(),
       duration: duration,
-      color: "primary",
+      //color: "primary",
       position: 'bottom',
       cssClass: "toastCart"
     });
