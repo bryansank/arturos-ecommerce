@@ -1,6 +1,6 @@
-import { AfterContentChecked, Component, OnInit } from '@angular/core';
+import { AfterContentChecked, Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { AlertController, IonSlides, LoadingController, NavController, ToastController } from '@ionic/angular';
+import { AlertController, IonContent, IonSlides, LoadingController, NavController, ToastController } from '@ionic/angular';
 import { errorHandler } from 'src/app/errors-handler/errors-handler';
 import { CartService } from 'src/app/services/cart.service';
 
@@ -29,6 +29,9 @@ export class HomeViewPage implements OnInit, AfterContentChecked {
     initialSlide: 0,
     speed: 400,
   };
+  public viewEntered = false;
+
+  @ViewChild('homeContent') homeContent: IonContent;
 
   promoTest = [1, 2, 3, 4];
 
@@ -67,6 +70,7 @@ export class HomeViewPage implements OnInit, AfterContentChecked {
         //llenamos cartHome.
         this.getCart();
         this.hideLoading();
+        this.ionViewDidEnter();
       }, err =>{
         this.hideLoading();
         this.errorHandler.handlerError(err, true, "No pudimos cargar los productos.");
@@ -86,16 +90,16 @@ export class HomeViewPage implements OnInit, AfterContentChecked {
 
   /* SEARCH LOGIC */
   /* SEARCH LOGIC */
-  InitializeItems() {
+  public InitializeItems() {
     this.itemsForSearch = this.item;
   }
 
-  itemsContentData(): boolean {
+  public itemsContentData(): boolean {
     const contentData = this.item;
     return (contentData.length != 0 ? true : false);
   }
 
-  getItemSearch(ev: any) {
+  public getItemSearch(ev: any) {
 
     this.flagDisplayListSearch = true;
     const valueSrch: string = ev.srcElement.value == null ? "" : ev.srcElement.value.toString();
@@ -125,7 +129,7 @@ export class HomeViewPage implements OnInit, AfterContentChecked {
 
   }
 
-  filterDataCategory(ParamCategory: string = "TODOS") {
+  public filterDataCategory(ParamCategory: string = "TODOS") {
     return (
       this.itemsForSearch.filter(
         (e) => { return e.category == ParamCategory }
@@ -133,7 +137,7 @@ export class HomeViewPage implements OnInit, AfterContentChecked {
     );
   }
 
-  noDisplaySrch(FlagnotFound: boolean = false) {
+  public noDisplaySrch(FlagnotFound: boolean = false) {
     this.InitializeItems();
     this.displaySrch = false;
     this.notFound = FlagnotFound;
@@ -145,7 +149,7 @@ export class HomeViewPage implements OnInit, AfterContentChecked {
 
   /*CART LOGIC */
   /*CART LOGIC */
-  addToCart(product: any) {
+  public addToCart(product: any) {
 
     this.getCart();
 
@@ -160,13 +164,13 @@ export class HomeViewPage implements OnInit, AfterContentChecked {
       this.cartService.addProduct(product);
     }
   }
-  notFoundProduct(product:any) {
+  public notFoundProduct(product:any) {
     product.count = 1;
     
     this.presentToast("Producto añadido a tu carrito", 1200);
     this.cartService.addProduct(product);
   }
-  foundProduct(product:any) {
+  public foundProduct(product:any) {
     this.cartService.deleteAllProducts();
     this.cartHome.map(i => {
       if(i.name == product.name){
@@ -176,27 +180,41 @@ export class HomeViewPage implements OnInit, AfterContentChecked {
     });
     this.presentToast("Producto añadido a tu carrito", 1200);
   }
-  getCart() {
+  public getCart() {
     this.cartHome = this.cartService.getCart();
   }
-  openPageCart() {
+  public openPageCart() {
     this.router.navigate(["cart-view"]);
   }
   /*CART LOGIC */
   /*CART LOGIC */
 
-  async hideLoading() {
+  /* Slides */
+  /* Slides */
+  public slidesDidLoad(slides: IonSlides) {
+    slides.startAutoplay();
+  }
+  public ionViewDidEnter() {
+    this.viewEntered = true;
+  }
+  public pageScroller(){
+    let yOffset = document.getElementById("idTextProducts").offsetTop;
+    this.homeContent.scrollToPoint(0, yOffset);
+  }
+  public viewPromos(){
+    this.pageScroller();
+  }
+  /* Slides */
+  /* Slides */
+
+  public async hideLoading() {
     this.loadingCtlr.getTop().then(loader => {
       if (loader) {
         loader.dismiss();
       }
     });
   }
-  //Slides
-  slidesDidLoad(slides: IonSlides) {
-    slides.startAutoplay();
-  }
-  doRefresh(event) {
+  public doRefresh(event) {
     //console.log('Begin async operation');
     setTimeout(() => {
       this.navCtrl.navigateRoot("/");
@@ -204,7 +222,7 @@ export class HomeViewPage implements OnInit, AfterContentChecked {
       //console.log("refresh")
     },1000);    
   }
-  async presentLoading() {
+  public async presentLoading() {
     this.loading = await this.loadingCtlr.create({
       cssClass: 'my-custom-class',
       message: 'Por favor espere.',
@@ -212,7 +230,7 @@ export class HomeViewPage implements OnInit, AfterContentChecked {
 
     return this.loading.present();
   }
-  async ShowPopup(msnHeader: string, msn: string, submsn?: string) {
+  public async ShowPopup(msnHeader: string, msn: string, submsn?: string) {
 
     const alert = await this.alertController.create(
       {
@@ -230,7 +248,7 @@ export class HomeViewPage implements OnInit, AfterContentChecked {
     await alert.present();
 
   }
-  async presentToast(msn:string,duration:number = 1800) {
+  public async presentToast(msn:string,duration:number = 1800) {
     const toast = await this.toastController.create({
       message: msn.toUpperCase(),
       duration: duration,

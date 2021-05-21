@@ -22,7 +22,7 @@
 </ion-header>
 <!--Aqui Usamos este header, para no tener el back-->
 
-<ion-content>
+<ion-content #homeContent>
 
   <!--
   <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
@@ -69,17 +69,19 @@
   <!-- Search list -->
 
   <!-- Slider -->
-  <ion-slides [options]="slideOpts" pager="true" #slider (ionSlidesDidLoad)="slidesDidLoad(slider)">
-    <ion-slide>
-      <img class="imgSlideProducts" src="/assets/productos/slide-1.png" />
-    </ion-slide>
-    <ion-slide>
-      <img class="imgSlideProducts" src="/assets/productos/slide-2.png" />
-    </ion-slide>
-    <ion-slide>
-      <img class="imgSlideProducts" src="/assets/productos/slide-3.png" />
-    </ion-slide>
-  </ion-slides>
+  <div *ngIf="viewEntered">
+    <ion-slides [options]="slideOpts" pager="true" #slider (ionSlidesDidLoad)="slidesDidLoad(slider)">
+      <ion-slide (click)="viewPromos()">
+        <img class="imgSlideProducts" src="/assets/productos/slide-1.png" />
+      </ion-slide>
+      <ion-slide (click)="viewPromos()">
+        <img class="imgSlideProducts" src="/assets/productos/slide-2.png" />
+      </ion-slide>
+      <ion-slide (click)="viewPromos()">
+        <img class="imgSlideProducts" src="/assets/productos/slide-3.png" />
+      </ion-slide>
+    </ion-slides>
+  </div>
   <!-- Slider -->
 
   <ion-text color="primary" style="text-align:center;">
@@ -89,6 +91,7 @@
   </ion-text>
 
   <!--Promociones-->
+  
   <ion-grid>
     <ion-row>
       <ion-col *ngFor="let promo of promoTest; let index =index" size="12" size-lg="3" size-md="4" size-sm="6" size-xs="12">
@@ -101,9 +104,10 @@
       </ion-col>
     </ion-row>
   </ion-grid>
+  
   <!--Promociones-->
   
-  <ion-text color="primary" style="text-align:center;">
+  <ion-text color="primary" style="text-align:center;" id="idTextProducts">
     <h1 class="titleProductsTxt" style="text-decoration-line: underline;">
       <ion-icon style="margin-top: 10px;" name="restaurant-outline"></ion-icon>
         <span>¡DISFRUTA DE NUESTROS PLATOS!</span>
@@ -174,3 +178,4 @@
 
 <!--Button RedSocial-->
 <fab-icons-component></fab-icons-component>
+<!--Button RedSocial-->

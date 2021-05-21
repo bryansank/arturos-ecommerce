@@ -67,13 +67,13 @@ export class PromotionsViewPage implements OnInit, AfterContentChecked {
     }
   }
 
-  notFoundProduct(promo:any) {
+  public notFoundProduct(promo:any) {
     promo.count = 1;
     
     this.presentToast("Promocion añadida a tu carrito", 1200);
     this.cartService.addProduct(promo);
   }
-  foundProduct(promo:any) {
+  public foundProduct(promo:any) {
     this.cartService.deleteAllProducts();
     this.cartData.map(i => {
       if(i.title == promo.title){
@@ -83,15 +83,15 @@ export class PromotionsViewPage implements OnInit, AfterContentChecked {
     });
     this.presentToast("Promocion añadida a tu carrito", 1200);
   }
-  getCart() {
+  public getCart() {
     this.cartData = this.cartService.getCart();
   }
-  openPageCart() {
+  public openPageCart() {
     this.router.navigate(["cart-view"]);
   }
 
 
-  async presentToast(msn:string,duration:number = 1800) {
+  public async presentToast(msn:string,duration:number = 1800) {
     const toast = await this.toastController.create({
       message: msn.toUpperCase(),
       duration: duration,
