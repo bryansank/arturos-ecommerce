@@ -22,10 +22,10 @@ export class ProductsViewPage implements OnInit, AfterContentChecked {
 
   public displaySrch:boolean=true;
   public flagDisplayListSearch:boolean = false;
-  public notFound = true;
-  public itemsForSearch;
-
-  @ViewChild('pageTop') pageTop: IonContent;
+  public notFound:boolean = true;
+  public itemsForSearch:any;
+  
+  @ViewChild('pageTop') productsContent: IonContent;
 
   constructor(
     private cartService: CartService,
@@ -54,33 +54,47 @@ export class ProductsViewPage implements OnInit, AfterContentChecked {
     );
   }
 
-  public pageScroller(){
-    //scroll to page top
-    this.pageTop.scrollToTop();
+  public scrollerToPoint(){
+    let yOffset = document.getElementById("rowProducts").offsetTop;
+    this.productsContent.scrollToPoint(0, yOffset);
+  }
+  public viewProduct(){
+    this.scrollerToPoint();
   }
 
-  displayCategoryProd(tabCategory){
+  public pageScroller(){
+    this.productsContent.scrollToTop();
+  }
+
+  public displayCategoryProd(tabCategory){
+    
     //cambio de estilos, se bugeaba con los de Home al llamarse igual
+
+    //console.log("Funciono displayCategoryProd");
+
     const elementGrid = document.getElementById(tabCategory+"GridProd");
 
     if(elementGrid.classList.contains('displayContentProd')){
       elementGrid.setAttribute("class","noDisplayContent md hydrated");
     }else{
       elementGrid.setAttribute("class","displayContentProd md hydrated");
+      this.viewProduct();
     }
+
   }
 
   /* SEARCH LOGIC */
-  InitializeItems(){
+  /* SEARCH LOGIC */
+  public InitializeItems(){
     this.itemsForSearch = this.item;
   }
 
-  itemsContentData():boolean{
+  public itemsContentData():boolean{
     const contentData = this.item;
     return (contentData.length != 0 ? true : false);
   }
 
-  getItemSearch(ev:any){
+  public getItemSearch(ev:any){
 
     this.flagDisplayListSearch = true;
 
@@ -116,7 +130,7 @@ export class ProductsViewPage implements OnInit, AfterContentChecked {
     
   }
   
-  filterDataCategory(ParamCategory:string="TODOS"){
+  public filterDataCategory(ParamCategory:string="TODOS"){
     return (
       this.itemsForSearch.filter(
         (e)=>{ return e.category == ParamCategory }
@@ -124,17 +138,20 @@ export class ProductsViewPage implements OnInit, AfterContentChecked {
     );
   }
 
-  noDisplaySrch(FlagnotFound:boolean=false){
+  public noDisplaySrch(FlagnotFound:boolean=false){
     this.InitializeItems();
     this.displaySrch = false;
     this.notFound = FlagnotFound;
     return;
     //console.log("test");
   }
-  /* SEARCH LOGICCC */
+  /* SEARCH LOGIC */
+  /* SEARCH LOGIC */
+
 
   /*CART LOGIC */
-  addToCart(product: any) {
+  /*CART LOGIC */
+  public addToCart(product: any) {
 
     this.getCart();
 
@@ -149,13 +166,13 @@ export class ProductsViewPage implements OnInit, AfterContentChecked {
       this.cartService.addProduct(product);
     }
   }
-  notFoundProduct(product:any) {
+  public notFoundProduct(product:any) {
     product.count = 1;
     
     this.presentToast("Producto añadido a tu carrito", 1200);
     this.cartService.addProduct(product);
   }
-  foundProduct(product:any) {
+  public foundProduct(product:any) {
     this.cartService.deleteAllProducts();
     this.cartHome.map(i => {
       if(i.name == product.name){
@@ -165,22 +182,23 @@ export class ProductsViewPage implements OnInit, AfterContentChecked {
     });
     this.presentToast("Producto añadido a tu carrito", 1200);
   }
-  getCart() {
+  public getCart() {
     this.cartHome = this.cartService.getCart();
   }
-  openPageCart() {
+  public openPageCart() {
     this.router.navigate(["cart-view"]);
   }
   /*CART LOGIC */
+  /*CART LOGIC */
 
-  async hideLoading() {
+  public async hideLoading() {
     this.loadingCtlr.getTop().then(loader => {
       if (loader) {
         loader.dismiss();
       }
     });
   }
-  async presentLoading() {
+  public async presentLoading() {
     this.loading = await this.loadingCtlr.create({
       cssClass: 'my-custom-class',
       message: 'Por favor, espere.',
@@ -188,7 +206,7 @@ export class ProductsViewPage implements OnInit, AfterContentChecked {
 
     return this.loading.present();
   }
-  async presentToast(msn:string,duration:number = 1800) {
+  public async presentToast(msn:string,duration:number = 1800) {
     const toast = await this.toastController.create({
       message: msn.toUpperCase(),
       duration: duration,

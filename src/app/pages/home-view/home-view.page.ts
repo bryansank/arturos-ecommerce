@@ -11,10 +11,8 @@ import { CartService } from 'src/app/services/cart.service';
 })
 export class HomeViewPage implements OnInit, AfterContentChecked {
 
-  
-
   public titleHeaderPage: string = "Arturos";
-  private errorHandler = new errorHandler(this.alertController, this.router);
+  private errorHandler: errorHandler = new errorHandler(this.alertController, this.router);
   private loading: any;
 
   public cartHome: any = [];
@@ -22,14 +20,16 @@ export class HomeViewPage implements OnInit, AfterContentChecked {
 
   public displaySrch: boolean = true;
   public flagDisplayListSearch: boolean = false;
-  public notFound = true;
-  public itemsForSearch;
+  public notFound: boolean = true;
+  public itemsForSearch:any;
 
   public slideOpts: any = {
     initialSlide: 0,
     speed: 400,
   };
-  public viewEntered = false;
+  public viewEntered:boolean = false;
+  //Flag para bug de reaload.
+  public flagReloadBug:boolean = true;
 
   @ViewChild('homeContent') homeContent: IonContent;
 
@@ -69,10 +69,22 @@ export class HomeViewPage implements OnInit, AfterContentChecked {
         this.item = productsData;
         //llenamos cartHome.
         this.getCart();
-        this.hideLoading();
+        this.hideLoading().then(()=>{
+          this.flagReloadBug = false;
+        }).catch((e)=>{
+          //console.log("error en hideLoading(): ", e)
+          this.flagReloadBug = true;
+        });
+        
         this.ionViewDidEnter();
       }, err =>{
-        this.hideLoading();
+        this.hideLoading().then(()=>{
+          this.flagReloadBug = false;
+        }).catch((e)=>{
+          //console.log("error en hideLoading(): ", e)
+          this.flagReloadBug = true;
+        });
+
         this.errorHandler.handlerError(err, true, "No pudimos cargar los productos.");
       }
     );
@@ -80,12 +92,20 @@ export class HomeViewPage implements OnInit, AfterContentChecked {
     setTimeout(()=>{
       this.hideLoading();
       this.ShowPopup(
-        "Hola Querid@ Cliente.", 
+        "¡Bienvenidos!", 
         "Te recordamos que si usas algun tipo de bloqueador de anuncios debes desactivarlo.",
         "No usaremos ningun dato personal fuera de este sitio o con fines comerciales."
       );
     }, 4000);
-    
+
+    setTimeout(()=>{
+      //Esto deberia detener el bug del reaload.
+      if(this.flagReloadBug){
+        this.hideLoading();
+        window.location.reload();
+      }
+    }, 10000);    
+
   }
 
   /* SEARCH LOGIC */
@@ -215,11 +235,9 @@ export class HomeViewPage implements OnInit, AfterContentChecked {
     });
   }
   public doRefresh(event) {
-    //console.log('Begin async operation');
     setTimeout(() => {
-      this.navCtrl.navigateRoot("/");
+      this.navCtrl.navigateRoot("/home-view");
       event.target.complete();  
-      //console.log("refresh")
     },1000);    
   }
   public async presentLoading() {
@@ -259,47 +277,3 @@ export class HomeViewPage implements OnInit, AfterContentChecked {
     toast.present();
   }
 }
-
-/*
-aka(product){
-  if(this.cartHome.length != 0){
-    const a = this.cartHome.filter(i=>i.name==product.name);
-    if(a.length > 0){
-      if(a.hasOwnProperty('count')){
-        a[0].count++;
-      }else{
-        a[0].count = 1;
-      }
-      this.cartService.addProduct(a[0]);
-    }else{
-      console.log("no entro nada")
-      this.cartService.addProduct(product);
-    }
-  }else{
-    this.cartService.addProduct(product);
-  }
-  console.log(this.cartHome)
-}
-*/
-
-// removeItemCart(data, itemForRemove) {
-
-  //   /*
-  //     for (const [i, v] of ['a', 'b', 'c'].entries()) {}
-  //   */
-
-  //   for (const [indexx, val] of data.entries()) {
-  //     //console.log("datos: ", data)
-  //     console.log("dataaaaa: ", data)
-  //     debugger;
-  //     console.log("name del obj: ", val.name.toLowerCase())
-  //     console.log("name del produ ", itemForRemove.name.toLowerCase())
-  //     const findvalue = val.name.toLowerCase() == itemForRemove.name.toLowerCase();
-  //     console.log(findvalue);
-  //     if (findvalue) {
-  //       console.log("disparo")
-  //       this.cartHome = data.splice( indexx, 1 );
-  //     }
-  //   }
-  //   //console.log(this.cartHome)
-  // }
