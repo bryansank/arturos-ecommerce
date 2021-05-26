@@ -1,0 +1,49 @@
+<style>
+  .item{
+    --background: --background: var(--ion-item-background, var(--ion-background-color, #fff));
+  }
+
+  .priceAmount{
+    color: grey;
+    font-weight: bold;
+  }
+</style>
+
+<ion-content>
+
+  <ion-text color="primary" style="text-align:center;">
+    <h1>¡Revisa tu orden!</h1>
+  </ion-text>
+
+  <ion-list *ngFor="let plist of dataProducts">
+    <ion-item>
+      {{plist.name}} {{plist.count}}
+      <ion-item lines="none">
+        <ion-button color="primary" class="item" (click)="editContent()">Editar Contenido</ion-button>
+        <!-- <div *ngIf="flagMoreCount; then moreBlock else notMoremoreBlock"></div>
+        <ng-template #moreBlock></ng-template>
+        <ng-template #notMoremoreBlock></ng-template> -->
+        <!-- <ion-button color="primary" class="item" (click)="openModalForPay()">Pagar</ion-button> -->
+      </ion-item>
+    </ion-item>
+  </ion-list>
+
+  <ion-text color="primary" style="text-align:center;">
+    <h3>¡Aprovecha nuestros Extras!</h3>
+  </ion-text>
+  <ion-list *ngFor="let extras of extrasData">
+    <ion-item>
+      {{extras.name}}  +<span class="priceAmount">{{extras.price}}</span>$
+    </ion-item>
+  </ion-list>
+  
+  <small>opcion para cambiar</small>
+
+  <p>agregar extras: precios</p>
+
+  ENVIAR TODO EL PEDIDO
+
+  <ion-button (click)="sin()" color="primary" expand="full"> Sin</ion-button>
+  <ion-button (click)="con()" color="secondary" expand="full"> Con</ion-button>
+  
+</ion-content>

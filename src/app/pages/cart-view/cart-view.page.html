@@ -86,15 +86,19 @@
           <ng-template #elseExchangeRate></ng-template>
         </ion-item>
 
+        <!-- Botones de accion -->
         <ion-item lines="none">
           <ion-button color="secondary" (click)="cartClear()">Vaciar mi carrito</ion-button>
-          <ion-button color="secondary">Pagar</ion-button>
+          <ion-button color="secondary" (click)="openModalForPay()">Pagar</ion-button>
         </ion-item>
+        <!-- Botones de accion -->
 
       </ng-template>
       <ng-template #elseBlock></ng-template>
     </div>
     <!--Total section-->
+
+    <ion-button color="secondary" (click)="openModalForPay()">Pagar</ion-button>
     
   </ion-list>
 

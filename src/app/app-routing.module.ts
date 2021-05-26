@@ -60,7 +60,11 @@ const routes: Routes = [
   {
     path: 'promotions-view',
     loadChildren: () => import('./pages/promotions-view/promotions-view.module').then( m => m.PromotionsViewPageModule)
+  },  {
+    path: 'build-order',
+    loadChildren: () => import('./modals/build-order/build-order.module').then( m => m.BuildOrderPageModule)
   }
+
   
 ];
 

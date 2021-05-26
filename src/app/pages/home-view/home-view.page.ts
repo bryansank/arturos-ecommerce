@@ -62,32 +62,38 @@ export class HomeViewPage implements OnInit, AfterContentChecked {
   }
 
   ngOnInit() {
-    this.presentLoading();
-
-    this.cartService.getProducts().subscribe(
-      productsData=>{
-        this.item = productsData;
-        //llenamos cartHome.
-        this.getCart();
-        this.hideLoading().then(()=>{
-          this.flagReloadBug = false;
-        }).catch((e)=>{
-          //console.log("error en hideLoading(): ", e)
-          this.flagReloadBug = true;
-        });
-        
-        this.ionViewDidEnter();
-      }, err =>{
-        this.hideLoading().then(()=>{
-          this.flagReloadBug = false;
-        }).catch((e)=>{
-          //console.log("error en hideLoading(): ", e)
-          this.flagReloadBug = true;
-        });
-
-        this.errorHandler.handlerError(err, true, "No pudimos cargar los productos.");
+    
+    this.presentLoading().then(
+      ()=>{
+        this.cartService.getProducts().subscribe(
+          productsData=>{
+            this.item = productsData;
+            //llenamos cartHome.
+            this.getCart();
+            this.hideLoading().then(()=>{
+              this.flagReloadBug = false;
+            }).catch((e)=>{
+              //console.log("error en hideLoading(): ", e)
+              this.flagReloadBug = true;
+            });
+            
+            this.ionViewDidEnter();
+          }, err =>{
+            this.hideLoading().then(()=>{
+              this.flagReloadBug = false;
+            }).catch((e)=>{
+              //console.log("error en hideLoading(): ", e)
+              this.flagReloadBug = true;
+            });
+    
+            this.errorHandler.handlerError(err, true, "No pudimos cargar los productos.");
+          }
+        );
       }
-    );
+    ).catch((error)=>{
+      //console.log(error)
+      this.hideLoading();
+    });
 
     setTimeout(()=>{
       this.hideLoading();

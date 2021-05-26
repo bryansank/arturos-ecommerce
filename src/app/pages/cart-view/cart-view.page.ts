@@ -1,8 +1,9 @@
 import { AfterViewInit, Component, OnInit, ElementRef, NgZone, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { AlertController, LoadingController, ToastController } from '@ionic/angular';
+import { AlertController, LoadingController, ModalController, ToastController } from '@ionic/angular';
 import { errorHandler } from 'src/app/errors-handler/errors-handler';
+import { BuildOrderPage } from 'src/app/modals/build-order/build-order.page';
 import { CartService } from 'src/app/services/cart.service';
 import { ExchangeRateDataService } from 'src/app/services/exchange-rate-data.service';
 //
@@ -14,12 +15,13 @@ import { ExchangeRateDataService } from 'src/app/services/exchange-rate-data.ser
 
 export class CartViewPage implements OnInit, AfterViewInit {
 
-  private errorHandler = new errorHandler(this.alertController, this.router);
+  private errorHandler: errorHandler = new errorHandler(this.alertController, this.router);
   public titleHeaderPage:string = "Carrito";
   public selectedItems: any[] = [];
   public itemsProduct: any[] = [];
   public itemsPromotions: any[] = [];
   public totalPrice : number = 0;
+  public dataExtras: any;
   
   private loading : any;
   public items: any[];
@@ -52,18 +54,21 @@ export class CartViewPage implements OnInit, AfterViewInit {
 
   //
   //@ViewChild('cardStripeInfo') cardStripeInfo: ElementRef;
-  /*@ViewChild('cardInfoStripe') cardInfoStripe: ElementRef;
+  /*
+  @ViewChild('cardInfoStripe') cardInfoStripe: ElementRef;
   cardError: string;
-  cardInfoElement: any;*/
+  cardInfoElement: any;
+  */
 
   constructor( 
+    public loadingCtlr: LoadingController,
     private cartService: CartService,
     private rateService: ExchangeRateDataService,
-    public loadingCtlr: LoadingController,
     private router: Router,
     private alertController: AlertController,
-    private toastController: ToastController
-    //private ngZone : NgZone
+    private toastController: ToastController,
+    //private ngZone : NgZone,
+    private modalCtrl: ModalController,
   ) {}
 
   ngAfterViewInit(){
@@ -130,9 +135,18 @@ export class CartViewPage implements OnInit, AfterViewInit {
       }
     );
 
+    this.cartService.getProducts().subscribe(
+      data=>{
+        
+      this.dataExtras = data.filter((i)=>
+        i.category.toUpperCase() == "POSTRES" || i.category.toUpperCase()=="EXTRAS" || i.category.toUpperCase()=="BEBIDAS" ? i : ""
+      );
+
+      },err=>{}
+    );
   }
 
-  changeCurrency(currency:any){
+  public changeCurrency(currency:any){
     const currencyValue:string = currency.detail.value.toString();
 
     if(currencyValue=="bolivares"){
@@ -147,11 +161,11 @@ export class CartViewPage implements OnInit, AfterViewInit {
     this.ngOnInit();
   }
 
-  getAllProductCart(){
+  public getAllProductCart(){
     return this.cartService.getCart();
   }
 
-  deleteProduct(excludeNameProduct){
+  public deleteProduct(excludeNameProduct){
     excludeNameProduct = excludeNameProduct.trim().trimStart();
 
     this.itemsProduct = this.itemsProduct.filter((e)=>e.name != excludeNameProduct);
@@ -174,19 +188,7 @@ export class CartViewPage implements OnInit, AfterViewInit {
     this.ngOnInit();
   }
 
-  cartClear(){
-    this.selectedItems = null;
-    this.itemsProduct = null;
-    this.itemsPromotions = null;
-    this.totalPrice = 0;
-
-    this.cartService.deleteAllProducts();
-    this.flagCartClean = false;
-    this.flagPromo = false;
-    this.ngOnInit();
-  }
-
-  addCountProduct(productName:string){
+  public addCountProduct(productName:string){
     this.cartService.deleteAllProducts();
     this.selectedItems.map(i => {
       if(i.name == productName){
@@ -197,7 +199,7 @@ export class CartViewPage implements OnInit, AfterViewInit {
     this.ngOnInit();
   }
 
-  subCountProduct(productName:string){
+  public subCountProduct(productName:string){
     this.cartService.deleteAllProducts();
     this.selectedItems.map(i => {
       if(i.name == productName){
@@ -210,9 +212,69 @@ export class CartViewPage implements OnInit, AfterViewInit {
     this.ngOnInit();
   }
 
+  /*-------ACTION BUTTONS-------*/
+  /*-------ACTION BUTTONS-------*/
+  public cartClear(){
+    this.selectedItems = null;
+    this.itemsProduct = null;
+    this.itemsPromotions = null;
+    this.totalPrice = 0;
+
+    this.cartService.deleteAllProducts();
+    this.flagCartClean = false;
+    this.flagPromo = false;
+    this.ngOnInit();
+  }
+  public async openModalForPay(){
+
+    // console.log(this.itemsProduct);
+    // console.log(this.itemsPromotions);
+
+    //const dataForModal2 = [this.itemsProduct, this.itemsPromotions];
+    const dataForModal = [
+      [
+        {id: 1, name: "JUNIOR", price: 5.15, count: 2},
+        {id: 22, name: "SUPER YUCA", price: 5.9, count: 1},
+        {id: 23, name: "SUPER Y/A", price: 5.9, count: 1},
+        {id: 600, name: "TORTA DE QUESO", price: 2.75, count: 1},
+        {id: 601, name: "TORTA DE QUESO C/HEL", price: 4, count: 1},
+        {id: 501, name: "BEBIDA 22oz", price: 0.78, count: 1},
+        {id: 502, name: "BEBIDA 32oz", price: 1.18, count: 1},
+      ],
+      [
+        {
+          count: 1, detail: "2 cervezas y 2 papas.", items: "cervezas, papas", 
+          price: 1.1, promo: true, title: "Dia del padre",
+        },
+        {
+          count: 1, detail: "2 super con 2 refrescos de lata y papas grandes.", 
+          items: "super, refresco de lata, papas", price: 5.1, 
+          promo: true, title: "Dia de las madres",
+        },
+      ],
+    ];
+
+    const modalForPay = await this.modalCtrl.create({
+      component: BuildOrderPage,
+      componentProps: {
+        dataCart: dataForModal,
+        extras: this.dataExtras,
+      }
+    });
+
+    await modalForPay.present();
+
+    const {data} = await modalForPay.onDidDismiss();
+
+    console.log("valor:", data)
+
+  }
+  /*-------ACTION BUTTONS-------*/
+  /*-------ACTION BUTTONS-------*/
+
   /*-------LOGIC FUNCTIONS------*/
   /*-------LOGIC FUNCTIONS------*/
-  async presentToast(msn:string,duration:number = 1800) {
+  public async presentToast(msn:string,duration:number = 1800) {
     const toast = await this.toastController.create({
       message: msn.toUpperCase(),
       duration: duration,
@@ -222,7 +284,7 @@ export class CartViewPage implements OnInit, AfterViewInit {
     });
     toast.present();
   }
-  async presentLoading() {
+  public async presentLoading() {
     this.loading = await this.loadingCtlr.create({
       cssClass: 'my-custom-class',
       message: 'Por favor, espere.',
@@ -230,14 +292,14 @@ export class CartViewPage implements OnInit, AfterViewInit {
 
     return this.loading.present();
   }
-  async hideLoading() {
+  public async hideLoading() {
     this.loadingCtlr.getTop().then(loader => {
       if (loader) {
         loader.dismiss();
       }
     });
   }
-  async ShowPopup(msnHeader:string,msn:string){
+  public async ShowPopup(msnHeader:string,msn:string){
     
     const alert = await this.alertController.create(
       {

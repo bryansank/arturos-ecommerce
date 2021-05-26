@@ -8,6 +8,8 @@ import { CartViewPageRoutingModule } from './cart-view-routing.module';
 
 import { CartViewPage } from './cart-view.page';
 import { OurComponentsModule } from 'src/app/components/components.module';
+import { BuildOrderPageModule } from 'src/app/modals/build-order/build-order.module';
+import { BuildOrderPage } from 'src/app/modals/build-order/build-order.page';
 
 @NgModule({
   imports: [
@@ -15,8 +17,12 @@ import { OurComponentsModule } from 'src/app/components/components.module';
     FormsModule,
     IonicModule,
     CartViewPageRoutingModule,
-    OurComponentsModule
+    OurComponentsModule,
+    BuildOrderPageModule
   ],
-  declarations: [CartViewPage]
+  declarations: [CartViewPage],
+  entryComponents: [
+    BuildOrderPage
+  ]
 })
 export class CartViewPageModule {}
