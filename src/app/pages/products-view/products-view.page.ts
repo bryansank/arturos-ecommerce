@@ -2,6 +2,7 @@ import { Component, OnInit, AfterContentChecked, ViewChild } from '@angular/core
 import { Router } from '@angular/router';
 import { AlertController, LoadingController, ToastController, IonContent } from '@ionic/angular';
 import { errorHandler } from 'src/app/errors-handler/errors-handler';
+import { CategoryProduct } from 'src/app/interfaces/category';
 import { CartService } from 'src/app/services/cart.service';
 //
 
@@ -14,18 +15,46 @@ import { CartService } from 'src/app/services/cart.service';
 export class ProductsViewPage implements OnInit, AfterContentChecked {
 
   public titleHeaderPage:string = "Platos";
-  private errorHandler = new errorHandler(this.alertController, this.router);
+  private errorHandler:errorHandler  = new errorHandler(this.alertController, this.router);
 
   private loading : any;
   public cartHome: any = [];
   public item: any = [];
+  public dataCategory: any;
 
   public displaySrch:boolean=true;
   public flagDisplayListSearch:boolean = false;
   public notFound:boolean = true;
   public itemsForSearch:any;
+
+  //TODO: Cambiar a un servicio
+  public productsCategories: CategoryProduct[]  = [
+    {
+      name: "platos",
+      //urlImage: "/assets/categories/platos.jpg",
+      urlImage: "/assets/categories/bebidas.jpg",
+    },
+    {
+      name: "bebidas",
+      urlImage: "/assets/categories/extras.jpg",
+    },
+    {
+      name: "extras",
+      urlImage: "/assets/categories/bebidas.jpg",
+    },
+    {
+      name: "postres",
+      //urlImage: "/assets/categories/postres.jpg",
+      urlImage: "/assets/categories/extras.jpg",
+    },
+    {
+      name: "todos",
+      //urlImage: "/assets/categories/todos.jpg",
+      urlImage: "/assets/categories/bebidas.jpg",
+    }
+  ];
   
-  @ViewChild('pageTop') productsContent: IonContent;
+  @ViewChild('contentPlatos') productsContent: IonContent;
 
   constructor(
     private cartService: CartService,
@@ -54,33 +83,16 @@ export class ProductsViewPage implements OnInit, AfterContentChecked {
     );
   }
 
-  public scrollerToPoint(){
-    let yOffset = document.getElementById("rowProducts").offsetTop;
-    this.productsContent.scrollToPoint(0, yOffset);
-  }
-  public viewProduct(){
-    this.scrollerToPoint();
-  }
-
   public pageScroller(){
     this.productsContent.scrollToTop();
   }
-
-  public displayCategoryProd(tabCategory){
-    
+  public displayCategoryProd(tabCategory:string){
     //cambio de estilos, se bugeaba con los de Home al llamarse igual
-
-    //console.log("Funciono displayCategoryProd");
-
-    const elementGrid = document.getElementById(tabCategory+"GridProd");
-
-    if(elementGrid.classList.contains('displayContentProd')){
-      elementGrid.setAttribute("class","noDisplayContent md hydrated");
-    }else{
-      elementGrid.setAttribute("class","displayContentProd md hydrated");
-      this.viewProduct();
-    }
-
+    tabCategory = tabCategory.toUpperCase();
+    const category = this.item.filter((e)=>{
+      return e.category.toUpperCase() == tabCategory ? e : false;
+    });
+    this.dataCategory = category[0].products;
   }
 
   /* SEARCH LOGIC */

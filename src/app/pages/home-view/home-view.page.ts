@@ -236,7 +236,8 @@ export class HomeViewPage implements OnInit, AfterContentChecked {
   }
   public doRefresh(event) {
     setTimeout(() => {
-      this.navCtrl.navigateRoot("/home-view");
+      //this.navCtrl.navigateRoot("/home-view");
+      window.location.reload();
       event.target.complete();  
     },1000);    
   }
