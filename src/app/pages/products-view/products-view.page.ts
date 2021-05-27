@@ -1,6 +1,6 @@
 import { Component, OnInit, AfterContentChecked, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { AlertController, LoadingController, ToastController, IonContent } from '@ionic/angular';
+import { AlertController, LoadingController, ToastController, IonContent, Platform } from '@ionic/angular';
 import { errorHandler } from 'src/app/errors-handler/errors-handler';
 import { CategoryProduct } from 'src/app/interfaces/category';
 import { CartService } from 'src/app/services/cart.service';
@@ -26,6 +26,10 @@ export class ProductsViewPage implements OnInit, AfterContentChecked {
   public flagDisplayListSearch:boolean = false;
   public notFound:boolean = true;
   public itemsForSearch:any;
+
+  private deviceWidth: number;
+  public flagProductsMobile:boolean = true;
+  
 
   //TODO: Cambiar a un servicio
   public productsCategories: CategoryProduct[]  = [
@@ -61,8 +65,22 @@ export class ProductsViewPage implements OnInit, AfterContentChecked {
     private router: Router,
     private alertController: AlertController,
     public loadingCtlr: LoadingController,
-    public toastController: ToastController
-  ){}
+    public toastController: ToastController,
+    private platform: Platform
+  ){
+    this.platform.ready().then(()=>{  
+      
+      this.deviceWidth = this.platform.width();
+      //console.log("deviceWidth:" + this.deviceWidth.toString());
+      
+      if (this.deviceWidth > 768){
+        this.flagProductsMobile = true;
+      }else if(this.deviceWidth <= 768){
+        this.flagProductsMobile = false;
+      }
+
+    });
+  }
 
   ngAfterContentChecked() {
     //Evento se dispara Se ejecuta cada vez que el contenido del componente ha sido verificado
@@ -81,6 +99,17 @@ export class ProductsViewPage implements OnInit, AfterContentChecked {
         this.errorHandler.handlerError(err, true, "No pudimos cargar los productos.");
       }
     );
+  }
+
+  public displayCategory(tabCategory) {
+
+    const elementGrid = document.getElementById(tabCategory + "Grid");
+
+    if (elementGrid.classList.contains('displayContent')) {
+      elementGrid.setAttribute("class", "noDisplayContent md hydrated");
+    } else {
+      elementGrid.setAttribute("class", "displayContent md hydrated");
+    }
   }
 
   public pageScroller(){

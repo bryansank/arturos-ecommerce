@@ -115,59 +115,114 @@
     </h1>
   </ion-text>
 
-  <!--Producst-->
-  <div *ngFor="let cat of item">
-
-
-    <!--Categorias de Productos-->
-    <ion-row no-padding class="category-banner">
-      <!-- delegate <ion-col e (click)="cat.expanded = !cat.expanded" align-self-center>-->
-      <ion-col text-left button tappable align-self-center (click)="displayCategory(cat.category)">
-        {{cat.category}}
-      </ion-col>
-    </ion-row>
-    <!--Categorias de Productos-->
-  
-    <!--Productos por Categoria-->
-    <ion-grid class="noDisplayContent" id="{{cat.category}}Grid">
-      <ion-row>
-        <!---->
-        <ion-col *ngFor="let obj of cat.products" 
-          size="12" size-lg="3" 
-          size-md="4" size-sm="6" 
-          size-xs="12">
-        
-            <ion-card class="CardBody">
-
-              <ion-card-header>
-                <ion-card-title class="headerTitleCardProduct">
-                  {{ obj.name}} {{obj.price}}$
-                </ion-card-title>
-              </ion-card-header>
-              
-              <ion-card-content>
-                <ion-img style="margin: 2px;" src="{{obj.imageUrl}}"></ion-img>
-                <ion-button expand="full" (click)="addToCart(obj)">
-                  Añadir al Carrito
-                </ion-button>
-                 <!--tooloptions for c/u-->
-                <!--<ion-item lines="none">
-                  <ion-button (click)="subCountProduct(obj.name)">-</ion-button>
-                  <ion-button id="countProduct">0</ion-button>
-                  <ion-button (click)="addCountProduct(obj.name)">+</ion-button>
-                </ion-item>-->
-              </ion-card-content>
-
-            </ion-card>  
-
+  <!--  -->
+  <div *ngIf="flagProductsMobile; then blockPage else blockMobile"></div>
+  <ng-template #blockPage>
+    <!-- list Products -->
+    <!-- list Products -->
+    <ion-grid>
+      <!-- Img Category Products -->
+      <!-- Img Category Products -->
+      <ion-row style="justify-content: center;">
+        <ion-col size-lg="2" size-md="8" size-sm="12" size-xs="12" *ngFor="let cat of productsCategories">
+          <ion-card (click)="displayCategoryProd(cat.name)">
+            <ion-img src={{cat.urlImage}}></ion-img>
+            <ion-card-header style="background-color: white;">
+              <ion-card-title  class="headerCategoryProduct">{{cat.name}}</ion-card-title>
+            </ion-card-header>
+          </ion-card>
         </ion-col>
-        <!---->
       </ion-row>
-    </ion-grid>
-    <!--Productos por Categoria-->
+      <!-- Img Category Products -->
+      <!-- Img Category Products -->
 
-  </div>
-  <!--Producst-->
+      <!-- Products -->
+      <!-- Products -->
+      <ion-row>
+        <ion-col size-lg="12" size-md="12" size-sm="12" size-xs="12">
+          <ion-grid>
+            <ion-row>
+              <!--  -->
+              <ion-col size-lg="4" size-md="4" size-xs="12" *ngFor="let obj of dataCategory">
+                <ion-card class="CardBody">
+                  <ion-card-header>
+                    <ion-card-title class="headerTitleCardProduct">
+                      {{ obj.name}} {{obj.price}}$
+                    </ion-card-title>
+                  </ion-card-header>
+                  <ion-card-content>
+                    <ion-img style="margin: 2px;" src="{{obj.imageUrl}}"></ion-img>
+                    <ion-button expand="full" (click)="addToCart(obj)">
+                      Añadir al Carrito
+                    </ion-button>
+                  </ion-card-content>
+                </ion-card>
+              </ion-col>
+              <!--  -->
+            </ion-row>
+          </ion-grid>
+        </ion-col>
+      </ion-row>
+      <!-- Products -->
+      <!-- Products -->
+    </ion-grid>
+    <!-- list Products -->
+    <!-- list Products -->
+  </ng-template>
+  <ng-template #blockMobile>
+    <!--Producst-->
+    <div *ngFor="let cat of item">
+      <!--Categorias de Productos-->
+      <ion-row no-padding class="category-banner">
+        <!-- delegate <ion-col e (click)="cat.expanded = !cat.expanded" align-self-center>-->
+        <ion-col text-left button tappable align-self-center (click)="displayCategory(cat.category)">
+          {{cat.category}}
+        </ion-col>
+      </ion-row>
+      <!--Categorias de Productos-->
+    
+      <!--Productos por Categoria-->
+      <ion-grid class="noDisplayContent" id="{{cat.category}}Grid">
+        <ion-row>
+          <!---->
+          <ion-col *ngFor="let obj of cat.products" 
+            size="12" size-lg="3" 
+            size-md="4" size-sm="6" 
+            size-xs="12">
+          
+              <ion-card class="CardBody">
+
+                <ion-card-header>
+                  <ion-card-title class="headerTitleCardProduct">
+                    {{ obj.name}} {{obj.price}}$
+                  </ion-card-title>
+                </ion-card-header>
+                
+                <ion-card-content>
+                  <ion-img style="margin: 2px;" src="{{obj.imageUrl}}"></ion-img>
+                  <ion-button expand="full" (click)="addToCart(obj)">
+                    Añadir al Carrito
+                  </ion-button>
+                  <!--tooloptions for c/u-->
+                  <!--<ion-item lines="none">
+                    <ion-button (click)="subCountProduct(obj.name)">-</ion-button>
+                    <ion-button id="countProduct">0</ion-button>
+                    <ion-button (click)="addCountProduct(obj.name)">+</ion-button>
+                  </ion-item>-->
+                </ion-card-content>
+
+              </ion-card>  
+
+          </ion-col>
+          <!---->
+        </ion-row>
+      </ion-grid>
+      <!--Productos por Categoria-->
+
+    </div>
+    <!--Producst-->
+  </ng-template>
+  <!--  -->
 
   <!--Footer-->
   <footer-component>

@@ -32,6 +32,7 @@ export class CartViewPage implements OnInit, AfterViewInit {
   //Prueba promo
   public flagPromo: boolean = false;
   public flagExchange: boolean = false;
+  public flagExtrasReady: boolean = true;
   
   //Reemplazar por Servicio.
   public exchangeRate: number= 0;
@@ -47,18 +48,6 @@ export class CartViewPage implements OnInit, AfterViewInit {
     dolares: 1,
     euros: 0.50
   }
-  //public hola; 
-
-  //public flagPay:string = "";
-  //public activeBtn = true;
-
-  //
-  //@ViewChild('cardStripeInfo') cardStripeInfo: ElementRef;
-  /*
-  @ViewChild('cardInfoStripe') cardInfoStripe: ElementRef;
-  cardError: string;
-  cardInfoElement: any;
-  */
 
   constructor( 
     public loadingCtlr: LoadingController,
@@ -135,15 +124,17 @@ export class CartViewPage implements OnInit, AfterViewInit {
       }
     );
 
-    this.cartService.getProducts().subscribe(
-      data=>{
-        
-      this.dataExtras = data.filter((i)=>
-        i.category.toUpperCase() == "POSTRES" || i.category.toUpperCase()=="EXTRAS" || i.category.toUpperCase()=="BEBIDAS" ? i : ""
+    this.cartService.getProducts().subscribe( (data:any)=>{        
+      
+      this.dataExtras = data.filter(
+        (i:any)=>i.category.toUpperCase()=="POSTRES" || i.category.toUpperCase()=="EXTRAS" || i.category.toUpperCase()=="BEBIDAS" ? i : ""
       );
-
-      },err=>{}
+      this.flagExtrasReady = false;
+      },err=>{
+        console.log(err)
+      }
     );
+
   }
 
   public changeCurrency(currency:any){
@@ -227,47 +218,50 @@ export class CartViewPage implements OnInit, AfterViewInit {
   }
   public async openModalForPay(){
 
-    // console.log(this.itemsProduct);
-    // console.log(this.itemsPromotions);
+    alert('Hola, esto esta en construccion./')
 
-    //const dataForModal2 = [this.itemsProduct, this.itemsPromotions];
-    const dataForModal = [
-      [
-        {id: 1, name: "JUNIOR", price: 5.15, count: 2},
-        {id: 22, name: "SUPER YUCA", price: 5.9, count: 1},
-        {id: 23, name: "SUPER Y/A", price: 5.9, count: 1},
-        {id: 600, name: "TORTA DE QUESO", price: 2.75, count: 1},
-        {id: 601, name: "TORTA DE QUESO C/HEL", price: 4, count: 1},
-        {id: 501, name: "BEBIDA 22oz", price: 0.78, count: 1},
-        {id: 502, name: "BEBIDA 32oz", price: 1.18, count: 1},
-      ],
-      [
-        {
-          count: 1, detail: "2 cervezas y 2 papas.", items: "cervezas, papas", 
-          price: 1.1, promo: true, title: "Dia del padre",
-        },
-        {
-          count: 1, detail: "2 super con 2 refrescos de lata y papas grandes.", 
-          items: "super, refresco de lata, papas", price: 5.1, 
-          promo: true, title: "Dia de las madres",
-        },
-      ],
-    ];
+    //dataForModal => pruebas eliminar...
+    // const dataForModal:any[] = [
+    //   [
+    //     {id: 1, name: "JUNIOR", price: 5.15, count: 2},
+    //     {id: 22, name: "SUPER YUCA", price: 5.9, count: 1},
+    //     {id: 23, name: "SUPER Y/A", price: 5.9, count: 1},
+    //     {id: 600, name: "TORTA DE QUESO", price: 2.75, count: 1},
+    //     {id: 601, name: "TORTA DE QUESO C/HEL", price: 4, count: 1},
+    //     {id: 501, name: "BEBIDA 22oz", price: 0.78, count: 1},
+    //     {id: 502, name: "BEBIDA 32oz", price: 1.18, count: 1},
+    //   ],
+    //   [
+    //     {
+    //       count: 1, detail: "2 cervezas y 2 papas.", items: "cervezas, papas", 
+    //       price: 1.1, promo: true, title: "Dia del padre",
+    //     },
+    //     {
+    //       count: 1, detail: "2 super con 2 refrescos de lata y papas grandes.", 
+    //       items: "super, refresco de lata, papas", price: 5.1, 
+    //       promo: true, title: "Dia de las madres",
+    //     },
+    //   ],
+    // ];
 
-    const modalForPay = await this.modalCtrl.create({
-      component: BuildOrderPage,
-      componentProps: {
-        dataCart: dataForModal,
-        extras: this.dataExtras,
-      }
-    });
-
-    await modalForPay.present();
-
-    const {data} = await modalForPay.onDidDismiss();
-
-    console.log("valor:", data)
-
+    // if(this.dataExtras.length != 0){
+    //   const modalForPay = await this.modalCtrl.create({
+    //     component: BuildOrderPage,
+    //     componentProps: {
+    //       dataCart: dataForModal,
+    //       extras: this.dataExtras,
+    //     }
+    //   });
+    //   await modalForPay.present();
+    //   const {data} = await modalForPay.onDidDismiss();
+  
+    //   if(data == undefined){
+    //     console.log("Esta undefined");
+    //   }else{
+    //     console.log(data);
+    //   }
+    // }
+    // this.openModalForPay();
   }
   /*-------ACTION BUTTONS-------*/
   /*-------ACTION BUTTONS-------*/

@@ -35,3 +35,7 @@ Este proyecto está bajo la licencia del HONOR.
 * Invita una cerveza 🍺 o un café ☕ a alguien del equipo. 
 * Da las gracias públicamente 🤓.
 * Nunca pares de aprender.
+
+--todo list:
+  Cambiar a un servicio en promociones CategoryProduct
+  Eliminar prueba de cart

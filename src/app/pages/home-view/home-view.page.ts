@@ -1,7 +1,8 @@
 import { AfterContentChecked, Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { AlertController, IonContent, IonSlides, LoadingController, NavController, ToastController } from '@ionic/angular';
+import { AlertController, IonContent, IonSlides, LoadingController, NavController, Platform, ToastController } from '@ionic/angular';
 import { errorHandler } from 'src/app/errors-handler/errors-handler';
+import { CategoryProduct } from 'src/app/interfaces/category';
 import { CartService } from 'src/app/services/cart.service';
 
 @Component({
@@ -31,6 +32,38 @@ export class HomeViewPage implements OnInit, AfterContentChecked {
   //Flag para bug de reaload.
   public flagReloadBug:boolean = true;
 
+  //
+  private deviceWidth: number;
+  public flagProductsMobile:boolean = true;
+  public dataCategory: any;
+
+  //TODO: Cambiar a un servicio
+  public productsCategories: CategoryProduct[]  = [
+    {
+      name: "platos",
+      //urlImage: "/assets/categories/platos.jpg",
+      urlImage: "/assets/categories/bebidas.jpg",
+    },
+    {
+      name: "bebidas",
+      urlImage: "/assets/categories/extras.jpg",
+    },
+    {
+      name: "extras",
+      urlImage: "/assets/categories/bebidas.jpg",
+    },
+    {
+      name: "postres",
+      //urlImage: "/assets/categories/postres.jpg",
+      urlImage: "/assets/categories/extras.jpg",
+    },
+    {
+      name: "todos",
+      //urlImage: "/assets/categories/todos.jpg",
+      urlImage: "/assets/categories/bebidas.jpg",
+    }
+  ];
+
   @ViewChild('homeContent') homeContent: IonContent;
 
   promoTest = [1, 2, 3, 4];
@@ -53,8 +86,22 @@ export class HomeViewPage implements OnInit, AfterContentChecked {
     private alertController: AlertController,
     public loadingCtlr: LoadingController,
     public toastController: ToastController,
-    public navCtrl: NavController
-  ){}
+    public navCtrl: NavController,
+    private platform: Platform
+  ){
+    this.platform.ready().then(()=>{  
+      
+      this.deviceWidth = this.platform.width();
+      //console.log("deviceWidth:" + this.deviceWidth.toString());
+      
+      if (this.deviceWidth > 768){
+        this.flagProductsMobile = true;
+      }else if(this.deviceWidth <= 768){
+        this.flagProductsMobile = false;
+      }
+
+    });
+  }
   
   ngAfterContentChecked() {
     //Evento se dispara Se ejecuta cada vez que el contenido del componente ha sido verificado
@@ -70,6 +117,7 @@ export class HomeViewPage implements OnInit, AfterContentChecked {
             this.item = productsData;
             //llenamos cartHome.
             this.getCart();
+
             this.hideLoading().then(()=>{
               this.flagReloadBug = false;
             }).catch((e)=>{
@@ -114,17 +162,24 @@ export class HomeViewPage implements OnInit, AfterContentChecked {
 
   }
 
+  public displayCategoryProd(tabCategory:string){
+    //cambio de estilos, se bugeaba con los de Home al llamarse igual
+    tabCategory = tabCategory.toUpperCase();
+    const category = this.item.filter((e)=>{
+      return e.category.toUpperCase() == tabCategory ? e : false;
+    });
+    this.dataCategory = category[0].products;
+  }
+
   /* SEARCH LOGIC */
   /* SEARCH LOGIC */
   public InitializeItems() {
     this.itemsForSearch = this.item;
   }
-
   public itemsContentData(): boolean {
     const contentData = this.item;
     return (contentData.length != 0 ? true : false);
   }
-
   public getItemSearch(ev: any) {
 
     this.flagDisplayListSearch = true;
@@ -154,7 +209,6 @@ export class HomeViewPage implements OnInit, AfterContentChecked {
     }
 
   }
-
   public filterDataCategory(ParamCategory: string = "TODOS") {
     return (
       this.itemsForSearch.filter(
@@ -162,7 +216,6 @@ export class HomeViewPage implements OnInit, AfterContentChecked {
       )
     );
   }
-
   public noDisplaySrch(FlagnotFound: boolean = false) {
     this.InitializeItems();
     this.displaySrch = false;
