@@ -101,9 +101,19 @@ export class BuildOrderPage implements OnInit {
 
   }
 
-  public subCountProduct(extraObj:any){
-    const objFilter = this.extraData.filter((i:any)=>{return i.name == extraObj.name});
-    objFilter.map((i:any)=> i.count == 0 ? 0 : i.count--);
+  public subCountProduct(extraObj:any, category:string){
+
+    let data: any = [];
+
+    if(category.toLowerCase()=="bebidas"){
+      data = this.bebidaData.filter((i:any)=>{return i.name == extraObj.name});
+    }else if(category.toLowerCase()=="postres"){
+      data = this.postreData.filter((i:any)=>{return i.name == extraObj.name});
+    }else{
+      data = this.extraData.filter((i:any)=>{return i.name == extraObj.name});
+    }
+
+    data.map((i:any)=> i.count--);
   }
 
 }
