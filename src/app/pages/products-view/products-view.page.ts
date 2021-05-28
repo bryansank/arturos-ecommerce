@@ -105,10 +105,10 @@ export class ProductsViewPage implements OnInit, AfterContentChecked {
 
     const elementGrid = document.getElementById(tabCategory + "Grid");
 
-    if (elementGrid.classList.contains('displayContent')) {
-      elementGrid.setAttribute("class", "noDisplayContent md hydrated");
+    if (elementGrid.classList.contains('displayContentProd')) {
+      elementGrid.setAttribute("class", "noDisplayContentProd md hydrated");
     } else {
-      elementGrid.setAttribute("class", "displayContent md hydrated");
+      elementGrid.setAttribute("class", "displayContentProd md hydrated");
     }
   }
 
