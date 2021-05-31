@@ -245,23 +245,23 @@ export class CartViewPage implements OnInit, AfterViewInit {
     // ];
 
     // if(this.dataExtras.length != 0){
-    //   const modalForPay = await this.modalCtrl.create({
-    //     component: BuildOrderPage,
-    //     componentProps: {
-    //       dataCart: dataForModal,
-    //       extras: this.dataExtras,
-    //     }
-    //   });
-    //   await modalForPay.present();
-    //   const {data} = await modalForPay.onDidDismiss();
+      const modalForPay = await this.modalCtrl.create({
+        component: BuildOrderPage,
+        componentProps: {
+          dataCart: [this.itemsProduct, this.itemsPromotions],
+          extras: this.dataExtras,
+        }
+      });
+      await modalForPay.present();
+      const {data} = await modalForPay.onDidDismiss();
   
-    //   if(data == undefined){
-    //     console.log("Esta undefined");
-    //   }else{
-    //     console.log(data);
-    //   }
+      if(data == undefined){
+        console.log("Esta undefined");
+      }else{
+        console.log(data);
+      }
     // }
-    // this.openModalForPay();
+    this.openModalForPay();
   }
   /*-------ACTION BUTTONS-------*/
   /*-------ACTION BUTTONS-------*/

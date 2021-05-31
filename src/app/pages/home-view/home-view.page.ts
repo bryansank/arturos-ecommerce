@@ -96,7 +96,7 @@ export class HomeViewPage implements OnInit, AfterContentChecked {
       
       if (this.deviceWidth > 768){
         this.flagProductsMobile = true;
-      }else if(this.deviceWidth <= 768){
+      }else if(this.deviceWidth <= 992){
         this.flagProductsMobile = false;
       }
 

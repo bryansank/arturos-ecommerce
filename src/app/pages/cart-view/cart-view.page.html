@@ -41,7 +41,9 @@
         <ion-button (click)="addCountProduct(item.name)">+</ion-button>
       </ion-item>
     </div>
+    <!--Items in the cart-->
 
+    <!--Items Promotions in the cart-->
     <div *ngIf="flagPromo; then PromothenBlock else PromoelseBlock"></div>
     <ng-template #PromothenBlock>
       <ion-text color="primary" style="text-align:center;">
@@ -62,6 +64,7 @@
       </div>
     </ng-template>
     <ng-template #PromoelseBlock></ng-template>
+    <!--Items Promotions in the cart-->
 
     <!--Total section-->
     <div style="border-bottom: 1px solid #dddddd;">
@@ -99,7 +102,7 @@
     <!--Total section-->
 
     <!-- ELIMINAR PRUEBA TODO: -->
-    <!-- <ion-button color="secondary" (click)="openModalForPay()">PRUEBA MODAL</ion-button> -->
+    <ion-button color="secondary" (click)="openModalForPay()">PRUEBA MODAL</ion-button>
     <!-- ELIMINAR PRUEBA TODO: -->
     
   </ion-list>
