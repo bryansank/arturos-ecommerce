@@ -3,11 +3,11 @@
 <ion-header>
   <ion-toolbar color="tertiary">
 
-    <ion-buttons slot="start">
-      <ion-back-button defaultHref="/home-view">
+    <!-- <ion-buttons slot="start">
+      <ion-back-button defaultHref="/">
         <ion-icon slot="start" name="arrow-back"></ion-icon>
       </ion-back-button>
-    </ion-buttons>
+    </ion-buttons> -->
 
     <ion-buttons slot="end">
       <ion-button (click)="openPageCart()">
@@ -71,7 +71,7 @@
   
   
 
-  <!--  -->
+  <!-- Categories for Products Mobile or Desktop -->
   <div *ngIf="flagProductsMobile; then blockPage else blockMobile"></div>
   <ng-template #blockPage>
     <!-- list Products -->
@@ -178,7 +178,7 @@
     </div>
     <!--Producst-->
   </ng-template>
-  <!--  -->
+  <!-- Categories for Products Mobile or Desktop -->
   
 </ion-content>
 

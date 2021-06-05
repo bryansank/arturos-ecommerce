@@ -6,6 +6,7 @@
   "description": "Arturo's Web Store with Ionic",
   "license": "ISC",
   "keywords": [],
+  "private": true,
   "scripts": {
     "config": "ts-node config-env.ts",
     "ng": "ng",
@@ -15,7 +16,6 @@
     "lint": "ng lint",
     "e2e": "ng e2e"
   },
-  "private": true,
   "dependencies": {
     "@angular-devkit/build-angular": "~0.1102.4",
     "@angular/cli": "~11.2.4",
@@ -31,7 +31,7 @@
     "@capacitor/core": "2.4.7",
     "@ionic/angular": "^5.5.2",
     "express": "^4.17.1",
-    "firebase": "^8.4.2",
+    "firebase": "8.6.5",
     "path": "^0.12.7",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",

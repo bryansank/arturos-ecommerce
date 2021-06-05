@@ -16,7 +16,6 @@
       <ion-menu-button menu="customMenu"></ion-menu-button>
     </ion-buttons>
 
-    <!-- <ion-title text-capitalize> {{ titleHeaderPage }} </ion-title> -->
     <img src="https://arturos.com.pa/wp-content/uploads/2020/06/cropped-Arturos-Logo_color-af.png" style="width:200px;"/>
     
   </ion-toolbar>
@@ -25,12 +24,10 @@
 
 <ion-content #homeContent>
 
-  
   <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
   
-
   <!-- Search platos -->
   <div>
     <ion-searchbar 
@@ -85,6 +82,8 @@
   </div>
   <!-- Slider -->
 
+
+
   <ion-text color="primary" style="text-align:center;">
     <h1>
       <ion-icon name="restaurant-outline"></ion-icon>Promociones<ion-icon name="restaurant-outline"></ion-icon>
@@ -92,7 +91,6 @@
   </ion-text>
 
   <!--Promociones-->
-  
   <ion-grid>
     <ion-row>
       <ion-col *ngFor="let promo of promoTest; let index =index" size="12" size-lg="3" size-md="4" size-sm="6" size-xs="12">
@@ -105,9 +103,9 @@
       </ion-col>
     </ion-row>
   </ion-grid>
-  
   <!--Promociones-->
   
+
   <ion-text color="primary" style="text-align:center;" id="idTextProducts">
     <h1 class="titleProductsTxt" style="text-decoration-line: underline;">
       <ion-icon style="margin-top: 10px;" name="restaurant-outline"></ion-icon>
@@ -116,7 +114,7 @@
     </h1>
   </ion-text>
 
-  <!--  -->
+  <!-- Categories for Products Mobile or Desktop -->
   <div *ngIf="flagProductsMobile; then blockPage else blockMobile"></div>
   <ng-template #blockPage>
     <!-- list Products -->
@@ -183,7 +181,7 @@
       <!--Categorias de Productos-->
     
       <!--Productos por Categoria-->
-      <ion-grid class="noDisplayContent" id="{{cat.category}}Grid">
+      <ion-grid class="noDisplayContent" id="{{cat.category}}GridHome">
         <ion-row>
           <!---->
           <ion-col *ngFor="let obj of cat.products" 
@@ -223,7 +221,7 @@
     </div>
     <!--Producst-->
   </ng-template>
-  <!--  -->
+  <!-- Categories for Products Mobile or Desktop -->
 
   <!--Footer-->
   <footer-component>

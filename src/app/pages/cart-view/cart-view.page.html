@@ -2,12 +2,12 @@
 <ion-header>
   <ion-toolbar color="tertiary">
 
-    <ion-buttons slot="start">
-      <!--<ion-back-button defaultHref="/" text="Volver">-->
-      <ion-back-button defaultHref="/home-view">
+    <!-- <ion-buttons slot="start">
+      --<ion-back-button defaultHref="/" text="Volver">--
+      <ion-back-button defaultHref="/">
         <ion-icon slot="start" name="arrow-back"></ion-icon>
       </ion-back-button>
-    </ion-buttons>
+    </ion-buttons> -->
 
     <ion-buttons slot="start">
       <ion-menu-button menu="customMenu"></ion-menu-button>
@@ -90,10 +90,12 @@
         </ion-item>
 
         <!-- Botones de accion -->
+        <!-- Botones de accion -->
         <ion-item lines="none">
-          <ion-button color="secondary" (click)="cartClear()">Vaciar mi carrito</ion-button>
-          <ion-button color="secondary" (click)="openModalForPay()" disabled={{flagExtrasReady}}>Personalizar Pedido</ion-button>
+          <ion-button color="secondary" (click)="cartClear()" class="btnActionCart">Vaciar mi carrito</ion-button>
+          <ion-button color="secondary" (click)="openModalForPay()" class="btnActionCart" disabled={{flagExtrasReady}}>Personalizar Pedido</ion-button>
         </ion-item>
+        <!-- Botones de accion -->
         <!-- Botones de accion -->
 
       </ng-template>

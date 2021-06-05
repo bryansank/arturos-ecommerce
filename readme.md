@@ -36,6 +36,9 @@ Este proyecto está bajo la licencia del HONOR.
 * Da las gracias públicamente 🤓.
 * Nunca pares de aprender.
 
+//"firebase": "^8.4.2",
+
 --todo list:
   Cambiar a un servicio en promociones CategoryProduct
   Eliminar prueba de cart
+  Cambiar a servicio el exchange rate

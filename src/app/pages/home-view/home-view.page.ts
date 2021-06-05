@@ -69,9 +69,10 @@ export class HomeViewPage implements OnInit, AfterContentChecked {
   promoTest = [1, 2, 3, 4];
 
   //Method for display css Categorys...
-  displayCategory(tabCategory) {
+  displayCategory(tabCategory:any) {
+    console.log("displayCategory")
 
-    const elementGrid = document.getElementById(tabCategory + "Grid");
+    const elementGrid = document.getElementById(tabCategory + "GridHome");
 
     if (elementGrid.classList.contains('displayContent')) {
       elementGrid.setAttribute("class", "noDisplayContent md hydrated");
