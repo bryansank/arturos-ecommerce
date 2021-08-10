@@ -137,6 +137,7 @@ export class CartViewPage implements OnInit, AfterViewInit {
 
   }
 
+
   public changeCurrency(currency:any){
     const currencyValue:string = currency.detail.value.toString();
 
@@ -156,7 +157,7 @@ export class CartViewPage implements OnInit, AfterViewInit {
     return this.cartService.getCart();
   }
 
-  public deleteProduct(excludeNameProduct){
+  public deleteProduct(excludeNameProduct:any){
     excludeNameProduct = excludeNameProduct.trim().trimStart();
 
     this.itemsProduct = this.itemsProduct.filter((e)=>e.name != excludeNameProduct);
@@ -205,6 +206,8 @@ export class CartViewPage implements OnInit, AfterViewInit {
 
   /*-------ACTION BUTTONS-------*/
   /*-------ACTION BUTTONS-------*/
+  public pay(){console.log("pagar")}
+
   public cartClear(){
     this.selectedItems = null;
     this.itemsProduct = null;
@@ -244,22 +247,24 @@ export class CartViewPage implements OnInit, AfterViewInit {
     //   ],
     // ];
 
+    //TODO: -?????
     // if(this.dataExtras.length != 0){
-      const modalForPay = await this.modalCtrl.create({
-        component: BuildOrderPage,
-        componentProps: {
-          dataCart: [this.itemsProduct, this.itemsPromotions],
-          extras: this.dataExtras,
-        }
-      });
-      await modalForPay.present();
-      const {data} = await modalForPay.onDidDismiss();
+      // const modalForPay = await this.modalCtrl.create({
+      //   component: BuildOrderPage,
+      //   componentProps: {
+      //     dataCart: [this.itemsProduct, this.itemsPromotions],
+      //     extras: this.dataExtras,
+      //   }
+      // });
+      // await modalForPay.present();
+      // const {data} = await modalForPay.onDidDismiss();
   
-      if(data == undefined){
-        console.log("Esta undefined");
-      }else{
-        console.log(data);
-      }
+      // if(data == undefined){
+      //   console.log("Esta undefined");
+      // }else{
+      //   console.log(data);
+      // }
+
     // }
     //this.openModalForPay();
   }

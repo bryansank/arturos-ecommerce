@@ -47,6 +47,8 @@
       debounce="1000"
       class="cssObligatory-searchListHome"
       style="color: orangered !important;font-weight: bold;"
+      search-icon="restaurant-outline"
+      #searchProductsID
     >
     </ion-searchbar>
   </div>
@@ -59,7 +61,7 @@
       <ion-list *ngFor="let search of itemsForSearch">
         <ion-item>{{search.name}} {{search.price}}$</ion-item>
         <ion-item>
-          <ion-button color="secondary" (click)="addToCart(search)">Agregar al Carrito</ion-button>
+          <ion-button color="secondary" (click)="addToCart(search, true, searchProductsID)">Agregar al Carrito</ion-button>
         </ion-item>
       </ion-list>
     </ng-template>

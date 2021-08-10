@@ -263,7 +263,13 @@ export class HomeViewPage implements OnInit, AfterContentChecked {
     });
     this.presentToast("Producto añadido a tu carrito", 1200);
   }
-  public addToCart(product: any) {
+  public addToCart(product: any, flagClearSearch:false, id:any) {
+
+    if(flagClearSearch){ 
+      const searchProductsID = id;
+      searchProductsID.value = "";
+      this.noDisplaySrch()
+    }
 
     this.getCart();
 

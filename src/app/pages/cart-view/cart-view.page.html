@@ -95,6 +95,9 @@
           <ion-button color="secondary" (click)="cartClear()" class="btnActionCart">Vaciar mi carrito</ion-button>
           <ion-button color="secondary" (click)="openModalForPay()" class="btnActionCart" disabled={{flagExtrasReady}}>Personalizar Pedido</ion-button>
         </ion-item>
+        <ion-item lines="none">
+          <ion-button color="primary" disabled (click)="pay()">Pagar</ion-button>
+        </ion-item>
         <!-- Botones de accion -->
         <!-- Botones de accion -->
 
@@ -104,7 +107,7 @@
     <!--Total section-->
 
     <!-- ELIMINAR PRUEBA TODO: -->
-    <ion-button color="secondary" (click)="openModalForPay()">PRUEBA MODAL</ion-button>
+      <!-- <ion-button color="secondary" disabled (click)="openModalForPay()">PRUEBA MODAL</ion-button> -->
     <!-- ELIMINAR PRUEBA TODO: -->
     
   </ion-list>
