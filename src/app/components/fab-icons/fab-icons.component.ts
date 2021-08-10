@@ -18,7 +18,7 @@ export class FabIconsComponent implements OnInit {
   ngOnInit() {}
 
   goAdmin(){
-    this.router.navigate(['admin-view']);
+    //this.router.navigate(['admin-view']);
   }
 
   goCart(){
