@@ -118,7 +118,7 @@ export class ProductsViewPage implements OnInit, AfterContentChecked {
   public displayCategoryProd(tabCategory:string){
     //cambio de estilos, se bugeaba con los de Home al llamarse igual
     tabCategory = tabCategory.toUpperCase();
-    const category = this.item.filter((e)=>{
+    const category = this.item.filter((e:any)=>{
       return e.category.toUpperCase() == tabCategory ? e : false;
     });
     this.dataCategory = category[0].products;
@@ -140,10 +140,7 @@ export class ProductsViewPage implements OnInit, AfterContentChecked {
     this.flagDisplayListSearch = true;
 
     const valueSrch:string = ev.srcElement.value == null ? "": ev.srcElement.value.toString();
-    console.log(valueSrch)
-
-    if(!this.itemsContentData()){console.log("A")}
-    if(valueSrch==""){console.log("b")}
+    // console.log(valueSrch)
 
     if(!this.itemsContentData() || valueSrch !=""){
 

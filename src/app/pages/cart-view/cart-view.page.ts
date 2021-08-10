@@ -261,7 +261,7 @@ export class CartViewPage implements OnInit, AfterViewInit {
         console.log(data);
       }
     // }
-    this.openModalForPay();
+    //this.openModalForPay();
   }
   /*-------ACTION BUTTONS-------*/
   /*-------ACTION BUTTONS-------*/

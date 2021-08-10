@@ -1,3 +1,10 @@
+<style>
+  .titleDescriptCard{
+    font-style: oblique;
+    text-decoration: underline;
+    text-decoration-color: #bdbdbd;
+  }
+</style>
 <!--Aqui Usamos este header, para tener la funciones del Cart-->
 <ion-header>
   <ion-toolbar color="tertiary">
@@ -24,43 +31,40 @@
 <ion-content #pageTop>
   <ion-grid>
     <ion-row>
-      <!--DETALLES-->
-      <!--DETALLES-->
+      
+      <!--Aqui estan los detalles de la promocion-->
       <ion-col size-xs="5" size-xs="12">
         <div *ngIf="viewDetail;then thenBlock else elseBlock"></div>
         <ng-template #thenBlock>
           <ion-card>
             <ion-card-content>
-              <ion-title color="primary">
-                <h1>{{obj.title}}</h1>
+              <ion-title style="text-align: center;" color="primary">
+                <h1 class="titleDescriptCard">{{obj.title}}</h1>
               </ion-title>
-              <br />
-              <ion-text style="font-size: 20px;">
-                {{obj.detail}}
-              </ion-text>
-              <ion-text style="font-size: 12px;">
-                <br />
-                -{{obj.items}}
-              </ion-text>
-              
               <ion-text>
-                <h1 style="margin-top: 10px;">Tiene un precio de: <span style="color:orangered">{{obj.price}}$</span></h1>
+                <h2 style="font-size: 20px; text-align: center;">{{obj.detail}}</h2>
+                <!-- <h2 style="font-size: 12px; text-align: center;">-{{obj.items}}</h2> -->
               </ion-text>
+              <ion-text>
+                <h1 style="margin-top: 10px; text-align: center;">
+                  Tiene un precio de: <span style="color:orangered">{{obj.price}}$</span>
+                </h1>
+              </ion-text>
+              <div style="margin-top: 10px; text-align: center;">
+                <ion-button (click)="sendToCart(obj)">
+                  Añadir al Carrito
+                </ion-button>
+              </div>
             </ion-card-content>
-
-            <div style="text-align: center;">
-              <ion-button (click)="sendToCart(obj)">Añadir al Carrito</ion-button>
-            </div>
-            
           </ion-card>
         </ng-template>
         <ng-template #elseBlock></ng-template>
       </ion-col>
-      <!--DETALLES-->
-      <!--DETALLES-->
+      <!--Aqui estan los detalles de la promocion-->
+      
 
-      <!--PROMO-->
-      <!--PROMO-->
+      
+      <!--Nombre de Promociones-->
       <ion-col size="12" size-lg="3" size-md="4" size-sm="6" size-xs="12" *ngFor="let promo of promoData; let ix =index">
         <ion-card>
           <ion-img class="zoom" src="/assets/productos/promo.png"></ion-img>
@@ -73,8 +77,8 @@
           </ion-card-header>
         </ion-card>
       </ion-col>
-      <!--PROMO-->
-      <!--PROMO-->
+      <!--Nombre de Promociones-->
+      
     </ion-row>
   </ion-grid>
 </ion-content>

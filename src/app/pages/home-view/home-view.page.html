@@ -1,12 +1,15 @@
-<style></style>
-<!--Aqui Usamos este header, para no tener el back-->
+<style>@import url('https://fonts.googleapis.com/css2?family=Rubik:ital,wght@1,300&display=swap');</style>
+
+<!--Header-->
 <ion-header>
-  <ion-toolbar color="tertiary">
+  <ion-toolbar color="" class="cssObligatory-header">
+
+    <img id="imgHeaderMain" src="https://arturos.com.pa/wp-content/uploads/2020/06/cropped-Arturos-Logo_color-af.png" style="width:200px;" />
 
     <ion-buttons slot="end">
       <ion-button (click)="openPageCart()">
         
-        <ion-badge *ngIf="cartHome.length > 0">{{ cartHome.length }}</ion-badge>
+        <ion-badge *ngIf="dataCartHome.length > 0">{{ dataCartHome.length }}</ion-badge>
         <ion-icon name="cart" slot="icon-only"></ion-icon>
 
       </ion-button>
@@ -15,35 +18,35 @@
     <ion-buttons slot="start">
       <ion-menu-button menu="customMenu"></ion-menu-button>
     </ion-buttons>
-
-    <img src="https://arturos.com.pa/wp-content/uploads/2020/06/cropped-Arturos-Logo_color-af.png" style="width:200px;"/>
     
   </ion-toolbar>
 </ion-header>
-<!--Aqui Usamos este header, para no tener el back-->
+<!--Header-->
 
+<!--Content-->
 <ion-content #homeContent>
 
+  <!-- Refresh Page -->
   <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
-  
-  <!-- Search platos -->
+  <!-- Refresh Page -->
+
+  <!-- Search Home -->
   <div>
     <ion-searchbar 
-      placeholder="¿Que quiere comer hoy?" 
-      style="color:black !important; font-weight: bold !important;"
+      placeholder="¿Que quieres comer hoy?" 
       (ionInput)="getItemSearch($event)"
       (ionClear)="noDisplaySrch()"
       debounce="1000"
-      class="searchHome"
-      id="searchHome"
+      class="cssObligatory-searchListHome"
+      style="color: orangered !important;font-weight: bold;"
     >
     </ion-searchbar>
   </div>
-  <!-- Search platos -->
+  <!-- Search Home -->
 
-  <!-- Search list -->
+  <!-- Search Result list -->
   <div *ngIf="flagDisplayListSearch">
     <div *ngIf="displaySrch; then thenBlock else elseBlock"></div>
     <ng-template #thenBlock>
@@ -55,40 +58,68 @@
       </ion-list>
     </ng-template>
     <ng-template #elseBlock>
-      <div *ngIf="notFound; then thenBlock else elseBlock"></div>
-      <ng-template #thenBlock>
+      <div *ngIf="FlagNotFoundDataInSearchList; then thenBlockNotFound else elseBlockFound"></div>
+      <ng-template #thenBlockNotFound>
         <ion-list>
           <ion-item>No se encontro nada.</ion-item>
         </ion-list>
       </ng-template>
-      <ng-template #elseBlock></ng-template>
+      <ng-template #elseBlockFound></ng-template>
     </ng-template>
   </div>
-  <!-- Search list -->
+  <!-- Search Result list -->
+
+  <!-- Options Products -->
+  <div class="cssObligatory-contentOptionsProducts">
+    <!-- Image Option One -->
+    <div class="cssObligatory-OptionOneProducts">
+      <img  class="cssObligatory-imgOne"
+            src="https://picsum.photos/700/400?random" alt="Hola" />
+    </div>
+    <!-- Image Option One -->
+    
+    <!-- Image Option Two and three -->
+    <div class="cssObligatory-OptionTwoProducts">
+
+      <div class="cssObligatory-contentImgTwo"> 
+        <img  class="cssObligatory-imgTwo" 
+              src="https://picsum.photos/700/400?random" alt="Hola" />
+      </div>
+
+      <div class="cssObligatory-contentImgThree">
+        <img  class="cssObligatory-imgThree"
+              src="https://picsum.photos/700/400?random" alt="Hola" />
+      </div>
+
+    </div>
+    <!-- Image Option Two and three -->
+  </div>
+  <!-- Options Products -->
+
 
   <!-- Slider -->
-  <div *ngIf="viewEntered">
-    <ion-slides [options]="slideOpts" pager="true" #slider (ionSlidesDidLoad)="slidesDidLoad(slider)">
+  <div *ngIf="loadSlide">
+    <ion-slides 
+      #slider [options]="slideOpts" pager="true"
+      (ionSlidesDidLoad)="slidesDidLoad(slider)"
+      class="cssObligatory-sliderProducts"
+      >
       <ion-slide (click)="viewPromos()">
-        <img class="imgSlideProducts" src="/assets/productos/slide-1.png" />
+        <img src="/assets/productos/slide-1.png" />
       </ion-slide>
       <ion-slide (click)="viewPromos()">
-        <img class="imgSlideProducts" src="/assets/productos/slide-2.png" />
+        <img src="/assets/productos/slide-2.png" />
       </ion-slide>
       <ion-slide (click)="viewPromos()">
-        <img class="imgSlideProducts" src="/assets/productos/slide-3.png" />
+        <img src="/assets/productos/slide-3.png" />
       </ion-slide>
     </ion-slides>
   </div>
   <!-- Slider -->
 
-
-
-  <ion-text color="primary" style="text-align:center;">
-    <h1>
-      <ion-icon name="restaurant-outline"></ion-icon>Promociones<ion-icon name="restaurant-outline"></ion-icon>
-    </h1>
-  </ion-text>
+  <div style="text-align: center;" *ngIf="loadSlide">
+    <ion-text style="font-family: 'Rubik', sans-serif;text-decoration: underline;font-weight: bold;">Promociones</ion-text>👀
+  </div>
 
   <!--Promociones-->
   <ion-grid>
@@ -104,27 +135,19 @@
     </ion-row>
   </ion-grid>
   <!--Promociones-->
-  
 
-  <ion-text color="primary" style="text-align:center;" id="idTextProducts">
-    <h1 class="titleProductsTxt" style="text-decoration-line: underline;">
-      <ion-icon style="margin-top: 10px;" name="restaurant-outline"></ion-icon>
-        <span>¡DISFRUTA DE NUESTROS PLATOS!</span>
-      <ion-icon name="restaurant-outline"></ion-icon>
-    </h1>
-  </ion-text>
-
+  <div style="text-align: center;" *ngIf="loadSlide">
+    <ion-text style="font-family: 'Rubik', sans-serif;text-decoration: underline;font-weight: bold;">Nuestros Platos</ion-text>🐔
+  </div>
   <!-- Categories for Products Mobile or Desktop -->
   <div *ngIf="flagProductsMobile; then blockPage else blockMobile"></div>
   <ng-template #blockPage>
-    <!-- list Products -->
-    <!-- list Products -->
+    
     <ion-grid>
-      <!-- Img Category Products -->
-      <!-- Img Category Products -->
+
       <ion-row style="justify-content: center;">
         <ion-col size-lg="2" size-md="8" size-sm="12" size-xs="12" *ngFor="let cat of productsCategories">
-          <ion-card (click)="displayCategoryProd(cat.name)">
+          <ion-card (click)="displayCategory(cat.name)">
             <ion-img src={{cat.urlImage}}></ion-img>
             <ion-card-header style="background-color: white;">
               <ion-card-title  class="headerCategoryProduct">{{cat.name}}</ion-card-title>
@@ -132,11 +155,9 @@
           </ion-card>
         </ion-col>
       </ion-row>
-      <!-- Img Category Products -->
-      <!-- Img Category Products -->
 
-      <!-- Products -->
-      <!-- Products -->
+      <span id="viewTagProducts"></span>
+
       <ion-row>
         <ion-col size-lg="12" size-md="12" size-sm="12" size-xs="12">
           <ion-grid>
@@ -162,25 +183,22 @@
           </ion-grid>
         </ion-col>
       </ion-row>
-      <!-- Products -->
-      <!-- Products -->
+
     </ion-grid>
-    <!-- list Products -->
-    <!-- list Products -->
+    
   </ng-template>
+
+
   <ng-template #blockMobile>
-    <!--Producst-->
+    
     <div *ngFor="let cat of item">
-      <!--Categorias de Productos-->
+      
       <ion-row no-padding class="category-banner">
-        <!-- delegate <ion-col e (click)="cat.expanded = !cat.expanded" align-self-center>-->
         <ion-col text-left button tappable align-self-center (click)="displayCategory(cat.category)">
           {{cat.category}}
         </ion-col>
       </ion-row>
-      <!--Categorias de Productos-->
-    
-      <!--Productos por Categoria-->
+      
       <ion-grid class="noDisplayContent" id="{{cat.category}}GridHome">
         <ion-row>
           <!---->
@@ -202,12 +220,6 @@
                   <ion-button expand="full" (click)="addToCart(obj)">
                     Añadir al Carrito
                   </ion-button>
-                  <!--tooloptions for c/u-->
-                  <!--<ion-item lines="none">
-                    <ion-button (click)="subCountProduct(obj.name)">-</ion-button>
-                    <ion-button id="countProduct">0</ion-button>
-                    <ion-button (click)="addCountProduct(obj.name)">+</ion-button>
-                  </ion-item>-->
                 </ion-card-content>
 
               </ion-card>  
@@ -216,18 +228,19 @@
           <!---->
         </ion-row>
       </ion-grid>
-      <!--Productos por Categoria-->
 
     </div>
-    <!--Producst-->
+    
   </ng-template>
   <!-- Categories for Products Mobile or Desktop -->
+
 
   <!--Footer-->
   <footer-component>
   </footer-component>
   <!--Footer-->
-
+  
+<!--Content-->
 </ion-content>
 
 <!--Button RedSocial-->

@@ -12,32 +12,35 @@ import { CartService } from 'src/app/services/cart.service';
 })
 export class HomeViewPage implements OnInit, AfterContentChecked {
 
-  public titleHeaderPage: string = "Arturos";
+  //-> For Global Functions
+  public loading: any;
+  public flagReloadBug:boolean = true;
+  public loadSlide:boolean = false;
   private errorHandler: errorHandler = new errorHandler(this.alertController, this.router);
-  private loading: any;
 
-  public cartHome: any = [];
+  //-> For Data Cart
+  public dataCartHome: any = [];
   public item: any = [];
 
-  public displaySrch: boolean = true;
+  //-> For search list
   public flagDisplayListSearch: boolean = false;
-  public notFound: boolean = true;
+  public displaySrch: boolean = true;
   public itemsForSearch:any;
-
+  public FlagNotFoundDataInSearchList: boolean = true;
+  
+  //-> For Slider Products
   public slideOpts: any = {
     initialSlide: 0,
     speed: 400,
   };
-  public viewEntered:boolean = false;
-  //Flag para bug de reaload.
-  public flagReloadBug:boolean = true;
+  
 
-  //
+  //-> For Device Mobile.
   private deviceWidth: number;
   public flagProductsMobile:boolean = true;
   public dataCategory: any;
 
-  //TODO: Cambiar a un servicio
+  // //TODO: Cambiar a un servicio
   public productsCategories: CategoryProduct[]  = [
     {
       name: "platos",
@@ -93,7 +96,6 @@ export class HomeViewPage implements OnInit, AfterContentChecked {
     this.platform.ready().then(()=>{  
       
       this.deviceWidth = this.platform.width();
-      //console.log("deviceWidth:" + this.deviceWidth.toString());
       
       if (this.deviceWidth > 768){
         this.flagProductsMobile = true;
@@ -116,41 +118,40 @@ export class HomeViewPage implements OnInit, AfterContentChecked {
         this.cartService.getProducts().subscribe(
           productsData=>{
             this.item = productsData;
-            //llenamos cartHome.
+            //llenamos dataCartHome.
             this.getCart();
 
             this.hideLoading().then(()=>{
               this.flagReloadBug = false;
-            }).catch((e)=>{
-              //console.log("error en hideLoading(): ", e)
+            }).catch(()=>{
               this.flagReloadBug = true;
             });
             
-            this.ionViewDidEnter();
-          }, err =>{
+            this.loadIonViewForSlides();
+
+          }, error =>{
+
             this.hideLoading().then(()=>{
               this.flagReloadBug = false;
-            }).catch((e)=>{
-              //console.log("error en hideLoading(): ", e)
+            }).catch(()=>{
               this.flagReloadBug = true;
             });
     
-            this.errorHandler.handlerError(err, true, "No pudimos cargar los productos.");
+            this.errorHandler.handlerError(error, true, "No pudimos cargar los productos.");
           }
         );
       }
-    ).catch((error)=>{
-      //console.log(error)
+    ).catch(()=>{
       this.hideLoading();
     });
 
     setTimeout(()=>{
       this.hideLoading();
-      this.ShowPopup(
-        "¡Bienvenidos!", 
-        "Te recordamos que si usas algun tipo de bloqueador de anuncios debes desactivarlo.",
-        "No usaremos ningun dato personal fuera de este sitio o con fines comerciales."
-      );
+      // this.ShowPopup(
+      //   "¡Bienvenidos!", 
+      //   "Te recordamos que si usas algun tipo de bloqueador de anuncios debes desactivarlo.",
+      //   "No usaremos ningun dato personal fuera de este sitio o con fines comerciales."
+      // );
     }, 4000);
 
     setTimeout(()=>{
@@ -159,21 +160,31 @@ export class HomeViewPage implements OnInit, AfterContentChecked {
         this.hideLoading();
         window.location.reload();
       }
-    }, 10000);    
+    }, 10000);
 
   }
 
-  public displayCategoryProd(tabCategory:string){
-    //cambio de estilos, se bugeaba con los de Home al llamarse igual
-    tabCategory = tabCategory.toUpperCase();
-    const category = this.item.filter((e)=>{
-      return e.category.toUpperCase() == tabCategory ? e : false;
-    });
-    this.dataCategory = category[0].products;
-  }
 
-  /* SEARCH LOGIC */
-  /* SEARCH LOGIC */
+
+
+  /////////////////
+  /////////////////
+  /*Cart LOGIC*/
+  public getCart() {
+    this.dataCartHome = this.cartService.getCart();
+  }
+  public openPageCart() {
+    this.router.navigate(["cart-view"]);
+  }
+  /*Cart LOGIC*/
+  /////////////////
+  /////////////////
+
+
+
+  /////////////////
+  /////////////////
+  /*Search LOGIC*/
   public InitializeItems() {
     this.itemsForSearch = this.item;
   }
@@ -181,10 +192,19 @@ export class HomeViewPage implements OnInit, AfterContentChecked {
     const contentData = this.item;
     return (contentData.length != 0 ? true : false);
   }
+  public filterDataCategory(ParamCategory: string = "TODOS") {
+    return (this.itemsForSearch.filter( (e:any) => { return e.category == ParamCategory }));
+  }
+  public noDisplaySrch(FlagNotFound: boolean = false) {
+    this.InitializeItems();
+    this.displaySrch = false;
+    this.FlagNotFoundDataInSearchList = FlagNotFound;
+    return;
+  }
   public getItemSearch(ev: any) {
 
+    const valueSrch:string = ev.srcElement.value == null ? "" : ev.srcElement.value.toString();
     this.flagDisplayListSearch = true;
-    const valueSrch: string = ev.srcElement.value == null ? "" : ev.srcElement.value.toString();
 
     if (!this.itemsContentData() || valueSrch != "") {
 
@@ -193,10 +213,10 @@ export class HomeViewPage implements OnInit, AfterContentChecked {
 
       const category = this.filterDataCategory("TODOS");
       //No funciona fusionado ambos metodos...
-      const allProducts = category.map((e) => e.products);
+      const allProducts = category.map((e:any) => e.products);
 
       this.itemsForSearch = allProducts[0].filter(
-        (i) => {
+        (i:any) => {
           return (i.name.toLowerCase().indexOf(valueSrch.toLowerCase()) !== -1 ? i : "")
         }
       )
@@ -210,31 +230,28 @@ export class HomeViewPage implements OnInit, AfterContentChecked {
     }
 
   }
-  public filterDataCategory(ParamCategory: string = "TODOS") {
-    return (
-      this.itemsForSearch.filter(
-        (e) => { return e.category == ParamCategory }
-      )
-    );
+  public notFoundProduct(product:any) {
+    product.count = 1;
+    
+    this.presentToast("Producto añadido a tu carrito", 1200);
+    this.cartService.addProduct(product);
   }
-  public noDisplaySrch(FlagnotFound: boolean = false) {
-    this.InitializeItems();
-    this.displaySrch = false;
-    this.notFound = FlagnotFound;
-    return;
-    //console.log("test");
+  public foundProduct(product:any) {
+    this.cartService.deleteAllProducts();
+    this.dataCartHome.map(i => {
+      if(i.name == product.name){
+        i.count += 1;
+      }
+      this.cartService.addProduct(i);
+    });
+    this.presentToast("Producto añadido a tu carrito", 1200);
   }
-  /* SEARCH LOGICCC */
-  /* SEARCH LOGICCC */
-
-  /*CART LOGIC */
-  /*CART LOGIC */
   public addToCart(product: any) {
 
     this.getCart();
 
-    if(this.cartHome.length != 0) {
-      const productObjFound = this.cartHome.find(i => i.name == product.name);
+    if(this.dataCartHome.length != 0) {
+      const productObjFound = this.dataCartHome.find((i:any) => i.name == product.name);
       //si no consigue es undefined
       productObjFound==undefined ? this.notFoundProduct(product) : this.foundProduct(product)
     } else {
@@ -244,64 +261,31 @@ export class HomeViewPage implements OnInit, AfterContentChecked {
       this.cartService.addProduct(product);
     }
   }
-  public notFoundProduct(product:any) {
-    product.count = 1;
-    
-    this.presentToast("Producto añadido a tu carrito", 1200);
-    this.cartService.addProduct(product);
-  }
-  public foundProduct(product:any) {
-    this.cartService.deleteAllProducts();
-    this.cartHome.map(i => {
-      if(i.name == product.name){
-        i.count += 1;
-      }
-      this.cartService.addProduct(i);
-    });
-    this.presentToast("Producto añadido a tu carrito", 1200);
-  }
-  public getCart() {
-    this.cartHome = this.cartService.getCart();
-  }
-  public openPageCart() {
-    this.router.navigate(["cart-view"]);
-  }
-  /*CART LOGIC */
-  /*CART LOGIC */
+  /* Search LOGIC*/
+  /////////////////
+  /////////////////
 
-  /* Slides */
-  /* Slides */
+
+  /////////////////
+  /////////////////
+  /* SLIDER  */
   public slidesDidLoad(slides: IonSlides) {
     slides.startAutoplay();
   }
-  public ionViewDidEnter() {
-    this.viewEntered = true;
-  }
-  public pageScroller(){
-    let yOffset = document.getElementById("idTextProducts").offsetTop;
-    this.homeContent.scrollToPoint(0, yOffset);
-  }
   public viewPromos(){
-    this.pageScroller();
+    //console.log("funcionando")
+    //this.pageScroller("idTextProducts");
   }
-  /* Slides */
-  /* Slides */
+  /* SLIDER  */
+  /////////////////
+  /////////////////
 
-  public async hideLoading() {
-    this.loadingCtlr.getTop().then(loader => {
-      if (loader) {
-        loader.dismiss();
-      }
-    });
-  }
-  public doRefresh(event) {
-    setTimeout(() => {
-      //this.navCtrl.navigateRoot("/home-view");
-      window.location.reload();
-      event.target.complete();  
-    },1000);    
-  }
-  public async presentLoading() {
+
+
+  /////////////////
+  /////////////////
+  /* GLOBAL FUNCTIONS */
+  public async presentLoading(){
     this.loading = await this.loadingCtlr.create({
       cssClass: 'my-custom-class',
       message: 'Por favor espere.',
@@ -309,7 +293,24 @@ export class HomeViewPage implements OnInit, AfterContentChecked {
 
     return this.loading.present();
   }
-  public async ShowPopup(msnHeader: string, msn: string, submsn?: string) {
+  public async hideLoading(){
+    this.loadingCtlr.getTop().then(loader => {
+      if (loader) {
+        loader.dismiss();
+      }
+    });
+  }
+  public loadIonViewForSlides(){
+    this.loadSlide = true;
+  }
+  public doRefresh(event:any){
+    setTimeout(() => {
+      //this.navCtrl.navigateRoot("/home-view");
+      event.target.complete();
+      window.location.reload();
+    },1000);    
+  }
+  public async ShowPopup(msnHeader: string, msn: string, submsn?: string){
 
     const alert = await this.alertController.create(
       {
@@ -337,4 +338,8 @@ export class HomeViewPage implements OnInit, AfterContentChecked {
     });
     toast.present();
   }
+  /* GLOBAL FUNCTIONS */
+  /////////////////
+  /////////////////
+
 }
