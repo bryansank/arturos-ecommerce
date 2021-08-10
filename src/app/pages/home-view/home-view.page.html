@@ -61,7 +61,7 @@
       <ion-list *ngFor="let search of itemsForSearch">
         <ion-item>{{search.name}} {{search.price}}$</ion-item>
         <ion-item>
-          <ion-button color="secondary" (click)="addToCart(search, true, searchProductsID)">Agregar al Carrito</ion-button>
+          <ion-button color="secondary" (click)="addToCart(search, 'yes', searchProductsID)">Agregar al Carrito</ion-button>
         </ion-item>
       </ion-list>
     </ng-template>
