@@ -133,7 +133,7 @@
       <ion-col *ngFor="let promo of promoTest; let index =index" size="12" size-lg="3" size-md="4" size-sm="6" size-xs="12">
         <ion-card>
           <ion-img class="zoom" src="/assets/productos/promo.png"></ion-img>
-          <ion-card-header routerLink="/promotions-view" style="background-color: white;">
+          <ion-card-header (click)="viewPagePromo" style="background-color: white;">
             <ion-card-title  class="headerCategoryProduct">Ver Promocion {{index + 1}}</ion-card-title>
           </ion-card-header>
         </ion-card>

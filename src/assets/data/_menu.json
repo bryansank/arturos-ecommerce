@@ -1,0 +1,33 @@
+[
+    {
+        "icon" : "home-outline",
+        "txt": "Inicio",
+        "redirecTo": "/home-view"
+    },
+    {
+        "icon" : "restaurant",
+        "txt": "Platos",
+        "redirecTo": "/products-view"
+    },
+    {
+        "icon" : "gift-outline",
+        "txt": "Promociones",
+        "redirecTo": "/promotions-view"
+    },
+    {
+        "icon" : "cart",
+        "txt": "Carrito",
+        "redirecTo": "/cart-view"
+    },
+    {
+        "icon" : "log-in-outline",
+        "txt": "Entrar",
+        "redirecTo": "/login-view"
+    },
+    {
+        "icon" : "finger-print-outline",
+        "txt": "Registrate",
+        "redirecTo": "/register-view"
+    }
+]
+

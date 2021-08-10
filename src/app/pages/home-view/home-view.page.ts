@@ -134,11 +134,11 @@ export class HomeViewPage implements OnInit, AfterContentChecked {
 
     setTimeout(()=>{
       this.hideLoading();
-      // this.ShowPopup(
-      //   "¡Bienvenidos!", 
-      //   "Te recordamos que si usas algun tipo de bloqueador de anuncios debes desactivarlo.",
-      //   "No usaremos ningun dato personal fuera de este sitio o con fines comerciales."
-      // );
+      this.ShowPopup(
+        "¡Bienvenidos!", 
+        "Te recordamos que si usas algun tipo de bloqueador de anuncios debes desactivarlo.",
+        "No usaremos ningun dato personal fuera de este sitio o con fines comerciales."
+      );
     }, 4000);
 
     setTimeout(()=>{
@@ -175,6 +175,10 @@ export class HomeViewPage implements OnInit, AfterContentChecked {
       return e.category.toUpperCase() == tabCategory ? e : false;
     });
     this.dataCategory = category[0].products;
+  }
+
+  public viewPagePromo(){
+    //this.router.navigate(["/promotions-view"]);
   }
   /* Products Logic*/
   ///////////////////
