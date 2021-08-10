@@ -153,7 +153,7 @@
 
       <ion-row style="justify-content: center;">
         <ion-col size-lg="2" size-md="8" size-sm="12" size-xs="12" *ngFor="let cat of productsCategories">
-          <ion-card (click)="displayCategory(cat.name)">
+          <ion-card (click)="displayCategoryForPageBlock(cat.name)">
             <ion-img src={{cat.urlImage}}></ion-img>
             <ion-card-header style="background-color: white;">
               <ion-card-title  class="headerCategoryProduct">{{cat.name}}</ion-card-title>
@@ -200,7 +200,7 @@
     <div *ngFor="let cat of item">
       
       <ion-row no-padding class="category-banner">
-        <ion-col text-left button tappable align-self-center (click)="displayCategory(cat.category)">
+        <ion-col text-left button tappable align-self-center (click)="displayCategoryForMobile(cat.category)">
           {{cat.category}}
         </ion-col>
       </ion-row>

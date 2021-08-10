@@ -21,6 +21,7 @@ export class HomeViewPage implements OnInit, AfterContentChecked {
   //-> For Data Cart
   public dataCartHome: any = [];
   public item: any = [];
+  public dataCategory: any;
 
   //-> For search list
   public flagDisplayListSearch: boolean = false;
@@ -33,12 +34,13 @@ export class HomeViewPage implements OnInit, AfterContentChecked {
     initialSlide: 0,
     speed: 400,
   };
+
+  @ViewChild('homeContent') homeContent: IonContent;
   
 
   //-> For Device Mobile.
   private deviceWidth: number;
   public flagProductsMobile:boolean = true;
-  public dataCategory: any;
 
   // //TODO: Cambiar a un servicio
   public productsCategories: CategoryProduct[]  = [
@@ -66,23 +68,8 @@ export class HomeViewPage implements OnInit, AfterContentChecked {
       urlImage: "/assets/categories/bebidas.jpg",
     }
   ];
-
-  @ViewChild('homeContent') homeContent: IonContent;
-
   promoTest = [1, 2, 3, 4];
 
-  //Method for display css Categorys...
-  displayCategory(tabCategory:any) {
-    console.log("displayCategory")
-
-    const elementGrid = document.getElementById(tabCategory + "GridHome");
-
-    if (elementGrid.classList.contains('displayContent')) {
-      elementGrid.setAttribute("class", "noDisplayContent md hydrated");
-    } else {
-      elementGrid.setAttribute("class", "displayContent md hydrated");
-    }
-  }
 
   constructor(
     private cartService: CartService,
@@ -166,6 +153,32 @@ export class HomeViewPage implements OnInit, AfterContentChecked {
 
 
 
+  ///////////////////
+  ///////////////////
+  /* Products Logic*/
+  //Method for display css Categorys...
+  public displayCategoryForMobile(tabCategory:any) {
+
+    const elementGrid = document.getElementById(tabCategory + "GridHome");
+
+    if (elementGrid.classList.contains('displayContent')) {
+      elementGrid.setAttribute("class", "noDisplayContent md hydrated");
+    } else {
+      elementGrid.setAttribute("class", "displayContent md hydrated");
+    }
+  }
+
+  public displayCategoryForPageBlock(tabCategory:string){
+    //cambio de estilos, se bugeaba con los de Home al llamarse igual
+    tabCategory = tabCategory.toUpperCase();
+    const category = this.item.filter((e:any)=>{
+      return e.category.toUpperCase() == tabCategory ? e : false;
+    });
+    this.dataCategory = category[0].products;
+  }
+  /* Products Logic*/
+  ///////////////////
+  ///////////////////
 
   /////////////////
   /////////////////
