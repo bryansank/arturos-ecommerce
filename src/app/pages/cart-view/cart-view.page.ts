@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit, ElementRef, NgZone, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ElementRef, NgZone, ViewChild, AfterContentChecked } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { AlertController, LoadingController, ModalController, ToastController } from '@ionic/angular';
@@ -13,7 +13,7 @@ import { ExchangeRateDataService } from 'src/app/services/exchange-rate-data.ser
   styleUrls: ['./cart-view.page.scss'],
 })
 
-export class CartViewPage implements OnInit, AfterViewInit {
+export class CartViewPage implements OnInit{
 
   private errorHandler: errorHandler = new errorHandler(this.alertController, this.router);
   public titleHeaderPage:string = "Carrito";
@@ -60,12 +60,19 @@ export class CartViewPage implements OnInit, AfterViewInit {
     private modalCtrl: ModalController,
   ) {}
 
-  ngAfterViewInit(){
-    //TODO: Add Stripe pay method.
+  ionViewWillLeave(){
+    //console.log("ionViewWillLeave")
+  }
+
+  ionViewDidLeave(){
+    //
+  }
+
+  ionViewWillEnter(){
+    this.ngOnInit()
   }
 
   ngOnInit() { 
-
     this.rateService.getExchangeRate().subscribe(
       rate => {
         this.dataCurrency.bolivares =  rate[0].rate.$numberDecimal;
@@ -110,6 +117,7 @@ export class CartViewPage implements OnInit, AfterViewInit {
 
           //Data de Products/Promo
           this.itemsProduct = this.selectedItems.filter(i=> !i.hasOwnProperty('promo'));
+          
           this.itemsPromotions = this.selectedItems.filter(i=> i.hasOwnProperty('promo'));
 
         }else{
@@ -117,7 +125,7 @@ export class CartViewPage implements OnInit, AfterViewInit {
           this.presentToast("Agrega algo al carrito", 1800);
         }
 
-      }, err=>{
+      },err =>{
         console.log("Hubo un error Inesperado: ", err);
         this.dataCurrency.bolivares = 0;
         this.errorHandler.handlerError(err);
@@ -134,7 +142,6 @@ export class CartViewPage implements OnInit, AfterViewInit {
         console.log(err)
       }
     );
-
   }
 
 
@@ -162,9 +169,6 @@ export class CartViewPage implements OnInit, AfterViewInit {
 
     this.itemsProduct = this.itemsProduct.filter((e)=>e.name != excludeNameProduct);
     this.itemsPromotions = this.itemsPromotions.filter((e)=>e.title != excludeNameProduct);
-
-    //console.log(this.itemsProduct)
-    //console.log(this.itemsPromotions)
 
     this.cartService.deleteAllProducts();
     

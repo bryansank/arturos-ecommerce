@@ -255,7 +255,8 @@ export class HomeViewPage implements OnInit, AfterContentChecked {
   }
   public foundProduct(product:any) {
     this.cartService.deleteAllProducts();
-    this.dataCartHome.map(i => {
+    
+    this.dataCartHome.map((i:any) => {
       if(i.name == product.name){
         i.count += 1;
       }
@@ -263,7 +264,7 @@ export class HomeViewPage implements OnInit, AfterContentChecked {
     });
     this.presentToast("Producto añadido a tu carrito", 1200);
   }
-  public addToCart(product: any, flagClearSearch?, id?:any) {
+  public addToCart(product: any, flagClearSearch?:any, id?:any) {
 
     if(flagClearSearch == 'yes'){ 
       const searchProductsID = id;
