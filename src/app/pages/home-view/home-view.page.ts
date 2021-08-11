@@ -267,13 +267,14 @@ export class HomeViewPage implements OnInit, AfterContentChecked {
     });
     this.presentToast("Producto añadido a tu carrito", 1200);
   }
-  public addToCart(product: any, flagClearSearch?:any, id?:any) {
+  public addToCart(product: any) {
+    //public addToCart(product: any, flagClearSearch?:any, id?:any) {
 
-    if(flagClearSearch == 'yes'){ 
-      const searchProductsID = id;
-      searchProductsID.value = "";
-      this.noDisplaySrch()
-    }
+    // if(flagClearSearch == 'yes'){ 
+    //   const searchProductsID = id;
+    //   searchProductsID.value = "";
+    //   this.noDisplaySrch()
+    // }
 
     this.getCart();
 

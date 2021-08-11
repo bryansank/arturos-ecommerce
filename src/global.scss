@@ -45,7 +45,7 @@
 /***********************/
 .headerCategoryProduct{
     color: #fe4f00 !important;
-    font-size: 18px !important;
+    font-size: 15px !important;
     text-transform: uppercase;
     text-decoration: none;
     margin-top: 20px;
@@ -499,7 +499,7 @@
 .cssObligatory-contentImgTwo{width: 100%;height:50%;margin-bottom: 12px;}
 .cssObligatory-contentImgThree{width: 100%;height:47%}
 
-@media only screen and (max-width: 1440px) {
+    @media only screen and (max-width: 1440px) {
     /*cssObligatory-searchListHome BUG EN PRODUCCION!!!*/
     .cssObligatory-searchListHome{width: 1252px;}
     // .cssObligatory-sliderProducts{
@@ -509,9 +509,9 @@
     //   margin-bottom: 50px;
     //   border: 2px solid #e2e0e0;
     // }
-  }
+    }
 
-  @media only screen and (max-width: 1024px) {
+    @media only screen and (max-width: 1024px) {
     .cssObligatory-searchListHome{width: 905px;margin-right: 78px;margin-left: auto;}
     // .cssObligatory-sliderProducts{
     //   margin-right: 86px;
@@ -520,59 +520,59 @@
     //   margin-bottom: 50px;
     //   border: 2px solid #e2e0e0;
     // }
-  }
-
-  @media only screen and (max-width: 768px) {
-    .cssObligatory-searchListHome{width: 686px;margin-right: 53px; margin-left: auto;}
-    // .cssObligatory-sliderProducts{
-    //   margin-right: 61px;
-    //   margin-left: 38px;
-    //   margin-top: 30px;
-    //   margin-bottom: 50px;
-    //   border: 2px solid #e2e0e0;
-    // }
-  }
-
-  @media only screen and (max-width: 425px) {
-    .cssObligatory-searchListHome{width: 320px;}
-    .cssObligatory-OptionOneProducts{width: auto !important;height: auto !important;margin-right: 0px;}
-    .cssObligatory-OptionTwoProducts{width: auto !important;height: auto !important;}
-    .cssObligatory-imgOne{border-radius: 0px;}
-    .cssObligatory-imgTwo{border-radius: 0px;}
-    .cssObligatory-imgThree{border-radius: 0px;}
-    .cssObligatory-contentImgTwo{margin-bottom: 4px;}
-
-    .cssObligatory-imgOne{border-radius: 20px 20px 0px 0px;}
-    // .cssObligatory-sliderProducts{
-    //   margin-right: 21px;
-    //   margin-left: 21px;
-    //   margin-top: 280px;
-    //   margin-bottom: 50px;
-    //   border: 2px solid #e2e0e0;
-    // }
-  }
-
-  @media only screen and (max-width: 375px) {
-    // .cssObligatory-sliderProducts{
-    //   margin-right: 18px;
-    //   margin-left: 18px;
-    //   margin-top: 220px;
-    //   margin-bottom: 50px;
-    //   border: 2px solid #e2e0e0;
-    // }
-    .cssObligatory-searchListHome{
-      width: 316px;
-      margin-left: auto;
-      margin-right: auto;
     }
-  }
 
-  @media only screen and (max-width: 320px) {
-    // .cssObligatory-sliderProducts{
-    //   margin-right: 10px;
-    //   margin-left: 10px;
-    //   margin-top: 120px;
-    //   margin-bottom: 50px;
-    //   border: 2px solid #e2e0e0;
-    // }
-  }
+    @media only screen and (max-width: 768px) {
+        .cssObligatory-searchListHome{width: 686px;margin-right: 53px; margin-left: auto;}
+        // .cssObligatory-sliderProducts{
+        //   margin-right: 61px;
+        //   margin-left: 38px;
+        //   margin-top: 30px;
+        //   margin-bottom: 50px;
+        //   border: 2px solid #e2e0e0;
+        // }
+    }
+
+    @media only screen and (max-width: 425px) {
+        .cssObligatory-searchListHome{width: 320px;}
+        .cssObligatory-OptionOneProducts{width: auto !important;height: auto !important;margin-right: 0px;}
+        .cssObligatory-OptionTwoProducts{width: auto !important;height: auto !important;}
+        .cssObligatory-imgOne{border-radius: 0px;}
+        .cssObligatory-imgTwo{border-radius: 0px;}
+        .cssObligatory-imgThree{border-radius: 0px;}
+        .cssObligatory-contentImgTwo{margin-bottom: 4px;}
+
+        .cssObligatory-imgOne{border-radius: 20px 20px 0px 0px;}
+        // .cssObligatory-sliderProducts{
+        //   margin-right: 21px;
+        //   margin-left: 21px;
+        //   margin-top: 280px;
+        //   margin-bottom: 50px;
+        //   border: 2px solid #e2e0e0;
+        // }
+    }
+
+    @media only screen and (max-width: 375px) {
+        // .cssObligatory-sliderProducts{
+        //   margin-right: 18px;
+        //   margin-left: 18px;
+        //   margin-top: 220px;
+        //   margin-bottom: 50px;
+        //   border: 2px solid #e2e0e0;
+        // }
+        .cssObligatory-searchListHome{
+        width: 316px;
+        margin-left: auto;
+        margin-right: auto;
+        }
+    }
+
+    @media only screen and (max-width: 320px) {
+        // .cssObligatory-sliderProducts{
+        //   margin-right: 10px;
+        //   margin-left: 10px;
+        //   margin-top: 120px;
+        //   margin-bottom: 50px;
+        //   border: 2px solid #e2e0e0;
+        // }
+    }

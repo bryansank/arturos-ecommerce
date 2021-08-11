@@ -48,8 +48,9 @@
       class="cssObligatory-searchListHome"
       style="color: orangered !important;font-weight: bold;"
       search-icon="restaurant-outline"
-      #searchProductsID
     >
+    <!-- #searchProductsID
+      > -->
     </ion-searchbar>
   </div>
   <!-- Search Home -->
@@ -61,7 +62,9 @@
       <ion-list *ngFor="let search of itemsForSearch">
         <ion-item>{{search.name}} {{search.price}}$</ion-item>
         <ion-item>
-          <ion-button color="secondary" (click)="addToCart(search, 'yes', searchProductsID)">Agregar al Carrito</ion-button>
+          <!-- <ion-button color="secondary" (click)="addToCart(search, 'yes', searchProductsID)">Agregar al Carrito</ion-button> -->
+          <ion-button color="secondary" (click)="addToCart(search)">Agregar al Carrito</ion-button>
+          <ion-button color="primary" (click)="alert('hola')"><ion-icon name="images-outline"></ion-icon></ion-button>
         </ion-item>
       </ion-list>
     </ng-template>
@@ -145,8 +148,9 @@
   <!--Promociones-->
 
   <div style="text-align: center;" >
-    <ion-text style="font-family: 'Rubik', sans-serif;text-decoration: underline;font-weight: bold;">Nuestros Platos</ion-text>🐔
+    <ion-text style="font-family: 'Rubik', sans-serif;text-decoration: underline;font-weight: bold;">Nuestros Platos</ion-text>
   </div>
+  
   <!-- Categories for Products Mobile or Desktop -->
   <div *ngIf="flagProductsMobile; then blockPage else blockMobile"></div>
   <ng-template #blockPage>
@@ -154,11 +158,19 @@
     <ion-grid>
 
       <ion-row style="justify-content: center;">
-        <ion-col size-lg="2" size-md="8" size-sm="12" size-xs="12" *ngFor="let cat of productsCategories">
+        <ion-col size-lg="2" size-md="2" *ngFor="let cat of productsCategories">
           <ion-card (click)="displayCategoryForPageBlock(cat.name)">
             <ion-img src={{cat.urlImage}}></ion-img>
             <ion-card-header style="background-color: white;">
-              <ion-card-title  class="headerCategoryProduct">{{cat.name}}</ion-card-title>
+              <div *ngIf="cat.name == 'platos';else OthersCategoriesNoMobile">
+                <ion-card-title class="headerCategoryProduct" style="margin-top: 8px;font-size: 13px !important;">
+                  Platos Principales
+                </ion-card-title>
+              </div>
+              <ng-template #OthersCategoriesNoMobile>
+                <ion-card-title class="headerCategoryProduct">{{cat.name}}</ion-card-title>
+              </ng-template>
+              <!--  -->
             </ion-card-header>
           </ion-card>
         </ion-col>
@@ -167,11 +179,11 @@
       <span id="viewTagProducts"></span>
 
       <ion-row>
-        <ion-col size-lg="12" size-md="12" size-sm="12" size-xs="12">
+        <ion-col>
           <ion-grid>
             <ion-row>
               <!--  -->
-              <ion-col size-lg="4" size-md="4" size-xs="12" *ngFor="let obj of dataCategory">
+              <ion-col *ngFor="let obj of dataCategory">
                 <ion-card class="CardBody">
                   <ion-card-header>
                     <ion-card-title class="headerTitleCardProduct">
@@ -203,7 +215,12 @@
       
       <ion-row no-padding class="category-banner">
         <ion-col text-left button tappable align-self-center (click)="displayCategoryForMobile(cat.category)">
-          {{cat.category}}
+          <div *ngIf="cat.category == 'PLATOS';else OthersCategoriesMobile">
+            PLATOS PRINCIPALES
+          </div>
+          <ng-template #OthersCategoriesMobile>
+            {{cat.category}}
+          </ng-template>
         </ion-col>
       </ion-row>
       
