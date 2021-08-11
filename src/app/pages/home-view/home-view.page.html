@@ -13,7 +13,7 @@
     <img id="imgHeaderMain" src="https://arturos.com.pa/wp-content/uploads/2020/06/cropped-Arturos-Logo_color-af.png" style="width:200px;" />
 
     <ion-buttons slot="end">
-      <ion-button (click)="openPageCart()">
+      <ion-button (click)="goCartPage()">
         
         <ion-badge *ngIf="dataCartHome.length > 0">{{ dataCartHome.length }}</ion-badge>
         <ion-icon name="cart" slot="icon-only"></ion-icon>

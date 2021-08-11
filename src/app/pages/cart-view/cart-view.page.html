@@ -21,6 +21,20 @@
 
 <ion-content>
 
+  <!-- <ion-button color="secondary" (click)="cartClear()" class="btnActionCart">Vuelve para elegir que comer</ion-button> -->
+  <!--   
+  <div *ngIf="flagForCartVoid; then thenCartVoid else elseCartVoid">
+    <ng-template #thenCartVoid></ng-template>
+    <ng-template #elseCartVoid>
+      
+        <ion-button expand="full" (click)="goHomePage()">
+          <ion-icon name="home" slot="start"></ion-icon>
+          Vuelve y elige que comer 🐔
+        </ion-button>
+      
+    </ng-template>
+  </div> -->
+  
   <ion-list>
     <!--Items in the cart-->
     <div *ngFor="let item of itemsProduct;" style="border-bottom:1x solid #fe5000">

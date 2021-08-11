@@ -190,7 +190,7 @@ export class HomeViewPage implements OnInit, AfterContentChecked {
   public getCart() {
     this.dataCartHome = this.cartService.getCart();
   }
-  public openPageCart() {
+  public goCartPage() {
     this.router.navigate(["cart-view"]);
   }
   /*Cart LOGIC*/
@@ -230,6 +230,9 @@ export class HomeViewPage implements OnInit, AfterContentChecked {
 
       const category = this.filterDataCategory("TODOS");
       //No funciona fusionado ambos metodos...
+      if(category.length == 0){
+        this.ngOnInit();
+      }
       const allProducts = category.map((e:any) => e.products);
 
       this.itemsForSearch = allProducts[0].filter(
