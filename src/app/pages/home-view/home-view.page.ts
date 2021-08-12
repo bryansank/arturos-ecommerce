@@ -28,6 +28,7 @@ export class HomeViewPage implements OnInit, AfterContentChecked {
   public displaySrch: boolean = true;
   public itemsForSearch:any;
   public FlagNotFoundDataInSearchList: boolean = true;
+  public img:string;
   
   //-> For Slider Products
   public slideOpts: any = {
@@ -151,8 +152,6 @@ export class HomeViewPage implements OnInit, AfterContentChecked {
 
   }
 
-
-
   ///////////////////
   ///////////////////
   /* Products Logic*/
@@ -167,7 +166,6 @@ export class HomeViewPage implements OnInit, AfterContentChecked {
       elementGrid.setAttribute("class", "displayContent md hydrated");
     }
   }
-
   public displayCategoryForPageBlock(tabCategory:string){
     //cambio de estilos, se bugeaba con los de Home al llamarse igual
     tabCategory = tabCategory.toUpperCase();
@@ -176,7 +174,6 @@ export class HomeViewPage implements OnInit, AfterContentChecked {
     });
     this.dataCategory = category[0].products;
   }
-
   public viewPagePromo(){
     //this.router.navigate(["/promotions-view"]);
   }
@@ -289,6 +286,21 @@ export class HomeViewPage implements OnInit, AfterContentChecked {
       this.cartService.addProduct(product);
     }
   }
+  public openModalImageSearch(objSearch:any){
+    let modal = document.getElementById("myModal");
+    modal.style.display = "block";
+    this.img = objSearch.imageUrl;
+  }
+  public envEnterProductSearch(){/*console.log("Se dispara el envento over mouse")*/}
+  public closeModalImageSearch(){
+    let modal = document.getElementById("myModal"); 
+    modal.style.display = "none";
+  }
+  public closeSearch(id:any){ 
+    const searchProductsID = id;
+    searchProductsID.value = "";
+    this.noDisplaySrch()
+  }
   /* Search LOGIC*/
   /////////////////
   /////////////////
@@ -370,4 +382,6 @@ export class HomeViewPage implements OnInit, AfterContentChecked {
   /////////////////
   /////////////////
 
+
+  
 }

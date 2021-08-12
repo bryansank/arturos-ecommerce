@@ -1,8 +1,10 @@
 <style>
+
   .contentPromoText{text-align: center;margin-top: 50px;}
   @media only screen and (max-width: 476px){
     .contentPromoText{margin-top: 300px;}
   }
+  
 @import url('https://fonts.googleapis.com/css2?family=Rubik:ital,wght@1,300&display=swap');
 </style>
 
@@ -48,9 +50,8 @@
       class="cssObligatory-searchListHome"
       style="color: orangered !important;font-weight: bold;"
       search-icon="restaurant-outline"
+      #searchProductsID
     >
-    <!-- #searchProductsID
-      > -->
     </ion-searchbar>
   </div>
   <!-- Search Home -->
@@ -59,12 +60,15 @@
   <div *ngIf="flagDisplayListSearch">
     <div *ngIf="displaySrch; then thenBlock else elseBlock"></div>
     <ng-template #thenBlock>
+      <ion-item>
+        <ion-button (click)="closeSearch(searchProductsID)">Cerrar Busqueda<ion-icon name="close-sharp"></ion-icon></ion-button>
+      </ion-item>
       <ion-list *ngFor="let search of itemsForSearch">
-        <ion-item>{{search.name}} {{search.price}}$</ion-item>
+        <ion-item><span (mouseenter)="envEnterProductSearch()">{{search.name}} {{search.price}}$</span></ion-item>
         <ion-item>
           <!-- <ion-button color="secondary" (click)="addToCart(search, 'yes', searchProductsID)">Agregar al Carrito</ion-button> -->
           <ion-button color="secondary" (click)="addToCart(search)">Agregar al Carrito</ion-button>
-          <ion-button color="primary"><ion-icon name="images-outline"></ion-icon></ion-button>
+          <ion-button (click)="openModalImageSearch(search)"><ion-icon name="image-sharp"></ion-icon></ion-button>
         </ion-item>
       </ion-list>
     </ng-template>
@@ -158,14 +162,12 @@
     <ion-grid>
 
       <ion-row style="justify-content: center;">
-        <ion-col size-lg="2" size-md="2" *ngFor="let cat of productsCategories">
+        <ion-col size-lg="2" size-md="8" size-sm="12" size-xs="12" *ngFor="let cat of productsCategories">
           <ion-card (click)="displayCategoryForPageBlock(cat.name)">
             <ion-img src={{cat.urlImage}}></ion-img>
             <ion-card-header style="background-color: white;">
               <div *ngIf="cat.name == 'platos';else OthersCategoriesNoMobile">
-                <ion-card-title class="headerCategoryProduct" style="margin-top: 8px;font-size: 13px !important;">
-                  Platos Principales
-                </ion-card-title>
+                <ion-card-title class="headerCategoryProduct">Platos Principales</ion-card-title>
               </div>
               <ng-template #OthersCategoriesNoMobile>
                 <ion-card-title class="headerCategoryProduct">{{cat.name}}</ion-card-title>
@@ -179,7 +181,7 @@
       <span id="viewTagProducts"></span>
 
       <ion-row>
-        <ion-col>
+        <ion-col size-lg="12" size-md="12" size-sm="12" size-xs="12">
           <ion-grid>
             <ion-row>
               <!--  -->
@@ -259,7 +261,6 @@
   </ng-template>
   <!-- Categories for Products Mobile or Desktop -->
 
-
   <!--Footer-->
   <footer-component>
   </footer-component>
@@ -267,6 +268,23 @@
   
 <!--Content-->
 </ion-content>
+
+<div id="myModal" class="modal" (click)="closeModalImageSearch()">
+
+  <!-- Modal content -->
+  <div class="modal-content">
+    <ion-button (click)="closeModalImageSearch()"><ion-icon name="close-sharp"></ion-icon></ion-button>
+    <img class="imgCartMuestra" src={{img}} />
+  </div>
+
+</div>
+
+  
+
+<!-- <ion-fab color="primary" vertical="bottom" horizontal="end" slot="fixed">
+  <ion-fab-button>
+    <ion-icon name="construct-outline"></ion-icon>
+  </ion-fab-button> -->
 
 <!--Button RedSocial-->
 <fab-icons-component></fab-icons-component>
