@@ -1,16 +1,17 @@
 <style>
-
+  /* Fuente Usada */
+  @import url('https://fonts.googleapis.com/css2?family=Rubik:ital,wght@1,300&display=swap');
+  
   .contentPromoText{text-align: center;margin-top: 50px;}
   @media only screen and (max-width: 476px){
     .contentPromoText{margin-top: 300px;}
   }
   
-@import url('https://fonts.googleapis.com/css2?family=Rubik:ital,wght@1,300&display=swap');
 </style>
 
 <!--Header-->
-<ion-header>
-  <ion-toolbar color="" class="cssObligatory-header">
+<ion-header >
+  <ion-toolbar color="" class="cssObligatory-header" style="border-bottom: 3px solid #f55424;">
 
     <img id="imgHeaderMain" src="https://arturos.com.pa/wp-content/uploads/2020/06/cropped-Arturos-Logo_color-af.png" style="width:200px;" />
 
@@ -24,7 +25,7 @@
     </ion-buttons>
 
     <ion-buttons slot="start">
-      <ion-menu-button menu="customMenu"></ion-menu-button>
+      <ion-menu-button menu="menu_component"></ion-menu-button>
     </ion-buttons>
     
   </ion-toolbar>
@@ -40,7 +41,7 @@
   </ion-refresher>
   <!-- Refresh Page -->
 
-  <!-- Search Home -->
+  <!-- Component Search Home -->
   <div>
     <ion-searchbar 
       placeholder="¿Que quieres comer hoy?" 
@@ -54,15 +55,17 @@
     >
     </ion-searchbar>
   </div>
-  <!-- Search Home -->
+  <!-- Component Search Home -->
 
   <!-- Search Result list -->
   <div *ngIf="flagDisplayListSearch">
     <div *ngIf="displaySrch; then thenBlock else elseBlock"></div>
+
     <ng-template #thenBlock>
       <ion-item>
         <ion-button (click)="closeSearch(searchProductsID)">Cerrar Busqueda<ion-icon name="close-sharp"></ion-icon></ion-button>
       </ion-item>
+
       <ion-list *ngFor="let search of itemsForSearch">
         <ion-item><span (mouseenter)="envEnterProductSearch()">{{search.name}} {{search.price}}$</span></ion-item>
         <ion-item>
@@ -72,6 +75,7 @@
         </ion-item>
       </ion-list>
     </ng-template>
+
     <ng-template #elseBlock>
       <div *ngIf="FlagNotFoundDataInSearchList; then thenBlockNotFound else elseBlockFound"></div>
       <ng-template #thenBlockNotFound>
@@ -85,16 +89,16 @@
   <!-- Search Result list -->
 
   <!-- Options Products -->
-  <div class="cssObligatory-contentOptionsProducts">
+  <!-- <div class="cssObligatory-contentOptionsProducts"> -->
     <!-- Image Option One -->
-    <div class="cssObligatory-OptionOneProducts">
+    <!-- <div class="cssObligatory-OptionOneProducts">
       <img  class="cssObligatory-imgOne"
             src="https://picsum.photos/700/400?random" alt="Hola" />
-    </div>
+    </div> -->
     <!-- Image Option One -->
     
     <!-- Image Option Two and three -->
-    <div class="cssObligatory-OptionTwoProducts">
+    <!-- <div class="cssObligatory-OptionTwoProducts">
 
       <div class="cssObligatory-contentImgTwo"> 
         <img  class="cssObligatory-imgTwo" 
@@ -106,12 +110,13 @@
               src="https://picsum.photos/700/400?random" alt="Hola" />
       </div>
 
-    </div>
+    </div> -->
     <!-- Image Option Two and three -->
-  </div>
+  <!-- </div> -->
   <!-- Options Products -->
 
 
+  <!-- -- -->
   <!-- Slider -->
   <!-- <div *ngIf="loadSlide">
     <ion-slides 
@@ -132,38 +137,27 @@
   </div>- --> 
   <!-- Slider -->
 
-  <div class="contentPromoText" >
-    <ion-text style="font-family: 'Rubik', sans-serif;text-decoration: underline;font-weight: bold;">Promociones</ion-text>👀
-  </div>
-
-  <!--Promociones-->
-  <ion-grid>
-    <ion-row>
-      <ion-col *ngFor="let promo of promoTest; let index =index" size="12" size-lg="3" size-md="4" size-sm="6" size-xs="12">
-        <ion-card>
-          <ion-img class="zoom" src="/assets/productos/promo.png"></ion-img>
-          <ion-card-header (click)="viewPagePromo" style="background-color: white;">
-            <ion-card-title  class="headerCategoryProduct">Ver Promocion {{index + 1}}</ion-card-title>
-          </ion-card-header>
-        </ion-card>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
-  <!--Promociones-->
-
+  <!-- Text "Platos" -->
   <div style="text-align: center;" >
     <ion-text style="font-family: 'Rubik', sans-serif;text-decoration: underline;font-weight: bold;">Nuestros Platos</ion-text>
   </div>
+  <!-- Text "Platos" -->
   
+
   <!-- Categories for Products Mobile or Desktop -->
-  <div *ngIf="flagProductsMobile; then blockPage else blockMobile"></div>
+  
+  <!-- TODO: Lo deje asi para ahorra tiempo y implementar SITEF -->
+  <!-- <div *ngIf="flagProductsMobile; then blockPage else blockMobile"></div> -->
+  <div *ngIf="true; then blockPage else blockMobile"></div>
+  
   <ng-template #blockPage>
     
     <ion-grid>
 
+      <!-- Categorys -->
       <ion-row style="justify-content: center;">
         <ion-col size-lg="2" size-md="8" size-sm="12" size-xs="12" *ngFor="let cat of productsCategories">
-          <ion-card (click)="displayCategoryForPageBlock(cat.name)">
+          <ion-card id={{cat.name}} (click)="displayCategoryForPageBlock(cat.name)">
             <ion-img src={{cat.urlImage}}></ion-img>
             <ion-card-header style="background-color: white;">
               <div *ngIf="cat.name == 'platos';else OthersCategoriesNoMobile">
@@ -177,8 +171,22 @@
           </ion-card>
         </ion-col>
       </ion-row>
+      <!-- Categorys -->
 
-      <span id="viewTagProducts"></span>
+      <div id="beforeCategoryScroll">&nbsp;</div>
+
+      <!-- products -->
+
+      <div *ngIf="dataCategory != null; then displayTitle else noDisplayTitle"></div>
+      <ng-template #displayTitle>
+        <!-- Text "Productos" -->
+        <div style="text-align: center;" >
+          <ion-text style="font-family: 'Rubik', sans-serif;text-decoration: underline;font-weight: bold;">Productos</ion-text>
+        </div>
+        <!-- Text "Productos" -->
+      </ng-template>
+      <ng-template #noDisplayTitle></ng-template>
+
 
       <ion-row>
         <ion-col size-lg="12" size-md="12" size-sm="12" size-xs="12">
@@ -205,6 +213,7 @@
           </ion-grid>
         </ion-col>
       </ion-row>
+      <!-- products -->
 
     </ion-grid>
     
@@ -261,6 +270,30 @@
   </ng-template>
   <!-- Categories for Products Mobile or Desktop -->
 
+  <div class="contentPromoText">
+    <ion-text style="font-family: 'Rubik', sans-serif;text-decoration: underline;font-weight: bold;">Promociones</ion-text>👀
+  </div>
+
+  <!--Promotions-->
+  <ion-grid>
+    <ion-row>
+      <ion-col *ngFor="let promo of promoTest; let index =index" size="12" size-lg="3" size-md="4" size-sm="6" size-xs="12">
+        <ion-card>
+          <ion-img class="zoom" src="/assets/productos/promo.png"></ion-img>
+          <ion-card-header (click)="viewPagePromo" style="background-color: white;">
+            <ion-card-title  class="headerCategoryProduct">
+              <ion-button color="primary" shape="round">
+                Ver Promocion {{index + 1}}
+              </ion-button>
+            </ion-card-title>
+          </ion-card-header>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <!--Promotions-->
+
+
   <!--Footer-->
   <footer-component>
   </footer-component>
@@ -269,6 +302,7 @@
 <!--Content-->
 </ion-content>
 
+<!-- MODAL IMG BUSQUEDA -->
 <div id="myModal" class="modal" (click)="closeModalImageSearch()">
 
   <!-- Modal content -->
@@ -278,14 +312,19 @@
   </div>
 
 </div>
+<!-- MODAL IMG BUSQUEDA -->
 
   
-
-<!-- <ion-fab color="primary" vertical="bottom" horizontal="end" slot="fixed">
-  <ion-fab-button>
-    <ion-icon name="construct-outline"></ion-icon>
-  </ion-fab-button> -->
-
-<!--Button RedSocial-->
+<!--Funciones del sitio-->
 <fab-icons-component></fab-icons-component>
-<!--Button RedSocial-->
+<!--Funciones del sitio-->
+
+<div *ngIf="dataCategory != null; then displayButtonTop else noDisplayButtonTop"></div>
+<ng-template #displayButtonTop>
+  <ion-fab (click)="goTopPage()" vertical="bottom" horizontal="start" slot="fixed">
+    <ion-fab-button style="--color:#000000; --background: #ffffff; ">
+      <ion-icon name="chevron-up-circle-outline"></ion-icon> 
+    </ion-fab-button>
+  </ion-fab>
+</ng-template>
+<ng-template #noDisplayButtonTop></ng-template>

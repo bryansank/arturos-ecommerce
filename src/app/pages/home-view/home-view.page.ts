@@ -37,7 +37,6 @@ export class HomeViewPage implements OnInit, AfterContentChecked {
   };
 
   @ViewChild('homeContent') homeContent: IonContent;
-  
 
   //-> For Device Mobile.
   private deviceWidth: number;
@@ -167,6 +166,10 @@ export class HomeViewPage implements OnInit, AfterContentChecked {
     }
   }
   public displayCategoryForPageBlock(tabCategory:string){
+
+    //todo: nuevo cambio
+    this.scrollToBeforeCategories();
+
     //cambio de estilos, se bugeaba con los de Home al llamarse igual
     tabCategory = tabCategory.toUpperCase();
     const category = this.item.filter((e:any)=>{
@@ -176,6 +179,21 @@ export class HomeViewPage implements OnInit, AfterContentChecked {
   }
   public viewPagePromo(){
     //this.router.navigate(["/promotions-view"]);
+  }
+  public scrollToBeforeCategories(): void {
+    // setTimeout(()=>{
+      // const beforeCatefories = document.getElementById('todos').offsetTop;
+      let beforeCatefories = document.getElementById('beforeCategoryScroll').offsetTop;
+      // beforeCatefories = beforeCatefories / 2;
+      console.log(beforeCatefories)
+      this.homeContent.scrollToPoint(0, (beforeCatefories-60));
+      // this.homeContent.scrollByPoint(0, beforeCatefories, 1000);
+      return;
+    // },3000);
+  }
+  public goTopPage(){
+    this.homeContent.scrollToPoint(0, 0, 0);
+    return;
   }
   /* Products Logic*/
   ///////////////////

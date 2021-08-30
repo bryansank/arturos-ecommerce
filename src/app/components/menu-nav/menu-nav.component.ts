@@ -54,4 +54,7 @@ export class MenuNavComponent implements OnInit {
 
   }
 
+  public menuClose(component:{el:any}){
+    component.el.onclose;
+  }
 }

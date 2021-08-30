@@ -1,4 +1,4 @@
-<ion-menu side="start" menuId="customMenu" contentId="main" class="my-custom-menu">
+<ion-menu side="start" menuId="menu_component" contentId="main" class="my-custom-menu">
   <ion-header>
     <ion-toolbar color="primary">
       <ion-title>Menu</ion-title>
@@ -8,11 +8,22 @@
   <ion-content>
     <ion-list>
       <!--Para que cuando demos click, lo cierre-->
-      <ion-menu-toggle *ngFor="let nav of resultNavOptions">
-        <ion-item [routerLink]="nav.redirecTo" >
-          <ion-icon slot="start" [name]="nav.icon"></ion-icon>
-          <ion-label>{{nav.txt}}</ion-label>
-        </ion-item>
+      <ion-menu-toggle *ngFor="let nav of resultNavOptions" #MenuToggle>
+        
+        <div *ngIf="nav.redirecTo == ''; then noNav else yesNav"></div>
+        <ng-template #noNav>
+          <ion-item (click)="menuClose(MenuToggle)">
+            <ion-icon slot="start" [name]="nav.icon"></ion-icon>
+            <ion-label>{{nav.txt}}</ion-label>
+          </ion-item>
+        </ng-template>
+        <ng-template #yesNav>
+          <ion-item [routerLink]="nav.redirecTo">
+            <ion-icon slot="start" [name]="nav.icon"></ion-icon>
+            <ion-label>{{nav.txt}}</ion-label>
+          </ion-item>
+        </ng-template>
+
       </ion-menu-toggle>
     </ion-list>
   </ion-content>
