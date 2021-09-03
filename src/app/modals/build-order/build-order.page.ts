@@ -137,11 +137,11 @@ export class BuildOrderPage implements OnInit {
     this.modalCtrl.dismiss();
   }
 
-  // public closeModalWithParams(){
-  //   //Parametros que devuelve el modal al cerrarse
-  //   this.modalCtrl.dismiss({
-  //     prueba: "soyguapo"
-  //   });
-  // }
+  public closeModalWithParams(){
+    //Parametros que devuelve el modal al cerrarse
+    this.modalCtrl.dismiss({
+      prueba: "soyguapo"
+    });
+  }
 
 }
