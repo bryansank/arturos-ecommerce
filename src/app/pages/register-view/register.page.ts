@@ -2,7 +2,7 @@ import { OnInit } from '@angular/core';
 //Components
 import { Router } from '@angular/router';
 import { AlertController, LoadingController } from '@ionic/angular';
-import { errorHandler } from 'src/app/errors-handler/errors-handler';
+import { handlersManager } from 'src/app/handlers/handler-errors-and-logs';
 //Servicios
 import { AuthService } from 'src/app/services/firebaseAuth.service';
 //Validar Formulario
@@ -17,7 +17,7 @@ import { FormBuilder, Validators } from "@angular/forms";
 export class RegisterPage implements OnInit {
 
   public titleHeaderPage:string = "Registrate"
-  public errorHandler = new errorHandler(this.alertController, this.router);
+  public handlersManager:handlersManager = new handlersManager(this.alertController, this.router);
   private loading : any;
 
   constructor(
@@ -46,7 +46,7 @@ export class RegisterPage implements OnInit {
       }
 
     } catch (error) {
-      this.errorHandler.handlerError(error);
+      this.handlersManager.handlerError(error);
     }
   }
 
@@ -63,7 +63,7 @@ export class RegisterPage implements OnInit {
       }
 
     } catch (error) {
-      this.errorHandler.handlerError(error);
+      this.handlersManager.handlerError(error);
     }
   }
 

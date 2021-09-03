@@ -4,7 +4,8 @@
   
   .contentPromoText{text-align: center;margin-top: 50px;}
   @media only screen and (max-width: 476px){
-    .contentPromoText{margin-top: 300px;}
+    /* TODO: Comentar este css para Heroku... Dimensiones troll*/
+    /* .contentPromoText{margin-top: 300px;} */
   }
   
 </style>
@@ -13,10 +14,11 @@
 <ion-header >
   <ion-toolbar color="" class="cssObligatory-header" style="border-bottom: 3px solid #f55424;">
 
-    <img id="imgHeaderMain" src="https://arturos.com.pa/wp-content/uploads/2020/06/cropped-Arturos-Logo_color-af.png" style="width:200px;" />
+    <img id="imgHeaderMain" src="https://arturos.com.pa/wp-content/uploads/2020/06/cropped-Arturos-Logo_color-af.png" style="width:200px;margin-left: 5%;" />
 
     <ion-buttons slot="end">
-      <ion-button (click)="goCartPage()">
+      <!-- <ion-button (click)="goCartPage()"> -->
+        <ion-button (click)="openModalCart()">
         
         <ion-badge *ngIf="dataCartHome.length > 0">{{ dataCartHome.length }}</ion-badge>
         <ion-icon name="cart" slot="icon-only"></ion-icon>
@@ -24,14 +26,16 @@
       </ion-button>
     </ion-buttons>
 
-    <ion-buttons slot="start">
+    <!-- TODO: Option menu display none for test -->
+    <!-- <ion-buttons slot="start">
       <ion-menu-button menu="menu_component"></ion-menu-button>
-    </ion-buttons>
+    </ion-buttons> -->
     
   </ion-toolbar>
 </ion-header>
 <!--Header-->
 
+<!--Content-->
 <!--Content-->
 <ion-content #homeContent>
 
@@ -88,33 +92,6 @@
   </div>
   <!-- Search Result list -->
 
-  <!-- Options Products -->
-  <!-- <div class="cssObligatory-contentOptionsProducts"> -->
-    <!-- Image Option One -->
-    <!-- <div class="cssObligatory-OptionOneProducts">
-      <img  class="cssObligatory-imgOne"
-            src="https://picsum.photos/700/400?random" alt="Hola" />
-    </div> -->
-    <!-- Image Option One -->
-    
-    <!-- Image Option Two and three -->
-    <!-- <div class="cssObligatory-OptionTwoProducts">
-
-      <div class="cssObligatory-contentImgTwo"> 
-        <img  class="cssObligatory-imgTwo" 
-              src="https://picsum.photos/700/400?random" alt="Hola" />
-      </div>
-
-      <div class="cssObligatory-contentImgThree">
-        <img  class="cssObligatory-imgThree"
-              src="https://picsum.photos/700/400?random" alt="Hola" />
-      </div>
-
-    </div> -->
-    <!-- Image Option Two and three -->
-  <!-- </div> -->
-  <!-- Options Products -->
-
 
   <!-- -- -->
   <!-- Slider -->
@@ -134,7 +111,7 @@
         <img src="/assets/productos/slide-3.png" />
       </ion-slide>
     </ion-slides>
-  </div>- --> 
+  </div> -->
   <!-- Slider -->
 
   <!-- Text "Platos" -->
@@ -301,6 +278,10 @@
   
 <!--Content-->
 </ion-content>
+<!--Content-->
+<!--Content-->
+
+
 
 <!-- MODAL IMG BUSQUEDA -->
 <div id="myModal" class="modal" (click)="closeModalImageSearch()">

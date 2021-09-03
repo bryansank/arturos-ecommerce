@@ -1,10 +1,11 @@
 import { AfterViewInit, Component, OnInit, ElementRef, NgZone, ViewChild, AfterContentChecked } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { AlertController, LoadingController, ModalController, ToastController } from '@ionic/angular';
-import { errorHandler } from 'src/app/errors-handler/errors-handler';
-import { BuildOrderPage } from 'src/app/modals/build-order/build-order.page';
+import { AlertController, ModalController, ToastController } from '@ionic/angular';
+import { handlersManager } from 'src/app/handlers/handler-errors-and-logs';
+// import { BuildOrderPage } from 'src/app/modals/build-order/build-order.page';
 import { CartService } from 'src/app/services/cart.service';
+import { LoaderIonService } from 'src/app/services/loader-ion.service';
 import { ExchangeRateDataService } from 'src/app/services/exchange-rate-data.service';
 //
 @Component({
@@ -15,7 +16,7 @@ import { ExchangeRateDataService } from 'src/app/services/exchange-rate-data.ser
 
 export class CartViewPage implements OnInit{
 
-  private errorHandler: errorHandler = new errorHandler(this.alertController, this.router);
+  private handlersManager: handlersManager = new handlersManager(this.alertController, this.router);
   public titleHeaderPage:string = "Carrito";
   public selectedItems: any[] = [];
   public itemsProduct: any[] = [];
@@ -23,7 +24,7 @@ export class CartViewPage implements OnInit{
   public totalPrice : number = 0;
   public dataExtras: any;
   
-  private loading : any;
+  // private loading : any;
   public items: any[];
   
   public flagExcludeCart:boolean = false;
@@ -51,7 +52,7 @@ export class CartViewPage implements OnInit{
 
 
   constructor( 
-    public loadingCtlr: LoadingController,
+    public loadingCtlrService: LoaderIonService,
     private cartService: CartService,
     private rateService: ExchangeRateDataService,
     private router: Router,
@@ -73,14 +74,12 @@ export class CartViewPage implements OnInit{
     this.ngOnInit()
   }
 
-  ngOnInit() { 
+  async ngOnInit(){
+    await this.loadingCtlrService.loadingIon();
 
-    // this.presentLoading().then(()=>{
-
-      this.rateService.getExchangeRate().subscribe(
-        rate => {
+    this.rateService.getExchangeRate().subscribe(
+      (rate)=> {
           this.dataCurrency.bolivares =  rate[0].rate.$numberDecimal;
-  
           this.items = this.getAllProductCart();
     
           //promo
@@ -98,7 +97,7 @@ export class CartViewPage implements OnInit{
 
             return;
           }
-  
+
           if(this.items.length != 0){
   
             
@@ -129,32 +128,31 @@ export class CartViewPage implements OnInit{
             this.totalPrice = 0;
             this.presentToast("Agrega algo al carrito", 1800);
           }
-  
-        },err =>{
-          console.log("Hubo un error Inesperado: ", err);
-          this.dataCurrency.bolivares = 0;
-          this.errorHandler.handlerError(err);
-          
-        }
-      );
-  
-      this.cartService.getProducts().subscribe( 
-        (data:any)=>{
-          this.dataExtras = data.filter(
-            (i:any)=> i.category.toUpperCase()=="POSTRES" 
-              || i.category.toUpperCase()=="EXTRAS" 
-              || i.category.toUpperCase()=="BEBIDAS" ? i : ""
+
+          //Si se trajo la tasa, carga el carrito.
+
+          this.cartService.getProducts().subscribe( 
+            (data)=>{
+              this.dataExtras = data.filter(
+                (i:any)=> i.category.toUpperCase()=="POSTRES" 
+                  || i.category.toUpperCase()=="EXTRAS" 
+                  || i.category.toUpperCase()=="BEBIDAS" ? i : ""
+              );
+              this.loadingCtlrService.dismissLoader();
+            },(error)=>{
+              this.handlersManager.handlerError(error, true, "No cargaron los productos.");
+              this.loadingCtlrService.dismissLoader();
+            }
           );
 
-        },err=>{
-          //TODO: usar extras
-          // console.log(err)
-        }
-      );
+      },(error)=>{
+        this.dataCurrency.bolivares = 0;
+        this.loadingCtlrService.dismissLoader();
+        this.handlersManager.handlerError(error);
+      }
+    );
 
-    // }).catch(()=>{
-    //   this.hideLoading();
-    // });
+    // this.loadingCtlrService.dismissLoader()
 
   }
 
@@ -303,21 +301,21 @@ export class CartViewPage implements OnInit{
     });
     toast.present();
   }
-  public async presentLoading() {
-    this.loading = await this.loadingCtlr.create({
-      cssClass: 'my-custom-class',
-      message: 'Por favor, espere.',
-    });
+  // public async presentLoading() {
+  //   this.loading = await this.loadingCtlr.create({
+  //     cssClass: 'my-custom-class',
+  //     message: 'Por favor, espere.',
+  //   });
 
-    return this.loading.present();
-  }
-  public async hideLoading() {
-    this.loadingCtlr.getTop().then(loader => {
-      if (loader) {
-        loader.dismiss();
-      }
-    });
-  }
+  //   return this.loading.present();
+  // }
+  // public async hideLoading() {
+  //   this.loadingCtlr.getTop().then(loader => {
+  //     if (loader) {
+  //       loader.dismiss();
+  //     }
+  //   });
+  // }
   public async ShowPopup(msnHeader:string,msn:string){
     
     const alert = await this.alertController.create(

@@ -11,7 +11,7 @@ import * as firebase from 'firebase/app';
 import { AngularFirestore, AngularFirestoreDocument } from "@angular/fire/firestore";
 import { AlertController } from '@ionic/angular';
 //
-import { errorHandler } from '../errors-handler/errors-handler';
+import { handlersManager } from '../handlers/handler-errors-and-logs';
 import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
 
@@ -23,7 +23,7 @@ import { environment } from 'src/environments/environment';
 export class AuthService {
 
   public dataUser$: Observable<User>;
-  public errorHandlre = new errorHandler(this.alertController, this.router);
+  public handlersManager = new handlersManager(this.alertController, this.router);
 
   //guard observable
   public authenticationState : BehaviorSubject<boolean> = new BehaviorSubject(false);
@@ -71,7 +71,7 @@ export class AuthService {
     try {
       return (await this.firebaseAuth.currentUser).sendEmailVerification();
     } catch (error) {
-      this.errorHandlre.handlerError(error);
+      this.handlersManager.handlerError(error);
     }
   }
 
@@ -79,7 +79,7 @@ export class AuthService {
     try { 
       return this.firebaseAuth.sendPasswordResetEmail(email);
     } catch (error) {
-      this.errorHandlre.handlerError(error);
+      this.handlersManager.handlerError(error);
     }
   }
 
@@ -94,7 +94,7 @@ export class AuthService {
 
     } catch (error) {
       //debugger;
-      this.errorHandlre.handlerError(error);
+      this.handlersManager.handlerError(error);
     }
   }
 
@@ -104,7 +104,7 @@ export class AuthService {
       await  this.sendVerificateEmailMethod();
       return user;
     } catch (error) {
-      this.errorHandlre.handlerError(error);
+      this.handlersManager.handlerError(error);
     }
   }
 
@@ -114,7 +114,7 @@ export class AuthService {
       this.UpdateUserDataInFireStore(user);
       return user;
     } catch (error) {
-      this.errorHandlre.handlerError(error);
+      this.handlersManager.handlerError(error);
     }
   }
 
@@ -125,7 +125,7 @@ export class AuthService {
       this.Authenticated(false);
       
     } catch (error) {
-      this.errorHandlre.handlerError(error);
+      this.handlersManager.handlerError(error);
     }
   }
 

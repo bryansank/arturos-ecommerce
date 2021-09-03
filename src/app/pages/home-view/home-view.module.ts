@@ -8,6 +8,8 @@ import { HomeViewPageRoutingModule } from './home-view-routing.module';
 
 import { HomeViewPage } from './home-view.page';
 import { OurComponentsModule } from 'src/app/components/components.module';
+import { BuildOrderPageModule } from 'src/app/modals/build-order/build-order.module';
+import { BuildOrderPage } from 'src/app/modals/build-order/build-order.page';
 
 @NgModule({
   imports: [
@@ -16,7 +18,14 @@ import { OurComponentsModule } from 'src/app/components/components.module';
     IonicModule,
     HomeViewPageRoutingModule,
     OurComponentsModule,
+
+    //Para Modal
+    BuildOrderPageModule
   ],
-  declarations: [HomeViewPage]
+  declarations: [HomeViewPage],
+  //Para Modal
+  entryComponents: [
+    BuildOrderPage
+  ]
 })
 export class HomeViewPageModule {}

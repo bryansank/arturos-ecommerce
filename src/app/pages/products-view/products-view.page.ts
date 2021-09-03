@@ -1,7 +1,7 @@
 import { Component, OnInit, AfterContentChecked, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController, LoadingController, ToastController, IonContent, Platform } from '@ionic/angular';
-import { errorHandler } from 'src/app/errors-handler/errors-handler';
+import { handlersManager } from 'src/app/handlers/handler-errors-and-logs';
 import { CategoryProduct } from 'src/app/interfaces/category';
 import { CartService } from 'src/app/services/cart.service';
 //
@@ -15,7 +15,7 @@ import { CartService } from 'src/app/services/cart.service';
 export class ProductsViewPage implements OnInit, AfterContentChecked {
 
   public titleHeaderPage:string = "Platos";
-  private errorHandler:errorHandler  = new errorHandler(this.alertController, this.router);
+  private errorHandler:handlersManager  = new handlersManager(this.alertController, this.router);
 
   private loading : any;
   public cartHome: any = [];

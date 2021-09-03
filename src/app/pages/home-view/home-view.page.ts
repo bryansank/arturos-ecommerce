@@ -1,9 +1,11 @@
 import { AfterContentChecked, Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { AlertController, IonContent, IonSlides, LoadingController, NavController, Platform, ToastController } from '@ionic/angular';
-import { errorHandler } from 'src/app/errors-handler/errors-handler';
+import { AlertController, IonContent, IonSlides, LoadingController, ModalController, NavController, Platform, ToastController } from '@ionic/angular';
+import { handlersManager } from 'src/app/handlers/handler-errors-and-logs';
 import { CategoryProduct } from 'src/app/interfaces/category';
+import { BuildOrderPage } from 'src/app/modals/build-order/build-order.page';
 import { CartService } from 'src/app/services/cart.service';
+import { LoaderIonService } from 'src/app/services/loader-ion.service';
 
 @Component({
   selector: 'app-home-view',
@@ -12,35 +14,34 @@ import { CartService } from 'src/app/services/cart.service';
 })
 export class HomeViewPage implements OnInit, AfterContentChecked {
 
+  @ViewChild('homeContent') homeContent: IonContent;
+
   //-> For Global Functions
-  public loading: any;
+  // public loading: any;
   public flagReloadBug:boolean = true;
   public loadSlide:boolean = false;
-  private errorHandler: errorHandler = new errorHandler(this.alertController, this.router);
-
+  private handlersManager: handlersManager = new handlersManager(this.alertController, this.router);
   //-> For Data Cart
   public dataCartHome: any = [];
   public item: any = [];
   public dataCategory: any;
-
   //-> For search list
   public flagDisplayListSearch: boolean = false;
   public displaySrch: boolean = true;
   public itemsForSearch:any;
   public FlagNotFoundDataInSearchList: boolean = true;
   public img:string;
-  
   //-> For Slider Products
   public slideOpts: any = {
     initialSlide: 0,
     speed: 400,
   };
-
-  @ViewChild('homeContent') homeContent: IonContent;
-
   //-> For Device Mobile.
   private deviceWidth: number;
   public flagProductsMobile:boolean = true;
+
+
+
 
   // //TODO: Cambiar a un servicio
   public productsCategories: CategoryProduct[]  = [
@@ -71,14 +72,20 @@ export class HomeViewPage implements OnInit, AfterContentChecked {
   promoTest = [1, 2, 3, 4];
 
 
+
+
+
+
   constructor(
     private cartService: CartService,
     private router: Router,
     private alertController: AlertController,
-    public loadingCtlr: LoadingController,
+    //public loadingCtlr: LoadingController,
+    private loadingCtlrService: LoaderIonService,
     public toastController: ToastController,
     public navCtrl: NavController,
-    private platform: Platform
+    private platform: Platform,
+    private modalCtrl: ModalController
   ){
     this.platform.ready().then(()=>{  
       
@@ -98,57 +105,45 @@ export class HomeViewPage implements OnInit, AfterContentChecked {
     this.getCart();
   }
 
-  ngOnInit() {
+  async ngOnInit() {
+
+    await this.loadingCtlrService.loadingIon();
     
-    this.presentLoading().then(
-      ()=>{
-        this.cartService.getProducts().subscribe(
-          productsData=>{
-            this.item = productsData;
-            //llenamos dataCartHome.
-            this.getCart();
-
-            this.hideLoading().then(()=>{
-              this.flagReloadBug = false;
-            }).catch(()=>{
-              this.flagReloadBug = true;
-            });
-            
-            this.loadIonViewForSlides();
-
-          }, error =>{
-
-            this.hideLoading().then(()=>{
-              this.flagReloadBug = false;
-            }).catch(()=>{
-              this.flagReloadBug = true;
-            });
-    
-            this.errorHandler.handlerError(error, true, "No pudimos cargar los productos.");
-          }
-        );
+    this.cartService.getProducts().subscribe(
+      (productsData)=> {
+        this.item = productsData;
+        this.getCart();//llenamos dataCartHome.
+        this.loadIonViewForSlides();
+        this.loadingCtlrService.dismissLoader();
+        this.welcomeClients();
+      },(error)=>{
+        this.loadingCtlrService.dismissLoader();
+        this.handlersManager.handlerError(error, true, "No pudimos cargar los productos.");
       }
-    ).catch(()=>{
-      this.hideLoading();
-    });
+    );
+  }
 
+  public welcomeClients():void{
     setTimeout(()=>{
-      this.hideLoading();
       this.ShowPopup(
         "¡Bienvenidos!", 
         "Te recordamos que si usas algun tipo de bloqueador de anuncios debes desactivarlo.",
         "No usaremos ningun dato personal fuera de este sitio o con fines comerciales."
       );
-    }, 4000);
+    }, 1000);
+  }
 
-    setTimeout(()=>{
-      //Esto deberia detener el bug del reaload.
-      if(this.flagReloadBug){
-        this.hideLoading();
-        window.location.reload();
-      }
-    }, 10000);
-
+  public async openModalCart(){
+    const modalForPay = await this.modalCtrl.create({
+      component: BuildOrderPage,
+      // componentProps: {
+      //   dataCart: [0, 1],
+      //   extras: "hola",
+      // }
+    });
+    await modalForPay.present();
+    const {data} = await modalForPay.onDidDismiss();
+    //    console.log(data);
   }
 
   ///////////////////
@@ -167,7 +162,6 @@ export class HomeViewPage implements OnInit, AfterContentChecked {
   }
   public displayCategoryForPageBlock(tabCategory:string){
 
-    //todo: nuevo cambio
     this.scrollToBeforeCategories();
 
     //cambio de estilos, se bugeaba con los de Home al llamarse igual
@@ -181,15 +175,9 @@ export class HomeViewPage implements OnInit, AfterContentChecked {
     //this.router.navigate(["/promotions-view"]);
   }
   public scrollToBeforeCategories(): void {
-    // setTimeout(()=>{
-      // const beforeCatefories = document.getElementById('todos').offsetTop;
-      let beforeCatefories = document.getElementById('beforeCategoryScroll').offsetTop;
-      // beforeCatefories = beforeCatefories / 2;
-      console.log(beforeCatefories)
+      const beforeCatefories = document.getElementById('beforeCategoryScroll').offsetTop;      
       this.homeContent.scrollToPoint(0, (beforeCatefories-60));
-      // this.homeContent.scrollByPoint(0, beforeCatefories, 1000);
       return;
-    // },3000);
   }
   public goTopPage(){
     this.homeContent.scrollToPoint(0, 0, 0);
@@ -202,8 +190,9 @@ export class HomeViewPage implements OnInit, AfterContentChecked {
   /////////////////
   /////////////////
   /*Cart LOGIC*/
-  public getCart() {
+  public getCart():void{
     this.dataCartHome = this.cartService.getCart();
+    //return this.dataCartHome
   }
   public goCartPage() {
     this.router.navigate(["cart-view"]);
@@ -343,21 +332,23 @@ export class HomeViewPage implements OnInit, AfterContentChecked {
   /////////////////
   /////////////////
   /* GLOBAL FUNCTIONS */
-  public async presentLoading(){
-    this.loading = await this.loadingCtlr.create({
-      cssClass: 'my-custom-class',
-      message: 'Por favor espere.',
-    });
+  // public async presentLoading(){
+  //   this.loading = await this.loadingCtlr.create({
+  //     cssClass: 'my-custom-class',
+  //     message: 'Por favor espere.',
+  //   });
 
-    return this.loading.present();
-  }
-  public async hideLoading(){
-    this.loadingCtlr.getTop().then(loader => {
-      if (loader) {
-        loader.dismiss();
-      }
-    });
-  }
+  //   return this.loading.present();
+  // }
+
+  // public async hideLoading(){
+  //   this.loadingCtlr.getTop().then(loader => {
+  //     if (loader) {
+  //       loader.dismiss();
+  //     }
+  //   });
+  // }
+
   public loadIonViewForSlides(){
     this.loadSlide = true;
   }

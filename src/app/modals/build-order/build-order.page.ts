@@ -9,111 +9,139 @@ import { CartService } from 'src/app/services/cart.service';
 })
 export class BuildOrderPage implements OnInit {
 
-  constructor(private modalCtrl: ModalController) { }
+  constructor(
+    private modalCtrl: ModalController, 
+    private cartService: CartService
+  ){}
 
-  @Input() dataCart: any;
-  @Input() extras: any;
-  
-  public dataProducts:any = []; 
-  public dataPromotions:any = [];
-  public extraData :any = [];
-  public bebidaData :any = [];
-  public postreData :any = [];
-  
-  // public extraInCart: any = [];
-  public flags:any = {
-    flagExtraSection: false,
-    flagBebidasSection: false,
-    flagPostresSection: false,
-    flafPromoExist: false,
-  }
+  // @Input() dataCart: any;
+  // @Input() extras: any;
 
-  public total = 273;
-  
-  
+  public rate = 1.00;
+  public currency = "$";
 
-  public form = [
-    { val: 'Pepperoni', isChecked: true },
-    { val: 'Sausage', isChecked: false },
-    { val: 'Mushroom', isChecked: false }
-  ];
+  public items: any[];
+  public selectedItems: any[] = [];
+  public itemsProduct: any[] = [];
+  public itemsPromotions: any[] = [];
+  public totalToPay: number = 0;
 
-  ngOnInit() {
-    //Inciando productos del carrito con sus extras/bebidas.
-    this.dataProducts = this.dataCart[0];
-    this.dataPromotions = this.dataCart[1];
+  public flagPromo: boolean = false;
+  public flagCartClean: boolean = false;
 
-    this.dataPromotions.length == 0 ? this.flags.flafPromoExist = false : this.flags.flafPromoExist = true;
-    
-    this.extraData = this.extras.filter((i:any)=> i.category.toUpperCase() == "EXTRAS" ? i : null);
-    this.extraData = this.extraData[0].products.map((i:any)=> { return {...i, count: 0}});
+  ngOnInit(){
+    this.items = this.getAllProductCart();
+    // console.log(this.items)
 
-    this.bebidaData = this.extras.filter((i:any)=> i.category.toUpperCase() == "BEBIDAS" ? i : null);
-    this.bebidaData = this.bebidaData[0].products.map((i:any)=> { return {...i, count: 0}});
-
-    this.postreData = this.extras.filter((i:any)=> i.category.toUpperCase() == "POSTRES" ? i : null);
-    this.postreData = this.postreData[0].products.map((i:any)=> { return {...i, count: 0}});
-  }
-
-  public moreExtras(section:string){
-    if(section.toLowerCase()=="bebidas"){
-      this.flags.flagBebidasSection = this.flags.flagBebidasSection ? false : true;
-    }else if(section.toLowerCase()=="postres"){
-      this.flags.flagPostresSection = this.flags.flagPostresSection ? false : true;
-    }else{
-      this.flags.flagExtraSection = this.flags.flagExtraSection ? false : true;
+    //No hay nada en el carrito.
+    if(this.items == null || this.items == undefined){
+      this.totalToPay = 0;
+      // this.presentToast("Agrega algo al carrito", 1800);
+      console.log("llego vacio el carrito");
+      return;
     }
+
+    //Find Promo in items, for print in the view.
+    const findPromo = this.items.find((i:any)=> i.hasOwnProperty('promo') == true ? true : false);
+    findPromo != undefined ? this.flagPromo = true : this.flagPromo = false;
+
+    if(this.items.length != 0){
+      this.selectedItems = this.items;
+      this.flagCartClean = true;
+
+      //Data de Products/Promo
+      this.itemsProduct = this.selectedItems.filter((i:any)=> !i.hasOwnProperty('promo'));
+      this.itemsPromotions = this.selectedItems.filter((i:any)=> i.hasOwnProperty('promo'));
+
+      this.calculateTotalToPay();
+
+    }else{
+      this.totalToPay = 0;
+      // this.presentToast("Agrega algo al carrito", 1800);
+      console.log("llego vacio el carrito 2");
+    }
+  }
+
+  public calculateTotalToPay():void{
+    this.totalToPay = this.items.reduce(
+      (counterIni, objActual) => {return((parseFloat(counterIni) + (objActual.price * objActual.count)).toFixed(2))}, 0
+    );
+  }
+
+  public deleteProduct(excludeNameProduct:any){
+    excludeNameProduct = excludeNameProduct.trim().trimStart();
+
+    this.itemsProduct = this.itemsProduct.filter((e:any)=>e.name != excludeNameProduct);
+    this.itemsPromotions = this.itemsPromotions.filter((e:any)=>e.title != excludeNameProduct);
+
+    this.cartService.deleteAllProducts();
+    
+    this.itemsProduct.map(e=>{
+      this.cartService.addProduct(e);
+    });
+
+    this.itemsPromotions.map(e=>{
+      this.cartService.addProduct(e);
+    });
+
+    // this.flagExcludeCart = true;
+    this.ngOnInit();
+  }
+
+  public addCountProduct(productName:string){
+    this.cartService.deleteAllProducts();
+    this.selectedItems.map(i => {
+      if(i.name == productName){
+        i.count += 1;
+      }
+      this.cartService.addProduct(i);
+    });
+    this.ngOnInit();
+  }
+
+  public subCountProduct(productName:string){
+    this.cartService.deleteAllProducts();
+    this.selectedItems.map(i => {
+      if(i.name == productName){
+        if(i.count != 1){
+          i.count -= 1;
+        }
+      }
+      this.cartService.addProduct(i);
+    });
+    this.ngOnInit();
+  }
+
+  public cartClear(){
+    this.selectedItems = null;
+    this.itemsProduct = null;
+    this.itemsPromotions = null;
+    this.totalToPay = 0;
+
+    this.cartService.deleteAllProducts();
+    this.flagCartClean = false;
+    this.flagPromo = false;
+    this.ngOnInit();
+  }
+
+  public getAllProductCart(){
+    return this.cartService.getCart();
   }
 
   public closeModal(){
     this.closeModalWithOuthParams();
-  }
-
-  editContent(){
-    console.log("editContent")
+    // this.closeModalWithParams();
   }
 
   public closeModalWithOuthParams(){
     this.modalCtrl.dismiss();
   }
 
-  public closeModalWithParams(){
-    //Parametros que devuelve el modal al cerrarse
-    this.modalCtrl.dismiss({
-      prueba: "soyguapo"
-    });
-  }
-
-  
-  public addCountProduct(extraObj:any, category:string){
-    
-    let data: any = [];
-
-    if(category.toLowerCase()=="bebidas"){
-      data = this.bebidaData.filter((i:any)=>{return i.name == extraObj.name});
-    }else if(category.toLowerCase()=="postres"){
-      data = this.postreData.filter((i:any)=>{return i.name == extraObj.name});
-    }else{
-      data = this.extraData.filter((i:any)=>{return i.name == extraObj.name});
-    }
-
-    data.map((i:any)=> i.count++);
-
-  }
-
-  public subCountProduct(extraObj:any, category:string){
-
-    let data: any = [];
-
-    if(category.toLowerCase()=="bebidas"){
-      data = this.bebidaData.filter((i:any)=>{return i.name == extraObj.name});
-    }else if(category.toLowerCase()=="postres"){
-      data = this.postreData.filter((i:any)=>{return i.name == extraObj.name});
-    }else{
-      data = this.extraData.filter((i:any)=>{return i.name == extraObj.name});
-    }
-
-    data.map((i:any)=> i.count--);
-  }
+  // public closeModalWithParams(){
+  //   //Parametros que devuelve el modal al cerrarse
+  //   this.modalCtrl.dismiss({
+  //     prueba: "soyguapo"
+  //   });
+  // }
 
 }

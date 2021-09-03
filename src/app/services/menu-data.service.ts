@@ -7,9 +7,9 @@ import { DataNav } from '../interfaces/dataNav';
 })
 export class MenuDataService {
 
-  public dataMenu;
-  public dataMenuLogin;
-  public dataMenuAdmin;
+  public dataMenu:any;
+  public dataMenuLogin:any;
+  public dataMenuAdmin:any;
 
   constructor(private http: HttpClient) {
      this.dataMenu = this.http.get<DataNav[]>('/assets/data/menu.json');
@@ -17,15 +17,15 @@ export class MenuDataService {
      this.dataMenuAdmin = this.http.get<DataNav[]>('/assets/data/menuAdmin.json');
    }
 
-  getMenuOptions(){
+  public getMenuOptions():any{
     return this.dataMenu;
   }
 
-  getMenuOptionsLogin(){
+  public getMenuOptionsLogin():any{
     return this.dataMenuLogin;
   }
   
-  getMenuOptionsAdmin(){
+  public getMenuOptionsAdmin():any{
     return this.dataMenuAdmin;
   }
 

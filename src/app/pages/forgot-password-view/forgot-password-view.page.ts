@@ -2,7 +2,7 @@ import { OnInit } from '@angular/core';
 //Components
 import { Router } from '@angular/router';
 import { AlertController, LoadingController } from '@ionic/angular';
-import { errorHandler } from 'src/app/errors-handler/errors-handler';
+import { handlersManager } from 'src/app/handlers/handler-errors-and-logs';
 //Servicios
 import { AuthService } from 'src/app/services/firebaseAuth.service';
 //Validar Formulario
@@ -17,7 +17,7 @@ import { FormBuilder, Validators } from "@angular/forms";
 export class ForgotPasswordViewPage implements OnInit {
 
   public titleHeaderPage:string = "Recuperar Contraseña";
-  private errorHandler = new errorHandler(this.alertController, this.router);
+  private handlersManager:handlersManager = new handlersManager(this.alertController, this.router);
   private loading : any;
 
   constructor(
@@ -41,7 +41,7 @@ export class ForgotPasswordViewPage implements OnInit {
       setTimeout(()=>{ this.router.navigate(["login-view"])}, 60000);
       
     } catch (error) {
-      this.errorHandler.handlerError(error);
+      this.handlersManager.handlerError(error);
     }
   }
 

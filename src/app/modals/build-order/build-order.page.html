@@ -7,13 +7,16 @@
     font-weight: bold;
     --background: --background: var(--ion-item-background, var(--ion-background-color, #fff));
   }
+  .priceTotal{
+    color:greenyellow
+  }
 </style>
 
 <!-- Header Modal -->
 <!-- Header Modal -->
 <ion-header>
   <ion-toolbar>
-    <ion-title class="titleHeader">Total en Carrito: <span class="priceTotal">{{total}}$</span></ion-title>
+    <ion-title class="titleHeader">Total en Carrito: <span class="priceTotal">{{totalToPay}}$</span></ion-title>
     
     <ion-buttons slot="end">
       <ion-button (click)="closeModal()">
@@ -28,129 +31,94 @@
 
 
 <ion-content>
+  <!--Items in the cart no promo-->
+  <div *ngFor="let item of itemsProduct;" style="border-bottom:1x solid #fe5000">
 
-  <!-- Edit Content Products -->
-  <ion-text color="primary" style="text-align:center;">
-    <h1>¡Revisa tu orden!</h1>
-  </ion-text>
+    <ion-item lines="none">
+      {{item.count}}x. - {{item.name}} - {{(item.price * rate).toFixed(2)}}{{currency}}
+      <span slot="end">
+        {{ ((item.price * item.count) * rate).toFixed(2) }}
+        {{currency}}
+      </span>
+    </ion-item>
 
-  <ion-list *ngFor="let plist of dataProducts">
-    <ion-item>
-      <span style="font-size: 15px;">{{plist.name}} </span>
+    <!--tooloptions for c/u-->
+    <ion-item lines="none">
+      <ion-button (click)="deleteProduct(item.name)">Eliminar</ion-button>
+      <ion-button (click)="subCountProduct(item.name)">-</ion-button>
+      <ion-button>{{item.count}}</ion-button>
+      <ion-button (click)="addCountProduct(item.name)">+</ion-button>
+    </ion-item>
     
-      <span *ngIf="plist.count > 1; then MasDeUno else Uno"></span>
-      <ng-template #MasDeUno>
-        <span style="font-size: 13px;padding-left: 2px;">x{{plist.count}}</span>
-      </ng-template>
-      <ng-template #Uno></ng-template>
-      
-      <ion-item lines="none" slot="end" lines="none" (click)="editContent()">
-        <ion-button style="font-size: 10px;" color="primary">Personalizar</ion-button>
-        <!-- <ion-button style="font-size: 10px;" color="primary" class="item" (click)="editContent()">
-          Personalizar
-        </ion-button> -->
-      </ion-item>
+  </div>
+  <!--Items in the cart-->
 
-    </ion-item>
-    <!-- aqui colocas el detalle -->
-    <!-- <ion-item *ngFor="let entry of form">
-      <ion-label>{{entry.val}}</ion-label>
-      <ion-checkbox slot="end" [(ngModel)]="entry.isChecked"></ion-checkbox>
-    </ion-item> -->
-  </ion-list>
-
-  <div *ngIf="this.flags.flafPromoExist; then PromoExistBlock else elsePromoExistBlock"></div>
-  <ng-template #PromoExistBlock>
+  <!--Items Promotions in the cart-->
+  <div *ngIf="flagPromo; then PromothenBlock else PromoelseBlock"></div>
+  <ng-template #PromothenBlock>
     <ion-text color="primary" style="text-align:center;">
-      <h3>Promociones</h3>
+      <h3>Promociones:</h3>
     </ion-text>
-  
-    <ion-list *ngFor="let promolist of dataPromotions">
-      <ion-item>
-        {{promolist.title}}
+    <div *ngFor="let promoItem of itemsPromotions;">
+      <ion-item lines="none">
+        {{promoItem.count}}x. {{promoItem.title}} - {{(promoItem.price * rate).toFixed(2)}}{{currency}}
+        <span slot="end">
+          {{ ((promoItem.price * promoItem.count) * rate).toFixed(2) }}
+          {{currency}}
+        </span>
       </ion-item>
-    </ion-list>
+      <!--tooloptions for c/u-->
+      <!-- <ion-item lines="none">
+        <ion-button (click)="deleteProduct(promoItem.title)">Eliminar</ion-button>
+      </ion-item> -->
+    </div>
   </ng-template>
-  <ng-template #elsePromoExistBlock></ng-template>
-  <!-- Edit Content Products -->
+  <ng-template #PromoelseBlock></ng-template>
+  <!--Items Promotions in the cart-->
 
-  
-  <!-- Sections of Topics -->
-
-    <ion-text color="primary" style="text-align:center;">
-      <h3>¡Aprovecha nuestros Extras!</h3>
-    </ion-text>
-
-    <!-- Extras Section -->
-    <ion-item>
-      <ion-label>Ver Extras</ion-label>
-      <ion-checkbox (ionChange)="moreExtras('extras')"></ion-checkbox>
+  <!--Total section-->
+  <div style="border-bottom: 1px solid #dddddd;">
+    <ion-item lines="none">
+      Total a pagar: <span slot="end">{{ (totalToPay * rate).toFixed(2) }}{{currency}}</span>
     </ion-item>
+    
+    <div *ngIf="flagCartClean; then thenBlock else elseBlock"></div>
+    <ng-template #thenBlock>
 
-    <div *ngIf="flags.flagExtraSection; then extraSecBlock else elseExtraSecBlock"></div>
-    <ng-template #extraSecBlock>
-      <ion-list *ngFor="let extras of extraData">
-        <ion-item>
-          <ion-button color="secondary" (click)="subCountProduct(extras, 'extras')">-</ion-button>
-          <ion-button color="secondary">{{extras.count}}</ion-button>
-          <ion-button color="secondary" (click)="addCountProduct(extras, 'extras')">+</ion-button>
-          {{extras.name}} 
-          <ion-item slot="end" lines="none" class="priceAmount">
-            +{{extras.price}}$
-          </ion-item>
-        </ion-item>
-      </ion-list>
+      <!-- <ion-item>
+        <ion-label>Tipo de Cambio a Usar:</ion-label>
+        <ion-select placeholder="Selecciona Uno" value="dolares" (ionChange)="changeCurrency($event)">
+          <ion-select okText="Okay" cancelText="Cancelar"></ion-select>
+          <ion-select-option value="dolares">Dolares</ion-select-option>
+          <ion-select-option value="bolivares">Bolivares</ion-select-option>
+        </ion-select>
+        <div *ngIf="flagExchange; then thenExchangeRate else elseExchangeRate"></div>
+        <ng-template #thenExchangeRate>
+          <ion-text>{{exchangeRate}}</ion-text>
+        </ng-template>
+        <ng-template #elseExchangeRate></ng-template>
+      </ion-item> -->
+
+      <!-- Botones de accion -->
+      <!-- Botones de accion -->
+      <ion-item lines="none">
+        <!-- <ion-button color="secondary" (click)="cartClear()" class="btnActionCart">Vaciar mi carrito</ion-button> -->
+        <ion-button color="secondary" (click)="cartClear()" class="btnActionCart">Vaciar mi carrito</ion-button>
+        <!-- <ion-button color="secondary" (click)="openModalForPay()" class="btnActionCart" disabled={{flagExtrasReady}}>Personalizar Pedido</ion-button> -->
+      </ion-item>
+
+      <!-- <ion-item lines="none"> -->
+        <!-- <ion-button color="primary" disabled (click)="pay()">Pagar</ion-button> -->
+        <!-- <ion-button color="primary" disabled>Pagar</ion-button> -->
+      <!-- </ion-item> -->
+      
+      <!-- Botones de accion -->
+      <!-- Botones de accion -->
+
     </ng-template>
-    <ng-template #elseExtraSecBlock></ng-template>
-    <!-- Extras Section -->
-
-
-    <!-- BEBIDAS Section -->
-    <ion-item>
-      <ion-label>Ver Bebidas</ion-label>
-      <ion-checkbox (ionChange)="moreExtras('bebidas')"></ion-checkbox>
-    </ion-item>
-
-    <div *ngIf="flags.flagBebidasSection; then bebidasSecBlock else elseBebidasSecBlock"></div>
-    <ng-template #bebidasSecBlock>
-      <ion-list *ngFor="let bebidas of bebidaData">
-        <ion-item>
-          <ion-button color="secondary" (click)="subCountProduct(bebidas, 'bebidas')">-</ion-button>
-          <ion-button color="secondary">{{bebidas.count}}</ion-button>
-          <ion-button color="secondary" (click)="addCountProduct(bebidas, 'bebidas')">+</ion-button>
-          {{bebidas.name}} 
-          <ion-item slot="end" lines="none" class="priceAmount">
-            +{{bebidas.price}}$
-          </ion-item>
-        </ion-item>
-      </ion-list>
-    </ng-template>
-    <ng-template #elseBebidasSecBlock></ng-template>
-    <!-- BEBIDAS Section -->
-
-    <!-- POSTRES Section -->
-    <ion-item>
-      <ion-label>Ver Postres</ion-label>
-      <ion-checkbox (ionChange)="moreExtras('postres')"></ion-checkbox>
-    </ion-item>
-
-    <div *ngIf="flags.flagPostresSection; then postresSecBlock else elsePostresSecBlock"></div>
-    <ng-template #postresSecBlock>
-      <ion-list *ngFor="let postres of postreData">
-        <ion-item>
-          <ion-button color="secondary" (click)="subCountProduct(postres, 'postres')">-</ion-button>
-          <ion-button color="secondary">{{postres.count}}</ion-button>
-          <ion-button color="secondary" (click)="addCountProduct(postres, 'postres')">+</ion-button>
-          {{postres.name}} 
-          <ion-item slot="end" lines="none" class="priceAmount">
-            +{{postres.price}}$
-          </ion-item>
-        </ion-item>
-      </ion-list>
-    </ng-template>
-    <ng-template #elsePostresSecBlock></ng-template>
-    <!-- POSTRES Section -->
-  <!-- Sections of Topics -->
+    <ng-template #elseBlock></ng-template>
+  </div>
+  <!--Total section-->
   
 </ion-content>
 

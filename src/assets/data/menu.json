@@ -5,11 +5,6 @@
         "redirecTo": "/home-view"
     },
     {
-        "icon" : "cart",
-        "txt": "Carrito",
-        "redirecTo": "/cart-view"
-    },
-    {
         "icon" : "close-outline",
         "txt": "Cancelar",
         "redirecTo": ""
