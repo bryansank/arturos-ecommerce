@@ -1,6 +1,8 @@
 #Añadimos el src\app\app-routing.module.ts al ignore, por nuevas rutas que pueden ser vulneradas.
-app-routing.module.ts
-src/app/app-routing.module.ts
+*_app-routing.module.ts
+
+
+
 
 #obviar el archivo enviroment cuando se sube a Github!!!!!!!
 

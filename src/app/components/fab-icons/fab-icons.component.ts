@@ -22,7 +22,7 @@ export class FabIconsComponent implements OnInit {
   }
 
   goCart(){
-    this.router.navigate(['cart-view']);
+    // this.router.navigate(['cart-view']);
   }
 
   upPage(){
