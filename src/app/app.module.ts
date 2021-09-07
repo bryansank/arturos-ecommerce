@@ -5,7 +5,7 @@ import { RouteReuseStrategy } from '@angular/router';
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 
 import { AppComponent } from './app.component';
-import { AppRoutingModule } from './_app-routing.module';
+import { AppRoutingModule } from './app-routing.module';
 import { OurComponentsModule } from './components/components.module';
 import { HttpClientModule } from '@angular/common/http';
 
