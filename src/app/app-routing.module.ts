@@ -23,7 +23,11 @@ const routes: Routes = [
     //loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)
     //LazidLoad ?
     loadChildren: () => import('./pages/home-view/home-view.module').then( m => m.HomeViewPageModule)
+  },  {
+    path: 'choice-restaurant',
+    loadChildren: () => import('./modals/choice-restaurant/choice-restaurant.module').then( m => m.ChoiceRestaurantPageModule)
   },
+
   // {
   //   path: 'products-view',
   //   loadChildren: () => import('./pages/products-view/products-view.module').then( m => m.ProductsViewPageModule)
@@ -67,10 +71,15 @@ const routes: Routes = [
   //   path: 'promotions-view',
   //   loadChildren: () => import('./pages/promotions-view/promotions-view.module').then( m => m.PromotionsViewPageModule)
   // },
-  {
-    path: 'build-order',
-    loadChildren: () => import('./modals/build-order/build-order.module').then( m => m.BuildOrderPageModule)
-  }
+  // {
+  //   path: 'build-order',
+  //   loadChildren: () => import('./modals/build-order/build-order.module').then( m => m.BuildOrderPageModule)
+  // },
+  // {
+  //   path: 'pay-info',
+  //   loadChildren: () => import('./modals/pay-info/pay-info.module').then( m => m.PayInfoPageModule)
+  // }
+
 
   
 ];

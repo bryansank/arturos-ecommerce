@@ -1,0 +1,119 @@
+<style></style>
+
+
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Informacion para pagar.</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="closeModal()">
+        <ion-icon name="close-circle-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <!-- <ion-button (click)="guardarenLocal()">
+    <ion-icon slot="icon-only" name="add"></ion-icon>
+  </ion-button> -->
+
+  <ion-card>
+    <ion-card-content>
+        <form>
+
+          <ion-item>
+            <ion-title>Lugar de retiro: </ion-title>
+            <ion-label>{{restUseParam}}</ion-label>
+          </ion-item>
+
+          <!-- Cedula -->
+          <ion-item>
+            <ion-label position="stacked">Cedula:</ion-label>
+            <ion-input required="true" type="text" placeholder="20631895" 
+                      max="9" min="6" autocomplete="on" inputmode="numeric" 
+                      clearInput="true" maxlength="9" minlength="6"
+                      [(ngModel)]="cedula_client" name="cedula_client"></ion-input>
+          </ion-item>
+
+          <!-- Telefono -->
+          <ion-item>
+            <ion-label position="stacked">Telefono:</ion-label>
+            <ion-input type="tel" max="11" min="11" inputmode="numeric"
+                      maxlength="11" minlength="11"
+                      placeholder="04149193001" [(ngModel)]="tel_client" name="tel_client"></ion-input>
+          </ion-item>
+
+          <!-- Nombre -->
+          <ion-item>
+            <ion-label position="stacked">Nombre:</ion-label>
+            <ion-input type="text" max="15" min="3" clearInput="true"
+                      maxlength="15" minlength="3" 
+                      [(ngModel)]="name_client" name="name_client" placeholder="Alex"></ion-input>
+          </ion-item>
+
+          <!-- Direccion -->
+          <ion-item>
+            <ion-label position="stacked">Dirección:</ion-label>
+            <ion-textarea placeholder="La Urbina, Caracas" clearInput="true" type="text"
+                          maxlength="30" minlength="6"
+                          name="direc_client" [(ngModel)]="direc_client"></ion-textarea>
+          </ion-item>
+          
+
+          <!-- Tarjeta de Cliente -->
+          <ion-item>
+            <ion-label position="stacked">Tarjeta:</ion-label>
+            <ion-input required="true" type="password" placeholder=" 4444********4444" 
+                      max="16" min="16" inputmode="numeric" clearInput="true" 
+                      maxlength="16" minlength="16"
+                      [(ngModel)]="card_client" name="card_client"></ion-input>
+          </ion-item>
+
+
+          <!-- PIN Secre -->
+          <ion-item>
+            <ion-label position="stacked">PIN:</ion-label>
+            <ion-input required="true" type="password" placeholder="321" 
+                      max="3" min="3" inputmode="numeric"
+                      clearInput="true" maxlength="3" minlength="3"
+                      [(ngModel)]="pin_client" name="pin_client"></ion-input>
+          </ion-item>
+
+          <!-- Fecha Venc -->
+          <!-- class="centerBlock" -->
+          <ion-item>
+            <ion-label>Fecha Vencimiento:</ion-label>
+            <ion-datetime displayFormat="YYYY/MM/DD" cancel-text="Cancelar" 
+                          done-text="Usar" placeholder="Mes / Dia / Año" required="true"
+                          [(ngModel)]="expiryDate_client" name="expiryDate_client">
+                          <!-- (ionChange)="onDateEvent(this.dateToModel, this.dateFromModel)"> -->
+                          
+            </ion-datetime>
+          </ion-item>
+
+
+          <ion-item>
+            <ion-label>Guardar Datos</ion-label>
+            <ion-checkbox #checkSave slot="end" (ionChange)="activeCheckSaveInfo()" checked={{checkFlagSave}}>
+            </ion-checkbox>
+          </ion-item>
+
+          <!-- <ion-item color="primary">
+            <ion-label>Restaurant de Retiro:</ion-label>
+            <ion-select (ionChange)="restaurantSelected($event)">
+              <ion-select-option value={{dataRestAvailable.length}} *ngFor="let dataRestAvailable of restAvailables">
+                {{dataRestAvailable}}
+              </ion-select-option>
+            </ion-select>
+          </ion-item> -->
+        
+          <ion-button (click)="processData()" color="success" expand="block" fill="clear" shape="round">
+            Procesar Pago
+          </ion-button>
+
+        </form>
+    </ion-card-content>
+  </ion-card>
+  
+
+</ion-content>

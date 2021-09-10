@@ -6,6 +6,9 @@ import { CategoryProduct } from 'src/app/interfaces/category';
 import { BuildOrderPage } from 'src/app/modals/build-order/build-order.page';
 import { CartService } from 'src/app/services/cart.service';
 import { LoaderIonService } from 'src/app/services/loader-ion.service';
+import { ToastIonService } from 'src/app/services/toast-ion.service';
+import { ShowpopupIonService } from 'src/app/services/showpopup-ion.service';
+import { ChoiceRestaurantPage } from 'src/app/modals/choice-restaurant/choice-restaurant.page';
 
 @Component({
   selector: 'app-home-view',
@@ -70,22 +73,23 @@ export class HomeViewPage implements OnInit, AfterContentChecked {
     }
   ];
   promoTest = [1, 2, 3, 4];
+  public tesrest = ""
 
 
-
-
-
+//
 
   constructor(
     private cartService: CartService,
     private router: Router,
     private alertController: AlertController,
+    private showPopupCtrlService: ShowpopupIonService,
     //public loadingCtlr: LoadingController,
     private loadingCtlrService: LoaderIonService,
     public toastController: ToastController,
     public navCtrl: NavController,
     private platform: Platform,
-    private modalCtrl: ModalController
+    private modalCtrl: ModalController,
+    public toasCtrlService: ToastIonService,
   ){
     this.platform.ready().then(()=>{  
       
@@ -125,31 +129,38 @@ export class HomeViewPage implements OnInit, AfterContentChecked {
 
   public welcomeClients():void{
     setTimeout(()=>{
-      this.ShowPopup(
+      this.showPopupCtrlService.ShowPopup(
         "¡Bienvenidos!", 
         "Te recordamos que si usas algun tipo de bloqueador de anuncios debes desactivarlo.",
-        "No usaremos ningun dato personal fuera de este sitio o con fines comerciales."
+        "No usaremos ningun dato personal fuera de este sitio o con fines comerciales.", 
+        "Acepto", 
+        this
       );
     }, 1000);
+  }
+
+  public async openModalChoiceRestaurant(){
+    const modalChoiceRest = await this.modalCtrl.create({ component: ChoiceRestaurantPage });
+    await modalChoiceRest.present();
+    const {data} = await modalChoiceRest.onDidDismiss();
+    //TODO: test
+    this.tesrest = data.value;
+    if(!this.tesrest){this.ngOnInit()}
   }
 
   public async openModalCart(){
     const modalForPay = await this.modalCtrl.create({
       component: BuildOrderPage,
-      // componentProps: {
-      //   dataCart: [0, 1],
-      //   extras: "hola",
-      // }
+      componentProps: {
+        restUse: this.tesrest
+      }
     });
     await modalForPay.present();
     const {data} = await modalForPay.onDidDismiss();
     //    console.log(data);
   }
 
-  ///////////////////
-  ///////////////////
-  /* Products Logic*/
-  //Method for display css Categorys...
+
   public displayCategoryForMobile(tabCategory:any) {
 
     const elementGrid = document.getElementById(tabCategory + "GridHome");
@@ -183,13 +194,9 @@ export class HomeViewPage implements OnInit, AfterContentChecked {
     this.homeContent.scrollToPoint(0, 0, 0);
     return;
   }
-  /* Products Logic*/
-  ///////////////////
-  ///////////////////
+  
 
-  /////////////////
-  /////////////////
-  /*Cart LOGIC*/
+
   public getCart():void{
     this.dataCartHome = this.cartService.getCart();
     //return this.dataCartHome
@@ -197,15 +204,7 @@ export class HomeViewPage implements OnInit, AfterContentChecked {
   public goCartPage() {
     this.router.navigate(["cart-view"]);
   }
-  /*Cart LOGIC*/
-  /////////////////
-  /////////////////
 
-
-
-  /////////////////
-  /////////////////
-  /*Search LOGIC*/
   public InitializeItems() {
     this.itemsForSearch = this.item;
   }
@@ -257,7 +256,7 @@ export class HomeViewPage implements OnInit, AfterContentChecked {
   public notFoundProduct(product:any) {
     product.count = 1;
     
-    this.presentToast("Producto añadido a tu carrito", 1200);
+    this.toasCtrlService.presentToast("Producto añadido a tu carrito", 1200);
     this.cartService.addProduct(product);
   }
   public foundProduct(product:any) {
@@ -269,7 +268,7 @@ export class HomeViewPage implements OnInit, AfterContentChecked {
       }
       this.cartService.addProduct(i);
     });
-    this.presentToast("Producto añadido a tu carrito", 1200);
+    this.toasCtrlService.presentToast("Producto añadido a tu carrito", 1200);
   }
   public addToCart(product: any) {
     //public addToCart(product: any, flagClearSearch?:any, id?:any) {
@@ -289,7 +288,7 @@ export class HomeViewPage implements OnInit, AfterContentChecked {
     } else {
       //product entrate, le agrega 1
       product.count = 1;
-      this.presentToast("Producto añadido a tu carrito", 1200);
+      this.toasCtrlService.presentToast("Producto añadido a tu carrito", 1200);
       this.cartService.addProduct(product);
     }
   }
@@ -308,50 +307,21 @@ export class HomeViewPage implements OnInit, AfterContentChecked {
     searchProductsID.value = "";
     this.noDisplaySrch()
   }
-  /* Search LOGIC*/
-  /////////////////
-  /////////////////
-
-
-  /////////////////
-  /////////////////
-  /* SLIDER  */
-  public slidesDidLoad(slides: IonSlides) {
-    slides.startAutoplay();
-  }
+  
+  
   public viewPromos(){
-    //console.log("funcionando")
+    // this.handlersManager.consoleForDebbug("Funcionando, ver promos desde slider")
     //this.pageScroller("idTextProducts");
   }
-  /* SLIDER  */
-  /////////////////
-  /////////////////
-
-
-
-  /////////////////
-  /////////////////
-  /* GLOBAL FUNCTIONS */
-  // public async presentLoading(){
-  //   this.loading = await this.loadingCtlr.create({
-  //     cssClass: 'my-custom-class',
-  //     message: 'Por favor espere.',
-  //   });
-
-  //   return this.loading.present();
-  // }
-
-  // public async hideLoading(){
-  //   this.loadingCtlr.getTop().then(loader => {
-  //     if (loader) {
-  //       loader.dismiss();
-  //     }
-  //   });
-  // }
 
   public loadIonViewForSlides(){
     this.loadSlide = true;
   }
+
+  public slidesDidLoad(slides: IonSlides) {
+    slides.startAutoplay();
+  }
+  
   public doRefresh(event:any){
     setTimeout(() => {
       //this.navCtrl.navigateRoot("/home-view");
@@ -359,38 +329,10 @@ export class HomeViewPage implements OnInit, AfterContentChecked {
       window.location.reload();
     },1000);    
   }
-  public async ShowPopup(msnHeader: string, msn: string, submsn?: string){
 
-    const alert = await this.alertController.create(
-      {
-        header: msnHeader,
-        message: msn + " " + "<br/> <br/> " + submsn,
-        buttons: [
-          {
-            text: 'Acepto',
-            handler: () => { }
-          }
-        ]
-      }
-    );
-
-    await alert.present();
-
-  }
-  public async presentToast(msn:string,duration:number = 1800) {
-    const toast = await this.toastController.create({
-      message: msn.toUpperCase(),
-      duration: duration,
-      //color: "primary",
-      position: 'bottom',
-      cssClass: "toastCart"
-    });
-    toast.present();
-  }
-  /* GLOBAL FUNCTIONS */
-  /////////////////
-  /////////////////
 
 
   
+
+
 }

@@ -1,6 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { CartService } from 'src/app/services/cart.service';
+import { ToastIonService } from 'src/app/services/toast-ion.service';
+import { PayInfoPage } from '../pay-info/pay-info.page';
 
 @Component({
   selector: 'app-build-order',
@@ -11,11 +13,14 @@ export class BuildOrderPage implements OnInit {
 
   constructor(
     private modalCtrl: ModalController, 
-    private cartService: CartService
+    private cartService: CartService,
+    public toasCtrlService: ToastIonService
   ){}
 
   // @Input() dataCart: any;
   // @Input() extras: any;
+  @Input() restUse: string;
+  public auxRestUse:string;
 
   public rate = 1.00;
   public currency = "$";
@@ -28,16 +33,16 @@ export class BuildOrderPage implements OnInit {
 
   public flagPromo: boolean = false;
   public flagCartClean: boolean = false;
+  public flagPay: boolean = true;
 
   ngOnInit(){
+
     this.items = this.getAllProductCart();
-    // console.log(this.items)
 
     //No hay nada en el carrito.
     if(this.items == null || this.items == undefined){
       this.totalToPay = 0;
-      // this.presentToast("Agrega algo al carrito", 1800);
-      console.log("llego vacio el carrito");
+      this.toasCtrlService.presentToast("Agrega algo al carrito", 1800);
       return;
     }
 
@@ -48,6 +53,7 @@ export class BuildOrderPage implements OnInit {
     if(this.items.length != 0){
       this.selectedItems = this.items;
       this.flagCartClean = true;
+      this.flagPay = false;
 
       //Data de Products/Promo
       this.itemsProduct = this.selectedItems.filter((i:any)=> !i.hasOwnProperty('promo'));
@@ -57,9 +63,19 @@ export class BuildOrderPage implements OnInit {
 
     }else{
       this.totalToPay = 0;
-      // this.presentToast("Agrega algo al carrito", 1800);
-      console.log("llego vacio el carrito 2");
+      this.toasCtrlService.presentToast("Agrega algo al carrito", 1800);
     }
+  }
+
+  public async openModalToPay(){
+    const modalForPay = await this.modalCtrl.create({
+      component: PayInfoPage,
+      componentProps: {
+        restUseParam : this.restUse
+      }
+    });
+    await modalForPay.present();
+    const {data} = await modalForPay.onDidDismiss();
   }
 
   public calculateTotalToPay():void{
@@ -137,11 +153,11 @@ export class BuildOrderPage implements OnInit {
     this.modalCtrl.dismiss();
   }
 
-  public closeModalWithParams(){
-    //Parametros que devuelve el modal al cerrarse
-    this.modalCtrl.dismiss({
-      prueba: "soyguapo"
-    });
-  }
+  // public closeModalWithParams(){
+  //   //Parametros que devuelve el modal al cerrarse
+  //   this.modalCtrl.dismiss({
+  //     prueba: "soyguapo"
+  //   });
+  // }
 
 }

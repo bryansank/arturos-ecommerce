@@ -129,10 +129,10 @@
     <ion-grid>
       <ion-row>
         <ion-col  size="12" size-lg="6" size-md="6" size-sm="6" size-xs="12">
-          <ion-button (click)="closeModalWithOuthParams()" color="primary" expand="full"> Cancelar</ion-button>
+          <ion-button (click)="closeModalWithOuthParams()" color="secondary" expand="full"> Cancelar</ion-button>
         </ion-col>
         <ion-col  size="12" size-lg="6" size-md="6" size-sm="6" size-xs="12">
-          <ion-button (click)="closeModalWithParams()" color="secondary" expand="full">Pagar</ion-button>    
+          <ion-button disabled={{flagPay}} (click)="openModalToPay()" color="primary" expand="full">Pagar</ion-button>    
         </ion-col>
       </ion-row>
     </ion-grid>

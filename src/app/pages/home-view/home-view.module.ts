@@ -10,6 +10,8 @@ import { HomeViewPage } from './home-view.page';
 import { OurComponentsModule } from 'src/app/components/components.module';
 import { BuildOrderPageModule } from 'src/app/modals/build-order/build-order.module';
 import { BuildOrderPage } from 'src/app/modals/build-order/build-order.page';
+import { ChoiceRestaurantPageModule } from 'src/app/modals/choice-restaurant/choice-restaurant.module';
+import { ChoiceRestaurantPage } from 'src/app/modals/choice-restaurant/choice-restaurant.page';
 
 @NgModule({
   imports: [
@@ -19,13 +21,16 @@ import { BuildOrderPage } from 'src/app/modals/build-order/build-order.page';
     HomeViewPageRoutingModule,
     OurComponentsModule,
 
-    //Para Modal
-    BuildOrderPageModule
+    //Para Modal order
+    BuildOrderPageModule,
+    //modal rest
+    ChoiceRestaurantPageModule,
   ],
   declarations: [HomeViewPage],
   //Para Modal
   entryComponents: [
-    BuildOrderPage
+    BuildOrderPage,
+    ChoiceRestaurantPage,
   ]
 })
 export class HomeViewPageModule {}

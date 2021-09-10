@@ -120,4 +120,8 @@ export class handlersManager {
     
     }
 
+    public transformDate(date:string, separator:string="/"):string{
+        return date.slice(0, 10).split('-').join(separator);
+    }
+
 }

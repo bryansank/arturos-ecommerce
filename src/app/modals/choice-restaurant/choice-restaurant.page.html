@@ -1,0 +1,18 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>¿Donde vas a retirar?</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-item>
+    <ion-label position="stacked">Restaurante a Retirar:</ion-label>
+    <ion-select placeholder="Restaurante en donde Retirar" #comboRest (ionChange)="changeComboRest(comboRest)">
+      <ion-select-option *ngFor="let i of restaurantesPrueba;" value={{i.rest}}>{{i.location}}</ion-select-option>
+    </ion-select>
+  </ion-item>
+
+  <ion-button disabled={{flagRestSelect}} (click)="closeModal(comboRest)" expand="block" fill="clear" shape="round" color="primary">
+    Guardar
+  </ion-button>
+</ion-content>
